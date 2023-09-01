@@ -1,2 +1,2 @@
-# stellar_token_swap
-Token exchange platform on Stellar blockchain
+# Bounty Hunter Smart contract
+Bounty Hunter Smart contract on Stellar blockchain
