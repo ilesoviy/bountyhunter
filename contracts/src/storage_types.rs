@@ -8,7 +8,7 @@ pub(crate) const TOKEN_DECIMALS: u32 = 4;
 pub(crate) const INSTANCE_BUMP_AMOUNT: u32 = 34560; // 2 days
 
 
-#[derive(Clone)]
+#[derive(Clone, Copy, PartialEq, Debug)]
 #[contracttype]
 pub enum Error {
     Success = 0,

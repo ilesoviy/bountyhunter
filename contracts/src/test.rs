@@ -1,143 +1,120 @@
 #![cfg(test)]
 extern crate std;
 
-use soroban_sdk::{ log, token, BytesN };
-use crate::storage_types::{ DEF_FEE_RATE, TOKEN_DECIMALS, FeeInfo };
-use crate::{ Bounty, BountyClient };
-
-
+use soroban_sdk::{ log, token };
+use crate::storage_types::{ DEF_FEE_RATE, FEE_DECIMALS, TOKEN_DECIMALS, INSTANCE_BUMP_AMOUNT, FeeInfo, Error };
+use crate::{ BountyHunter, BountyHunterClient };
 use soroban_sdk::{
     symbol_short, Symbol,
-    testutils::{Address as _, AuthorizedFunction, AuthorizedInvocation},
-    Address, Env, IntoVal,
+    testutils::{Address as _, AuthorizedFunction, AuthorizedInvocation, Ledger, LedgerInfo},
+    Address, Env, IntoVal, String
 };
 
 
+const MUL_VAL: u64 = u64::pow(10, TOKEN_DECIMALS);
+const ONE_DAY: u64 = 60 * 60 * 24; // 60sec * 60min * 24hr
+
+
+fn create_bounty_contract<'a>(
+    e: &Env
+) -> BountyHunterClient<'a> {
+    let bounty_contract = BountyHunterClient::new(e, &e.register_contract(None, BountyHunter {}));
+
+    bounty_contract
+}
+
 fn create_token_contract<'a>(
     e: &Env,
-    admin: &Address,
+    admin: &Address
 ) -> (Address, token::Client<'a>, token::AdminClient<'a>) {
     let addr = e.register_stellar_asset_contract(admin.clone());
     (
         addr.clone(),
         token::Client::new(e, &addr),
-        token::AdminClient::new(e, &addr),
+        token::AdminClient::new(e, &addr)
     )
 }
 
-fn create_bounty_contract<'a>(
-    e: &Env,
-) -> TokenSwapClient<'a> {
-    let token_swap = TokenSwapClient::new(e, &e.register_contract(None, TokenSwap {}));
-
-    token_swap
-}
-
-
+// timelock test
 #[test]
-fn test() {
+fn test4() {
     let e = Env::default();
     e.mock_all_auths();
 
-
-    let token_admin = Address::random(&e);
-    let offeror = Address::random(&e);
-    let acceptor = Address::random(&e);
-    const MUL_VAL: u64 = u64::pow(10, TOKEN_DECIMALS);
-    
+    let token_admin: Address = Address::random(&e);
+    let creator: Address = Address::random(&e);
     
     // create contract
-    let token_swap = create_bounty_contract(
-        &e,
-    );
+    let bounty_contract = create_bounty_contract(&e);
 
-
-    let send_token = create_token_contract(&e, &token_admin);
-    let send_token_id = send_token.0;
-    let send_token_client = send_token.1;
-    let send_token_admin_client = send_token.2;
-    send_token_admin_client.mint(&offeror.clone(), &(1000 * MUL_VAL));
-    log!(&e, "send_token_id = {}", send_token_id);
-    
-    let recv_token = create_token_contract(&e, &token_admin);
-    let recv_token_id = recv_token.0;
-    let recv_token_client = recv_token.1;
-    let recv_token_admin_client = recv_token.2;
-    recv_token_admin_client.mint(&acceptor.clone(), &(100 * MUL_VAL));
-    
+    // create pay token
+    let pay_token = create_token_contract(&e, &token_admin);
+    let pay_token_id: Address = pay_token.0;
+    let pay_token_client = pay_token.1;
+    let pay_token_admin_client = pay_token.2;
+    pay_token_admin_client.mint(&creator.clone(), &(10000 * MUL_VAL as i128));
+    pay_token_client.approve(&creator.clone(), &bounty_contract.address.clone(), &(10000 * MUL_VAL as i128), &INSTANCE_BUMP_AMOUNT);
     
     // init fee
     let fee_rate = DEF_FEE_RATE;
     let fee_wallet = Address::random(&e);
+    bounty_contract.set_fee(&fee_rate, &fee_wallet);
 
-    token_swap.set_fee(&fee_rate, &fee_wallet);
-    
+    let old_timestamp = e.ledger().timestamp();
+    let new_timestamp = old_timestamp + ONE_DAY * 5;
 
-    // allow tokens
-    token_swap.allow_token(&send_token_id);
-    token_swap.allow_token(&recv_token_id);
+    // create bounty
+    let bounty_id: u32 = bounty_contract.create_bounty(
+        &creator,
+        &String::from_slice(&e, "Test4"),
+        &(1000 * MUL_VAL),
+        &pay_token_id,
+        &new_timestamp
+    );
+    assert_eq!(bounty_id, 0);
 
-    send_token_client.approve(&offeror.clone(), &token_swap.address.clone(), &(1000 * MUL_VAL), &2000000);
-    recv_token_client.approve(&acceptor.clone(), &token_swap.address.clone(), &(100 * MUL_VAL), &2000000);
-    
-    
-    // Initial transaction 1 - create offer
-    // 500 send_tokens : 50 recv_tokens (10 min_recv_tokens)
-    let timestamp: u32 = e.ledger().timestamp();
-    
-    let offer_id: BytesN<32> = token_swap.create_offer(
-        &offeror,
-        &send_token_id,
-        &recv_token_id,
-        &timestamp,
-        &(500 * MUL_VAL),
-        &(50 * MUL_VAL),
-        &(10 * MUL_VAL));
-    
-    // Verify that authorization is required for the offeror.
+    // fund bounty
+    let ret1 = bounty_contract.fund_bounty(
+        &creator,
+        &bounty_id
+    );
+    assert_eq!(ret1, Error::Success);
+    // check transfer
     assert_eq!(
         e.auths(),
         std::vec![(
-            offeror.clone(),
+            creator.clone(),
             AuthorizedInvocation {
                 function: AuthorizedFunction::Contract((
-                    token_swap.address.clone(),
-                    Symbol::new(&e, "create_offer"),
+                    bounty_contract.address.clone(),
+                    Symbol::new(&e, "fund_bounty"),
                     (
-                        offeror.clone(),
-                        &send_token_id,
-                        &recv_token_id,
-                        timestamp,
-                        500 * MUL_VAL,
-                        50 * MUL_VAL,
-                        10 * MUL_VAL
-                    )
-                        .into_val(&e)
+                        creator.clone(),
+                        bounty_id
+                    ).into_val(&e)
                 )),
                 sub_invocations: std::vec![
                     AuthorizedInvocation {
                         function: AuthorizedFunction::Contract((
-                            send_token_id.clone(),
+                            pay_token_id.clone(),
                             symbol_short!("transfer"),
                             (
-                                offeror.clone(),
-                                token_swap.address.clone(),
-                                500 * MUL_VAL,
-                            )
-                                .into_val(&e)
+                                creator.clone(),
+                                bounty_contract.address.clone(),
+                                (1000 * MUL_VAL) as i128,
+                            ).into_val(&e)
                         )),
                         sub_invocations: std::vec![]
                     },
                     AuthorizedInvocation {
                         function: AuthorizedFunction::Contract((
-                            send_token_id.clone(),
+                            pay_token_id.clone(),
                             symbol_short!("transfer"),
                             (
-                                offeror.clone(),
+                                creator.clone(),
                                 fee_wallet.clone(),
-                                12500_i128,
-                            )
-                                .into_val(&e)
+                                (1000 * MUL_VAL * (fee_rate as u64) / u64::pow(10, FEE_DECIMALS)) as i128,
+                            ).into_val(&e)
                         )),
                         sub_invocations: std::vec![],
                     }
@@ -146,96 +123,37 @@ fn test() {
         )]
     );
 
-    // trying to create an offer with same params - fail
-    assert!(token_swap.try_create_offer(
-        &offeror,
-        &send_token_id,
-        &recv_token_id,
-        &timestamp,
-        &(500 * MUL_VAL),
-        &(50 * MUL_VAL),
-        &(10 * MUL_VAL)).is_err());
+    // advance time 5 days
+    e.ledger().set(LedgerInfo {
+        timestamp: new_timestamp,
+        ..Default::default()
+    });
+    assert_eq!(new_timestamp, e.ledger().timestamp());
 
-    // trying to create an offer with different timestamp - fails due to insufficient balance
-    let timestamp2: u64 = timestamp + 127;
-    assert!(token_swap.try_create_offer(
-        &offeror,
-        &send_token_id,
-        &recv_token_id,
-        &timestamp2,
-        &(500 * MUL_VAL),
-        &(50 * MUL_VAL),
-        &(10 * MUL_VAL)).is_err());
-    
-    
-    // Try accepting 9 recv_token for at least 10 recv_token - that wouldn't
-    // succeed because minimum recv amount is 10 recv_token.
-    assert!(token_swap.try_accept_offer(
-        &acceptor, 
-        &offer_id, 
-        &(9 * MUL_VAL)).is_err());
-    
-    // acceptor accepts 10 recv_tokens.
-    token_swap.accept_offer(
-        &acceptor,
-        &offer_id,
-        &(10_i128 * MUL_VAL));
-    
-    assert_eq!(send_token_client.balance(&offeror), 500_i128 * MUL_VAL - 12500);
-    assert_eq!(send_token_client.balance(&token_swap.address), 400_i128 * MUL_VAL);
-    assert_eq!(send_token_client.balance(&acceptor), 100_i128 * MUL_VAL);
-    assert_eq!(send_token_client.balance(&fee_wallet), 12500);
-    
-    assert_eq!(recv_token_client.balance(&offeror), 10_i128 * MUL_VAL);
-    assert_eq!(recv_token_client.balance(&token_swap.address), 0);
-    assert_eq!(recv_token_client.balance(&acceptor), 90_i128 * MUL_VAL - 250);
-    assert_eq!(recv_token_client.balance(&fee_wallet), 250);
-    
-    
-    // update (recv_amount, min_recv_amount) from (40, 10) to (80, 20)
-    token_swap.update_offer(
-        &offeror,
-        &offer_id,
-        &(80_i128 * MUL_VAL),   // new recv_amount
-        &(20_i128 * MUL_VAL)    // new min_recv_amount
+    // close bounty
+    let ret2 = bounty_contract.close_bounty(
+        &token_admin,
+        &bounty_id
     );
-
-    
-    // acceptor accepts 40 recv_tokens.
-    token_swap.accept_offer(
-        &acceptor, 
-        &offer_id, 
-        &(40 * MUL_VAL));
-    
-    assert_eq!(send_token_client.balance(&offeror), 500_i128 * MUL_VAL - 12500);
-    assert_eq!(send_token_client.balance(&token_swap.address), 200_i128 * MUL_VAL);
-    assert_eq!(send_token_client.balance(&acceptor), 300_i128 * MUL_VAL);
-    assert_eq!(send_token_client.balance(&fee_wallet), 12500);
-
-    assert_eq!(recv_token_client.balance(&offeror), 50_i128 * MUL_VAL);
-    assert_eq!(recv_token_client.balance(&token_swap.address), 0);
-    assert_eq!(recv_token_client.balance(&acceptor), 50_i128 * MUL_VAL - 1250);
-    assert_eq!(recv_token_client.balance(&fee_wallet), 1250);
-    
-    
-    // offeror closes offer
-    token_swap.close_offer(
-        &offeror,
-        &offer_id
+    assert_eq!(ret2, Error::Success);
+    assert_eq!(
+        e.auths(),
+        std::vec![(
+            token_admin.clone(),
+            AuthorizedInvocation {
+                function: AuthorizedFunction::Contract((
+                    bounty_contract.address.clone(),
+                    Symbol::new(&e, "close_bounty"),
+                    (
+                        token_admin.clone(),
+                        bounty_id
+                    ).into_val(&e)
+                )),
+                sub_invocations: std::vec![]
+            }
+        )]
     );
-
-    assert_eq!(send_token_client.balance(&offeror), 700_i128 * MUL_VAL - 12500);
-    assert_eq!(send_token_client.balance(&token_swap.address), 0);
-    assert_eq!(send_token_client.balance(&acceptor), 300_i128 * MUL_VAL);
-    assert_eq!(send_token_client.balance(&fee_wallet), 12500);
-    
-    assert_eq!(recv_token_client.balance(&offeror), 50_i128 * MUL_VAL);
-    assert_eq!(recv_token_client.balance(&token_swap.address), 0);
-    assert_eq!(recv_token_client.balance(&acceptor), 50_i128 * MUL_VAL - 1250);
-    assert_eq!(recv_token_client.balance(&fee_wallet), 1250);
-
-
-    // disallow tokens
-    token_swap.disallow_token(&send_token_id);
-    token_swap.disallow_token(&recv_token_id);
+    // check refund
+    assert_eq!(pay_token_client.balance(&creator), 
+        (10000 * MUL_VAL - 1000 * MUL_VAL * (fee_rate as u64) / u64::pow(10, FEE_DECIMALS)) as i128);
 }

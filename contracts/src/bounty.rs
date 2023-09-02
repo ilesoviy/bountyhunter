@@ -100,6 +100,7 @@ pub fn bounty_fund(
     let mut bounty: BountyInfo = bounty_load(e, bounty_id);
 
     if bounty.creator != *creator {
+        // panic!("creator and bounty mismatch!");
         return Error::CreatorBountyMismatch
     }
     if bounty.status != BountyStatus::CREATED {
@@ -278,17 +279,18 @@ pub fn bounty_cancel(e: &Env,
     bounty_id: u32
 ) -> Error {
     if !e.storage().instance().has(&DataKey::RegBounties(bounty_id)) {
-        // panic!("can't find bounty");
+        // panic!("can't find bounty!");
         return Error::BountyNotFound;
     }
     let mut bounty = bounty_load(e, bounty_id);
 
     if bounty.creator != *creator {
-        return Error::CreatorBountyMismatch;
+        // panic!("creator and bounty mismatch!");
+        return Error::CreatorBountyMismatch
     }
     if bounty.status != BountyStatus::FUNDED {
-        // panic!("bounty not available");
-        return Error::InvalidBountyStatus;
+        // panic!("bounty not available!");
+        return Error::InvalidBountyStatus
     }
 
     creator.require_auth();
@@ -316,23 +318,23 @@ pub fn bounty_close(e: &Env,
     bounty_id: u32
 ) -> Error {
     if !e.storage().instance().has(&DataKey::RegBounties(bounty_id)) {
-        // panic!("can't find bounty");
-        return Error::BountyNotFound;
+        // panic!("can't find bounty!");
+        return Error::BountyNotFound
     }
-    let mut bounty = bounty_load(e, bounty_id);
+    let mut bounty: BountyInfo = bounty_load(e, bounty_id);
 
     if bounty.status != BountyStatus::FUNDED {
-        // panic!("bounty not available");
-        return Error::InvalidBountyStatus;
+        // panic!("bounty not available!");
+        return Error::InvalidBountyStatus
     }
     if bounty.end_date > e.ledger().timestamp() {
         // panic!("bounty not timeout!");
-        return Error::NoTimeout;
+        return Error::NoTimeout
     }
 
     admin.require_auth();
 
-    // refund to creator
+    // refund to bounty creator
     token::Client::new(e, &bounty.pay_token).transfer(
         &e.current_contract_address(), 
         &bounty.creator, 
