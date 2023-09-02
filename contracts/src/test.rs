@@ -35,7 +35,7 @@ fn create_token_contract<'a>(
     )
 }
 
-// timelock test
+// timelock(cancel) test
 #[test]
 fn test4() {
     let e = Env::default();
