@@ -38,15 +38,15 @@ pub fn bounty_create(
 ) -> u32 {
     // check args
     if name.len() == 0 {
-        // panic!("invalid name!");
+        // panic!("invalid name");
         return Error::InvalidName as u32
     }
     if reward_amount == 0 {
-        // panic!("zero reward isn't allowed!");
+        // panic!("zero reward isn't allowed");
         return Error::InvalidReward as u32
     }
     if deadline == 0 {
-        // panic!("invalid deadline!");
+        // panic!("invalid deadline");
         return Error::InvalidDeadline as u32
     }
     
@@ -88,23 +88,23 @@ pub fn bounty_fund(
     bounty_id: u32
 ) -> Error {
     if !fee_check(e) {
-        // panic!("fee hasn't been set yet!");
+        // panic!("fee hasn't been set yet");
         return Error::FeeNotSet
     }
 
     if !e.storage().instance().has(&DataKey::RegBounties(bounty_id)) {
-        // panic!("can't find bounty!");
+        // panic!("can't find bounty");
         return Error::BountyNotFound
     }
 
     let mut bounty: BountyInfo = bounty_load(e, bounty_id);
 
     if bounty.creator != *creator {
-        // panic!("creator and bounty mismatch!");
+        // panic!("creator and bounty mismatch");
         return Error::CreatorBountyMismatch
     }
     if bounty.status != BountyStatus::CREATED {
-        // panic!("invalid bounty status!");
+        // panic!("invalid bounty status");
         return Error::InvalidBountyStatus
     }
 
@@ -119,11 +119,11 @@ pub fn bounty_fund(
     let pay_token_client = token::Client::new(e, &bounty.pay_token);
 
     if pay_token_client.balance(&creator) < transfer_amount {
-        // panic!("creator's balance insufficient!");
+        // panic!("creator's balance insufficient");
         return Error::InsuffCreatorBalance
     }
     if pay_token_client.allowance(&creator, &contract) < transfer_amount {
-        // panic!("creator's allowance insufficient!");
+        // panic!("creator's allowance insufficient");
         return Error::InsuffCreatorAllowance
     }
 
@@ -148,22 +148,18 @@ pub fn bounty_submit(
     work_repo: &String
 ) -> u32 {
     // check args
-    if bounty_id == 0 {
-        // panic!("invalid bounty id!");
-        return Error::InvalidBountyID as u32
-    }
     if work_repo.len() == 0 {
-        // panic!("invalid repo!");
+        // panic!("invalid repo");
         return Error::InvalidWorkRepo as u32
     }
     
     if !participance_get(e, participant, bounty_id) {
-        // panic!("not participated!");
+        // panic!("not participated");
         return Error::NotParticipated as u32
     }
 
     if !bounty_check(e, bounty_id) {
-        // panic!("bounty not found!");
+        // panic!("bounty not found");
         return Error::BountyNotFound as u32
     }
 
@@ -204,6 +200,10 @@ pub fn bounty_approve(e: &Env,
     }
     let mut bounty: BountyInfo = bounty_load(e, work.bounty_id);
 
+    if bounty.creator != *creator {
+        // panic!("creator and bounty mismatch");
+        return Error::CreatorBountyMismatch;
+    }
     if bounty.status != BountyStatus::FUNDED {
         // panic!("invalid bounty status");
         return Error::InvalidBountyStatus
@@ -279,17 +279,17 @@ pub fn bounty_cancel(e: &Env,
     bounty_id: u32
 ) -> Error {
     if !e.storage().instance().has(&DataKey::RegBounties(bounty_id)) {
-        // panic!("can't find bounty!");
+        // panic!("can't find bounty");
         return Error::BountyNotFound;
     }
     let mut bounty = bounty_load(e, bounty_id);
 
     if bounty.creator != *creator {
-        // panic!("creator and bounty mismatch!");
+        // panic!("creator and bounty mismatch");
         return Error::CreatorBountyMismatch
     }
     if bounty.status != BountyStatus::FUNDED {
-        // panic!("bounty not available!");
+        // panic!("invalid bounty status");
         return Error::InvalidBountyStatus
     }
 
@@ -318,17 +318,17 @@ pub fn bounty_close(e: &Env,
     bounty_id: u32
 ) -> Error {
     if !e.storage().instance().has(&DataKey::RegBounties(bounty_id)) {
-        // panic!("can't find bounty!");
+        // panic!("can't find bounty");
         return Error::BountyNotFound
     }
     let mut bounty: BountyInfo = bounty_load(e, bounty_id);
 
     if bounty.status != BountyStatus::FUNDED {
-        // panic!("bounty not available!");
+        // panic!("bounty not available");
         return Error::InvalidBountyStatus
     }
     if bounty.end_date > e.ledger().timestamp() {
-        // panic!("bounty not timeout!");
+        // panic!("bounty not timeout");
         return Error::NoTimeout
     }
 
