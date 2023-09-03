@@ -1,8 +1,8 @@
 #![cfg(test)]
 extern crate std;
 
-use soroban_sdk::{ log, token };
-use crate::storage_types::{ DEF_FEE_RATE, FEE_DECIMALS, TOKEN_DECIMALS, INSTANCE_BUMP_AMOUNT, FeeInfo, Error };
+use soroban_sdk::{ /* log,  */token };
+use crate::storage_types::{ DEF_FEE_RATE, FEE_DECIMALS, TOKEN_DECIMALS, INSTANCE_BUMP_AMOUNT, Error };
 use crate::{ BountyHunter, BountyHunterClient };
 use soroban_sdk::{
     symbol_short, Symbol,
@@ -303,7 +303,6 @@ fn test3_cancel() {
     e.mock_all_auths();
 
     let token_issuer: Address = Address::random(&e);
-    let admin: Address = Address::random(&e);
     let creator: Address = Address::random(&e);
     
     // create contract

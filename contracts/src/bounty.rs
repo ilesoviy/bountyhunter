@@ -1,7 +1,7 @@
 const BOUNTY: Symbol = symbol_short!("BOUNTY");
 
 use soroban_sdk::{
-    log, token, Address, Env, symbol_short, Symbol, String
+    /* log,  */token, Address, Env, symbol_short, Symbol, String
 };
 use crate::storage_types::{ INSTANCE_BUMP_AMOUNT, FeeInfo, WorkStatus, WorkInfo, BountyStatus, BountyInfo, DataKey, Error };
 use crate::fee::{ fee_check, fee_get, fee_calculate };
