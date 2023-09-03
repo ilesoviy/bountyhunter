@@ -1,5 +1,5 @@
 [package]
-name = "soroban-token-exchange-contract"
+name = "soroban-escrow-smart-contract"
 version = "0.0.0"
 edition = "2021"
 publish = false
