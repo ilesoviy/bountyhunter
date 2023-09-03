@@ -9,7 +9,7 @@ mod bounty;
 
 use soroban_sdk::{
     token, contract, contractimpl, 
-    Address, Env, String
+    Env, Address, String
 };
 use crate::storage_types::{ INSTANCE_BUMP_AMOUNT, FeeInfo, DataKey, Error };
 use crate::fee::{ fee_set };

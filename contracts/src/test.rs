@@ -7,7 +7,7 @@ use crate::{ BountyHunter, BountyHunterClient };
 use soroban_sdk::{
     symbol_short, Symbol,
     testutils::{Address as _, AuthorizedFunction, AuthorizedInvocation, Ledger, LedgerInfo},
-    Address, Env, IntoVal, String
+    Env, Address, IntoVal, String
 };
 
 
@@ -42,6 +42,7 @@ fn test1_approve() {
     e.mock_all_auths();
 
     let token_issuer: Address = Address::random(&e);
+    let admin: Address = Address::random(&e);
     let creator: Address = Address::random(&e);
     let worker: Address = Address::random(&e);
     
@@ -59,7 +60,7 @@ fn test1_approve() {
     // init fee
     let fee_rate = DEF_FEE_RATE;
     let fee_wallet = Address::random(&e);
-    bounty_contract.set_fee(&fee_rate, &fee_wallet);
+    bounty_contract.set_fee(&admin, &fee_rate, &fee_wallet);
 
     let old_timestamp = e.ledger().timestamp();
     let new_timestamp = old_timestamp + ONE_DAY * 5;
@@ -174,6 +175,7 @@ fn test2_reject() {
     e.mock_all_auths();
 
     let token_issuer: Address = Address::random(&e);
+    let admin: Address = Address::random(&e);
     let creator: Address = Address::random(&e);
     let worker: Address = Address::random(&e);
     
@@ -191,7 +193,7 @@ fn test2_reject() {
     // init fee
     let fee_rate = DEF_FEE_RATE;
     let fee_wallet = Address::random(&e);
-    bounty_contract.set_fee(&fee_rate, &fee_wallet);
+    bounty_contract.set_fee(&admin, &fee_rate, &fee_wallet);
 
     let old_timestamp = e.ledger().timestamp();
     let new_timestamp = old_timestamp + ONE_DAY * 5;
@@ -303,6 +305,7 @@ fn test3_cancel() {
     e.mock_all_auths();
 
     let token_issuer: Address = Address::random(&e);
+    let admin: Address = Address::random(&e);
     let creator: Address = Address::random(&e);
     
     // create contract
@@ -319,7 +322,7 @@ fn test3_cancel() {
     // init fee
     let fee_rate = DEF_FEE_RATE;
     let fee_wallet = Address::random(&e);
-    bounty_contract.set_fee(&fee_rate, &fee_wallet);
+    bounty_contract.set_fee(&admin, &fee_rate, &fee_wallet);
 
     let old_timestamp = e.ledger().timestamp();
     let new_timestamp = old_timestamp + ONE_DAY * 5;
@@ -436,7 +439,7 @@ fn test4_close() {
     // init fee
     let fee_rate = DEF_FEE_RATE;
     let fee_wallet = Address::random(&e);
-    bounty_contract.set_fee(&fee_rate, &fee_wallet);
+    bounty_contract.set_fee(&admin, &fee_rate, &fee_wallet);
 
     let old_timestamp = e.ledger().timestamp();
     let new_timestamp = old_timestamp + ONE_DAY * 5;
