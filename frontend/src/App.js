@@ -43,13 +43,13 @@ function App() {
             <Home exact path="/">
               <Redirect to="/" />
             </Home>
-            <BountyListing path="ExploreBounties/:id"/>
+            <BountyListing path="ExploreBounties/:id" />
             <ExploreBounty path="ExploreBounties" />
             <PreviewNewBounty path="NewBounty/preview" />
             <NewBounty path="NewBounty" />
             <MyBounties path="MyBounties" />
             <Review path="Review" />
-            <Settings path="Settings"/>
+            <Settings path="Settings" />
           </ScrollTop>
         </PosedRouter>
       </SingingWeb3Provider>
