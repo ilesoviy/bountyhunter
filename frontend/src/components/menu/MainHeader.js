@@ -93,9 +93,9 @@ const MainHeader = function () {
           </BreakpointProvider>
 
           <div className='mainside'>
-            <Reveal keyframes={fadeIn} className='onStep' delay={0} duration={1000} triggerOnce>
+            {/* <Reveal keyframes={fadeIn} className='onStep' delay={0} duration={1000} triggerOnce> */}
                 <ConnectWallet />
-            </Reveal>
+            {/* </Reveal> */}
           </div>
         </div>
       </div>

@@ -1,17 +1,20 @@
 import { Reveal } from 'react-awesome-reveal';
 import { fadeInUp } from '../../utils';
-import { Link } from '@reach/router';
+import { useNavigate } from '@reach/router';
 
 const MyBountyBodyListItem = ({ count }) => {
+
+  const nav = useNavigate();
+
   return (
     <div className='app-body'>
       <Reveal keyframes={fadeInUp} className='onStep' delay={400} duration={1000} triggerOnce>
         <div className='row'>
           <div className='w-full mt-[20px] pr-0'>
-            <div className='app-card'>
+            <div className='app-card cursor-pointer' onClick={()=>nav('/MyBounties/0')}>
               <div className='flex justify-between sm:flex-col sm:text-center'>
                 <div className='flex flex-col'>
-                  <Link className='text-[16px]' to="/MyBounties/0">My Bounting Listings</Link>
+                  <div className='text-[16px]'>My Bounting Listings</div>
                 </div>
                 <div className='flex flex-col'>
                   <div className='flex flex-row space-x-2'>

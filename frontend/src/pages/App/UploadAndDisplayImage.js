@@ -3,7 +3,7 @@ import React, { useState } from "react";
 const UploadAndDisplayImage = () => {
 
   const [selectedImage, setSelectedImage] = useState(null);
-
+  
   return (
     <div className="relative">
       {selectedImage ?
