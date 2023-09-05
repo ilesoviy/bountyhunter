@@ -90,6 +90,9 @@ const ExploreBounty = () => {
                 <p className='text-[16px] app-gray'><span className='app-color'>3</span> Results </p>
               </div>
             </Reveal>
+
+
+            {/* SearchBox start */}
             <Reveal keyframes={fadeIn} className='onStep' delay={0} duration={1000} triggerOnce>
               <div className='flex gap-4 items-center'>
                 <div className='input-form-control relative z-50'>
@@ -150,6 +153,9 @@ const ExploreBounty = () => {
                 </div>
               </div>
             </Reveal>
+            {/* SearchBox end */}
+
+            
           </div>
           <div className={`app-content ${isSearchShow ? 'blur-sm' : ''}`}>
             {IsSmMobile() ? (

@@ -25,17 +25,13 @@ const SettingsBody = () => {
   const [purchasePrice, setPurchasePrice] = useState(0);
   const [futurePrice, setFuturePrice] = useState(0);
   const [days, setDays] = useState(30);
-  const [initAmount, setInitAmount] = useState(0);
-  const [wealth, setWealth] = useState(0);
-  const [rewardEst, setRewardEst] = useState(0);
-  const [potentialReturn, setPotentialReturn] = useState(0);
 
   useEffect(() => {
-    setInitAmount((Number(title) * Number(purchasePrice)));
-    setWealth((Number(title) * Number(ETRPrice)));
-    const rewards = ((((Number(apy) + 100) / 100) ** (days / 365)) * Number(title));
-    setRewardEst(rewards);
-    setPotentialReturn((rewards * Number(futurePrice)));
+    // setInitAmount((Number(title) * Number(purchasePrice)));
+    // setWealth((Number(title) * Number(ETRPrice)));
+    // const rewards = ((((Number(apy) + 100) / 100) ** (days / 365)) * Number(title));
+    // setRewardEst(rewards);
+    // setPotentialReturn((rewards * Number(futurePrice)));
   }, [title, apy, purchasePrice, futurePrice, days, ETRPrice]);
 
   const handleSlide = useCallback((event, value) => {
