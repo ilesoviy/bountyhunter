@@ -66,7 +66,7 @@ const NewBountyBody = () => {
   }, []);
 
   return (
-    <div className='app-body'>
+    <div className='app-body pl-[20px] pr-0'>
       <Reveal keyframes={fadeInUp} className='onStep' delay={400} duration={1000} triggerOnce>
         <div className='row'>
           <div className='w-full xl:w-full xl:h-fit lg:w-full md:w-full'>
@@ -82,11 +82,24 @@ const NewBountyBody = () => {
                         </div>
                       </div>
                     </div>
-                    <div className='col-md-12 pb-3'>
+                    <div className='col-md-6 pb-3'>
                       <div className='input-form-control'>
                         <label className='input-label'>Payment Amount</label>
                         <div className="input-control">
                           <input type="number" name="apy" value={apy} className='input-main' onChange={handleAPY}></input>
+                        </div>
+                      </div>
+                    </div>
+                    <div className='col-md-6 pb-3'>
+                      <div className='input-form-control'>
+                        <label className='input-label'>Dead Line</label>
+                        <div className="input-control">
+                          <select name="bDeadLine" className='input-main'>
+                            <option>More than 6 months</option>
+                            <option>3 to 6 months</option>
+                            <option>1 to 3 months</option>
+                            <option>Less than 1 month</option>
+                          </select>
                         </div>
                       </div>
                     </div>
@@ -122,6 +135,7 @@ const NewBountyBody = () => {
                         </div>
                       </div>
                     </div>
+                    
                     <div className='col-md-12 pb-3'>
                       <div className='input-form-control'>
                         <label className='input-label'>Github Link</label>
@@ -141,7 +155,7 @@ const NewBountyBody = () => {
                     <div className='col-md-4 pb-3'>
                       <div className='input-form-control'>
                         <div className="input-control">
-                          <button className='input-main' onClick={() => { }}>Submit</button></div>
+                          <button className='input-main text-white' onClick={() => { }}>Submit</button></div>
                       </div>
                     </div>
                   </div>
@@ -163,8 +177,8 @@ const NewBounty = () => (
       <div className='app-container'>
         <Subheader path="NewBounty" />
         <Reveal keyframes={fadeInUp} className='onStep' delay={200} duration={400} triggerOnce>
-          <div className='app-header'>
-            <div className='app-card w-full'>
+          <div className='app-header pl-[40px] pr-0 '>
+            <div className='app-card w-full bg-[#0092DC] py-4'>
               <div className='flex gap-3'>
                 <span className="text-xl"><i className='fa fa-exclamation-circle'></i></span>
                 <div className='flex flex-col'>

@@ -29,7 +29,7 @@ const GlobalStyles = createGlobalStyle`
   }
 `;
 
-const path_list = ['', 'ExploreBounties', 'NewBounty', 'MyBounties', 'InProgress', 'Review', 'Settings'];
+const path_list = ['', 'ExploreBounties', 'NewBounty', 'MyBounties', 'InProgress', 'Settings'];
 
 const Sidebar = ({ path }) => {
   const [isAdmin, setAdmin] = useState(false);
@@ -51,38 +51,14 @@ const Sidebar = ({ path }) => {
         <div className="navbar-content z-50">
           <div className='logo-img flex flex-col space-y-2 items-center pt-3 pb-4'>
             <Link className='cursor-pointer' to='/'>
-              <img alt='' src={'/images/banner/unknown.png'} width={120}/>
+              <img alt='' src={'/images/banner/unknown.png'} width={120} />
             </Link>
-            <ConnectWallet/>
+            <ConnectWallet />
           </div>
 
           <nav className='pb-4'>
             {!isAdmin ? (
               <>
-                {/* <Link
-                  to='/'
-                  className={`menu-item ${path === ''
-                    ? 'menu-active-item block transition duration-200  text-white'
-                    : 'block transition duration-200 app-gray hover:text-white'
-                    }`}
-                >
-                  <div className='flex space-x-6 align-items-center'>
-                    <i className="fa-solid fa-house-chimney"></i>
-                    <div className='menu-text text-lg'>Home</div>
-                  </div>
-                </Link> */}
-                <Link
-                  to='/ExploreBounties'
-                  className={`menu-item ${path === 'ExploreBounties'
-                    ? 'menu-active-item block transition duration-200  text-white'
-                    : 'block transition duration-200  app-gray hover:text-white'
-                    }`}
-                >
-                  <div className='flex space-x-6 align-items-center'>
-                    <i className="fa-solid fa-rocket-launch"></i>
-                    <div className='menu-text text-lg'>Explore Bounties</div>
-                  </div>
-                </Link>
                 <Link
                   to='/NewBounty'
                   className={`menu-item ${path === 'NewBounty'
@@ -96,6 +72,30 @@ const Sidebar = ({ path }) => {
                   </div>
                 </Link>
                 <Link
+                  to='/ExploreBounties'
+                  className={`menu-item ${path === 'ExploreBounties'
+                    ? 'menu-active-item block transition duration-200  text-white'
+                    : 'block transition duration-200  app-gray hover:text-white'
+                    }`}
+                >
+                  <div className='flex space-x-6 align-items-center'>
+                    <i className="fa-solid fa-rocket-launch"></i>
+                    <div className='menu-text text-lg'>Explore Bounties</div>
+                  </div>
+                </Link>
+                <Link
+                  to='/InProgress'
+                  className={`menu-item ${path === 'InProgress'
+                    ? 'menu-active-item block transition duration-200  text-white'
+                    : 'block transition duration-200  app-gray hover:text-white'
+                    }`}
+                >
+                  <div className='flex space-x-6 align-items-center'>
+                    <i className="fa-solid fa-user"></i>
+                    <div className='menu-text text-lg'>In Progress</div>
+                  </div>
+                </Link>
+                <Link
                   to='/MyBounties'
                   className={`menu-item ${path === 'MyBounties'
                     ? 'menu-active-item block transition duration-200  text-white'
@@ -105,18 +105,6 @@ const Sidebar = ({ path }) => {
                   <div className='flex space-x-6 align-items-center'>
                     <i className="fa-solid fa-user"></i>
                     <div className='menu-text text-lg'>My Bounties</div>
-                  </div>
-                </Link>
-                <Link
-                  to='/Review'
-                  className={`menu-item ${path === 'Review'
-                    ? 'menu-active-item block transition duration-200  text-white'
-                    : 'block transition duration-200  app-gray hover:text-white'
-                    }`}
-                >
-                  <div className='flex space-x-6 align-items-center'>
-                    <i className="fa-solid fa-right-left"></i>
-                    <div className='menu-text text-lg'>Review</div>
                   </div>
                 </Link>
                 <Link

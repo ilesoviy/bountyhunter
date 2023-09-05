@@ -11,18 +11,18 @@ const PreviewBody = () => {
     <div className='app-content'>
       <div className='row'>
         <div className='col-md-7 px-0 pt-7'>
-          <div className='flex justify-between sm:flex-col sm:text-center py-2'>
+          <div className='flex justify-between sm:flex-col sm:text-center pt-2 pb-3'>
             <div className='flex flex-col'>
               <button className='text-[18px] border rounded-2xl px-4'>Active</button>
             </div>
-            <div className='flex gap-1'>
-              <button className='text-[18px]'><i className='fa fa-upload'></i>Share</button>
+            <div className='flex'>
+              <button className='text-[18px] mr-2'><i className='fa fa-upload mr-2'></i>Share</button>
             </div>
           </div>
           <span className='py-2'>This is a preview from a bounty and contains the information written in the description.</span>
           <Reveal keyframes={fadeInUp} className='onStep' delay={200} duration={400} triggerOnce>
             <div className='app-header py-2 px-0'>
-              <div className='app-card w-full bg-[#0092DC]'>
+              <div className='app-card w-full bg-[#0092DC] py-4'>
                 <div className='flex gap-3'>
                   <span className="text-xl"><i className='fa fa-exclamation-circle'></i></span>
                   <div className='flex flex-col'>
@@ -124,8 +124,8 @@ const PreviewBody = () => {
             </div>
           </div>
           <div className='w-full my-2 py-3'>
-            <button className='text-[24px] w-full border rounded-2xl px-2'>Edit</button>
-            <button className='text-[24px] w-full border rounded-2xl px-2 mt-2'>Submit</button>
+            <button className='text-[18px] w-full border rounded-2xl px-2 py-2'>Edit</button>
+            <button className='text-[18px] w-full border rounded-2xl px-2 py-2 mt-2'>Create Bounty</button>
           </div>
         </div>
       </div>

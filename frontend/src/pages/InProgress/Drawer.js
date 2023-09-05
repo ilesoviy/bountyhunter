@@ -23,17 +23,10 @@ export const Drawer = (props) => {
     drawerOverlay,
     drawerOverlayOpen,
     drawerOverlayHidden,
-    drawerHeader
   } = classes;
 
   return (
     <>
-      <div
-        className={`${drawerOverlay} ${!open && drawerOverlayHidden} ${open && drawerOverlayOpen
-          }`}
-        onClick={onClose}
-        aria-hidden="true"
-      />
       <div
         tabIndex="-1"
         className={`${drawer} ${open && drawAnimate} ${!open && drawerHidden
@@ -45,6 +38,12 @@ export const Drawer = (props) => {
         </div>
           
       </div>
+      <div
+        className={`${drawerOverlay} ${!open && drawerOverlayHidden} ${open && drawerOverlayOpen
+          }`}
+        onClick={onClose}
+        aria-hidden="true"
+      />
     </>
   );
 };

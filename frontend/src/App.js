@@ -8,12 +8,13 @@ import Home from './pages/Home';
 import ExploreBounty from './pages/ExploreBounties/ExploreBounty';
 import NewBounty from './pages/NewBounty/NewBounty';
 import MyBounties from './pages/MyBounties/MyBounties';
-import Review from './pages/App/Review';
 import ScrollToTopBtn from './components/menu/ScrollToTop';
 import { SingingWeb3Provider } from './context/web3Context';
 import Settings from './pages/App/Settings';
-import BountyListing from './pages/ExploreBounties/BountyListing/BountyListing';
+import ExBountyListing from './pages/ExploreBounties/BountyListing/ExBountyListing';
 import PreviewNewBounty from './pages/NewBounty/PreviewNewBounty';
+import InProgress from './pages/InProgress/InProgress';
+import InBountyListing from './pages/InProgress/InBountyListing';
 
 const PosedRouter = ({ children }) => (
   <Location>
@@ -43,12 +44,13 @@ function App() {
             <Home exact path="/">
               <Redirect to="/" />
             </Home>
-            <BountyListing path="ExploreBounties/:id" />
-            <ExploreBounty path="ExploreBounties" />
             <PreviewNewBounty path="NewBounty/preview" />
             <NewBounty path="NewBounty" />
+            <ExBountyListing path="ExploreBounties/:id" />
+            <InBountyListing path="InProgress/:id" />
+            <ExploreBounty path="ExploreBounties" />            
+            <InProgress path="InProgress" />
             <MyBounties path="MyBounties" />
-            <Review path="Review" />
             <Settings path="Settings" />
           </ScrollTop>
         </PosedRouter>

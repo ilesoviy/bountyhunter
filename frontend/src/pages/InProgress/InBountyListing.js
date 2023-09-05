@@ -1,12 +1,11 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import { Scrollbars } from 'react-custom-scrollbars';
 import { Reveal } from 'react-awesome-reveal';
-import { fadeInUp } from '../../../utils';
-import MainHeader from '../../../components/menu/MainHeader';
+import { fadeInUp } from '../../utils';
+import MainHeader from '../../components/menu/MainHeader';
 import { Link } from '@reach/router';
 import { Drawer } from './Drawer';
 
-const BountyListingBody = ({ callback }) => {
+const InBountyListingBody = ({ callback }) => {
 
   return (
     <div className='app-content'>
@@ -145,7 +144,7 @@ const BountyListingBody = ({ callback }) => {
             </div>
           </Reveal>
           <div className='w-full my-2 py-3'>
-            <button className='text-[24px] w-full border rounded-2xl px-2' onClick={() => { callback() }}>Apply</button>
+            <button className='text-[24px] w-full border rounded-2xl px-2' onClick={() => { callback() }}>Submit Work</button>
           </div>
         </div>
       </div>
@@ -153,7 +152,7 @@ const BountyListingBody = ({ callback }) => {
   )
 }
 
-const BountyListing = () => {
+const InBountyListing = () => {
 
   const [drawerOpen, setDrawerOpen] = useState(false);
   const handleDrawerOpen = useCallback(() => setDrawerOpen(true), []);
@@ -197,7 +196,7 @@ const BountyListing = () => {
               <p className='text-[40px] sm:text-center text-white pt-3'>Bounty Listing</p>
             </div>
           </div>
-          <BountyListingBody callback={handleDrawerOpen} />
+          <InBountyListingBody callback={handleDrawerOpen} />
         </div>
       </div>
       <Drawer anchor="right" open={drawerOpen} onClose={handleDrawerClose}>
@@ -239,11 +238,11 @@ const BountyListing = () => {
         </div>
         <div className='input-form-control mt-3'>
           <div className="input-control w-1/3">
-            <button className='input-main' onClick={onApplyClicked}>Apply</button></div>
+            <button className='input-main' onClick={onApplyClicked}>Submit Work</button></div>
         </div>
       </Drawer>
     </div>
   )
 }
 
-export default BountyListing;
+export default InBountyListing;

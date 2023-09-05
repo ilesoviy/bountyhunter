@@ -2,33 +2,32 @@ import { Reveal } from 'react-awesome-reveal';
 import { numberWithCommas, IsSmMobile, fadeInUp, fadeIn, getUTCNow, getUTCDate, isEmpty } from '../../utils';
 import { Link } from '@reach/router';
 
-const Bounty = () => {
-  const a=0;
+const ExBounty = (pathTo) => {
   return (
     <div className='app-body'>
       <Reveal keyframes={fadeInUp} className='onStep' delay={400} duration={1000} triggerOnce>
         <div className='row'>
-          <div className='w-full mt-[20px]'>
+          <div className='w-full mt-[20px] pr-0'>
             <div className='app-card'>
               <div className='app-card-header text-left'>
                 <div className='flex justify-between sm:flex-col sm:text-center'>
                   <div className='flex flex-col'>
-                    <div className='flex flex-row'>
+                    <div className='flex flex-row items-center'>
                       <img className="h-[30px] logo" src="./images/banner/user.png" alt="" />
-                      <span className='app-gray text-[14px]'>GAD..RARW</span>
+                      <span className='app-gray text-[20px]'>GAD..RARW</span>
                     </div>
                   </div>
                   <div className='flex flex-col'>
                     <div className='flex flex-row space-x-2 '>
-                      <div className='flex-col justify-around sm:flex-col sm:text-center border rounded-2xl px-2'> {`${numberWithCommas(1000,3)} XLM`}</div>
-                      <div className='flex-col justify-around sm:flex-col sm:text-center border rounded-2xl px-2'>Active</div>
+                      <div className='flex-col app-gray justify-around sm:flex-col sm:text-center border rounded-2xl px-2'> {`${numberWithCommas(1000,3)} XLM`}</div>
+                      <div className='flex-col app-gray justify-around sm:flex-col sm:text-center border rounded-2xl px-2'>Active</div>
                     </div>
                   </div>
                 </div>
               </div>
               <div className='app-card-body'>
                 <div className="row text-left">
-                  <Link className='app-gray text-[32px]' to="/ExploreBounties/0">Bounty Listing</Link>
+                  <Link className='text-[32px]' to="/ExploreBounties/0">Bounty Listing</Link>
                   <p className='text-[17px] sm:text-[15px]'>As a bounty hunter for the Soroban Contract Writing in Rust, you will be responsible for thoroughly testing our platform and identifying any potential security vulnerabilities or bugs. You will be tasked with conducting comprehensive penetration testing and code review to ensure that...</p>
                 </div>
               </div>
@@ -39,9 +38,9 @@ const Bounty = () => {
                   </div>
                   <div className='flex flex-col'>
                     <div className='flex flex-row space-x-2'>
-                      <div className='flex-col justify-around space-x-2 sm:flex-col sm:text-center border rounded-2xl px-2'>Cooperative</div>
-                      <div className='flex-col justify-around space-x-2 sm:flex-col sm:text-center border rounded-2xl px-2'>Vanila</div>
-                      <div className='flex-col justify-around space-x-2 sm:flex-col sm:text-center border rounded-2xl px-2'>Beginner</div>
+                      <div className='flex-col app-gray justify-around space-x-2 sm:flex-col sm:text-center border rounded-2xl px-2'>Cooperative</div>
+                      <div className='flex-col app-gray justify-around space-x-2 sm:flex-col sm:text-center border rounded-2xl px-2'>Vanila</div>
+                      <div className='flex-col app-gray justify-around space-x-2 sm:flex-col sm:text-center border rounded-2xl px-2'>Beginner</div>
                     </div>
                   </div>
                 </div>
@@ -54,4 +53,4 @@ const Bounty = () => {
   )
 }
 
-export default Bounty;
+export default ExBounty;

@@ -68,22 +68,6 @@ const Subheader = ({ path }) => {
                 </div>
               </Link>
             </div>
-            <div className={path === 'Review' ? 'navbar-item menu-active-item' : 'navbar-item'}>
-              <Link to="/Review">
-                <div className='flex gap-2 items-center'>
-                  <i className="fa-solid fa-right-left"></i>
-                  <span>Review</span>
-                </div>
-              </Link>
-            </div>
-            <div className={path === 'Settings' ? 'navbar-item menu-active-item' : 'navbar-item'}>
-              <Link to="/Settings">
-                <div className='flex gap-2 items-center'>
-                  <i className="fa-solid fa-right-left"></i>
-                  <span>Settings</span>
-                </div>
-              </Link>
-            </div>
           </Popover>
         </Breakpoint>
       </BreakpointProvider>
