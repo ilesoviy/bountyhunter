@@ -31,7 +31,8 @@ const ExploreBounty = () => {
                     <input type="text" className='input-main border-r mx-3' placeholder='Search'></input>
                     <select type="checkbox" className="input-suffix selection" onClick={() => {}}>
                       <option value="Topics" selected={true}>Topics</option>
-                      <option value="Tokens" >Tokens</option>
+                      <option value="Type">Type</option>
+                      <option value="Difficulty">Difficulty</option>
                     </select>
                   </div>
                 </div>                
