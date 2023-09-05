@@ -11,7 +11,7 @@ const MyBountyBodyListItem = ({ count }) => {
             <div className='app-card'>
               <div className='flex justify-between sm:flex-col sm:text-center'>
                 <div className='flex flex-col'>
-                  <Link className='app-gray text-[14px]' to="/MyBounties/0">My Bounting Listses</Link>
+                  <Link className='text-[16px]' to="/MyBounties/0">My Bounting Listings</Link>
                 </div>
                 <div className='flex flex-col'>
                   <div className='flex flex-row space-x-2'>

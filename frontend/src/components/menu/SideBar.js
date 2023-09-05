@@ -32,16 +32,8 @@ const GlobalStyles = createGlobalStyle`
 const path_list = ['', 'ExploreBounties', 'NewBounty', 'MyBounties', 'InProgress', 'Settings'];
 
 const Sidebar = ({ path }) => {
-  const [isAdmin, setAdmin] = useState(false);
 
   useEffect(() => {
-    let path_name = path;
-    if (!path_list.includes(path))
-      path_name = '';
-    if (path_name === 'etrix_control/admin')
-      setAdmin(true);
-    else
-      setAdmin(false);
   }, [path]);
 
   return (
@@ -50,94 +42,78 @@ const Sidebar = ({ path }) => {
       <div className='my-navbar'>
         <div className="navbar-content z-50">
           <div className='logo-img flex flex-col space-y-2 items-center pt-3 pb-4'>
-            <Link className='cursor-pointer' to='/'>
-              <img alt='' src={'/images/banner/unknown.png'} width={120} />
-            </Link>
+            {/* <Link className='cursor-pointer' to='/'> */}
+            <div className='relative'>
+              <img alt='' src={'/images/banner/unknown.png'} width={120} height={120} className='rounded-full' />
+              <div className='absolute right-0 bottom-0 w-[30px] h-[30px] '>
+                <div className='flex w-full h-full justify-center items-center rounded-full bg-[#011829] cursor-pointer'>
+                  <i className='fa fa-pencil'/>
+                </div>
+                
+              </div>
+            </div>
+            {/* </Link> */}
             <ConnectWallet />
           </div>
 
           <nav className='pb-4'>
-            {!isAdmin ? (
-              <>
-                <Link
-                  to='/NewBounty'
-                  className={`menu-item ${path === 'NewBounty'
-                    ? 'menu-active-item block transition duration-200  text-white'
-                    : 'block transition duration-200  app-gray hover:text-white'
-                    }`}
-                >
-                  <div className='flex space-x-6 align-items-center'>
-                    <i className="fa-solid fa-landmark"></i>
-                    <div className='menu-text text-lg'>New Bounty</div>
-                  </div>
-                </Link>
-                <Link
-                  to='/ExploreBounties'
-                  className={`menu-item ${path === 'ExploreBounties'
-                    ? 'menu-active-item block transition duration-200  text-white'
-                    : 'block transition duration-200  app-gray hover:text-white'
-                    }`}
-                >
-                  <div className='flex space-x-6 align-items-center'>
-                    <i className="fa-solid fa-rocket-launch"></i>
-                    <div className='menu-text text-lg'>Explore Bounties</div>
-                  </div>
-                </Link>
-                <Link
-                  to='/InProgress'
-                  className={`menu-item ${path === 'InProgress'
-                    ? 'menu-active-item block transition duration-200  text-white'
-                    : 'block transition duration-200  app-gray hover:text-white'
-                    }`}
-                >
-                  <div className='flex space-x-6 align-items-center'>
-                    <i className="fa-solid fa-user"></i>
-                    <div className='menu-text text-lg'>In Progress</div>
-                  </div>
-                </Link>
-                <Link
-                  to='/MyBounties'
-                  className={`menu-item ${path === 'MyBounties'
-                    ? 'menu-active-item block transition duration-200  text-white'
-                    : 'block transition duration-200  app-gray hover:text-white'
-                    }`}
-                >
-                  <div className='flex space-x-6 align-items-center'>
-                    <i className="fa-solid fa-user"></i>
-                    <div className='menu-text text-lg'>My Bounties</div>
-                  </div>
-                </Link>
-                <Link
-                  to='/Settings'
-                  className={`menu-item ${path === 'Settings'
-                    ? 'menu-active-item block transition duration-200  text-white'
-                    : 'block transition duration-200  app-gray hover:text-white'
-                    }`}
-                >
-                  <div className='flex space-x-6 align-items-center'>
-                    <i className="fa-solid fa-landmark"></i>
-                    <div className='menu-text text-lg'>Settings</div>
-                  </div>
-                </Link>
-              </>
-            ) : (
-              <>
-                {/********************** ADMIN ****************************/}
-                <Link
-                  to='/etrix_control/admin'
-                  className={`menu-item ${path === 'etrix_control/admin'
-                    ? 'menu-active-item block transition duration-200  text-white'
-                    : 'block transition duration-200  app-gray hover:text-white'
-                    }`}
-                >
-                  <div className='flex space-x-6 align-items-center'>
-                    <i className="fa-solid fa-grid-2"></i>
-                    <div className='text-lg'>Administrator</div>
-                  </div>
-                </Link>
-                {/********************** ADMIN ****************************/}
-              </>
-            )}
+            <>
+              <Link
+                to='/NewBounty'
+                className={`menu-item ${path === 'NewBounty'
+                  ? 'menu-active-item block transition duration-200  text-white'
+                  : 'block transition duration-200  app-gray hover:text-white'
+                  }`}
+              >
+                <div className='flex space-x-6 align-items-center'>
+                  <div className='menu-text text-lg'>New Bounty</div>
+                </div>
+              </Link>
+              <Link
+                to='/ExploreBounties'
+                className={`menu-item ${path === 'ExploreBounties'
+                  ? 'menu-active-item block transition duration-200  text-white'
+                  : 'block transition duration-200  app-gray hover:text-white'
+                  }`}
+              >
+                <div className='flex space-x-6 align-items-center'>
+                  <div className='menu-text text-lg'>Explore Bounties</div>
+                </div>
+              </Link>
+              <Link
+                to='/InProgress'
+                className={`menu-item ${path === 'InProgress'
+                  ? 'menu-active-item block transition duration-200  text-white'
+                  : 'block transition duration-200  app-gray hover:text-white'
+                  }`}
+              >
+                <div className='flex space-x-6 align-items-center'>
+                  <div className='menu-text text-lg'>In Progress</div>
+                </div>
+              </Link>
+              <Link
+                to='/MyBounties'
+                className={`menu-item ${path === 'MyBounties'
+                  ? 'menu-active-item block transition duration-200  text-white'
+                  : 'block transition duration-200  app-gray hover:text-white'
+                  }`}
+              >
+                <div className='flex space-x-6 align-items-center'>
+                  <div className='menu-text text-lg'>My Bounties</div>
+                </div>
+              </Link>
+              <Link
+                to='/Settings'
+                className={`menu-item ${path === 'Settings'
+                  ? 'menu-active-item block transition duration-200  text-white'
+                  : 'block transition duration-200  app-gray hover:text-white'
+                  }`}
+              >
+                <div className='flex space-x-6 align-items-center'>
+                  <div className='menu-text text-lg'>Settings</div>
+                </div>
+              </Link>
+            </>
           </nav>
         </div>
       </div>

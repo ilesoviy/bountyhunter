@@ -39,32 +39,42 @@ const Subheader = ({ path }) => {
               vertical: 'top',
               horizontal: 'right',
             }}>
-            <div className='navbar-item px-1'>
-              <Link to="/">
-                <img className='pointer' alt='' src={'/images/logo/logo.gif'} width={150} />
+            <div className={path === 'NewBounty' ? 'navbar-item menu-active-item' : 'navbar-item'}>
+              <Link to="/NewBounty">
+                <div className='flex gap-2 items-center'>
+                  <span>New Bounty</span>
+                </div>
               </Link>
             </div>
             <div className={path === 'ExploreBounties' ? 'navbar-item menu-active-item' : 'navbar-item'}>
               <Link to="/ExploreBounties">
                 <div className='flex gap-2 items-center'>
-                  <i className="fa-solid fa-rocket-launch"></i>
                   <span>Explore Bounties</span>
                 </div>
               </Link>
             </div>
-            <div className={path === 'NewBounty' ? 'navbar-item menu-active-item' : 'navbar-item'}>
-              <Link to="/NewBounty">
+
+
+            <div className={path === 'InProgress' ? 'navbar-item menu-active-item' : 'navbar-item'}>
+              <Link to="/InProgress">
                 <div className='flex gap-2 items-center'>
-                  <i className="fa-solid fa-landmark"></i>
-                  <span>New Bounty</span>
+                  <span>In Progress</span>
                 </div>
               </Link>
             </div>
+
             <div className={path === 'MyBounties' ? 'navbar-item menu-active-item' : 'navbar-item'}>
               <Link to="/MyBounties">
                 <div className='flex gap-2 items-center'>
-                  <i className="fa-solid fa-user"></i>
                   <span>My Bounties</span>
+                </div>
+              </Link>
+            </div>
+
+            <div className={path === 'Settings' ? 'navbar-item menu-active-item' : 'navbar-item'}>
+              <Link to="/Settings">
+                <div className='flex gap-2 items-center'>
+                  <span>Settings</span>
                 </div>
               </Link>
             </div>
