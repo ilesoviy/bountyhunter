@@ -182,7 +182,7 @@ const NewBounty = () => (
               <div className='flex gap-3'>
                 <span className="text-xl"><i className='fa fa-exclamation-circle'></i></span>
                 <div className='flex flex-col'>
-                  <p className='text-[17px] sm:text-[15px]'>You need to connect your wallet in order to create a bounty.. </p>
+                  <p className='text-[17px] sm:text-[15px]'>You need to connect your wallet in order to create a bounty.</p>
                   <span className='font-bold'>Learn More</span>
                 </div>
               </div>

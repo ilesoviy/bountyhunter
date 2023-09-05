@@ -66,7 +66,7 @@ const MainHeader = function () {
           <div className='logo px-0'>
             <div className='navbar-title navbar-item'>
               <NavLink to="/">
-                Bounty Hunter
+                BountyHunter
               </NavLink>
             </div>
           </div>
