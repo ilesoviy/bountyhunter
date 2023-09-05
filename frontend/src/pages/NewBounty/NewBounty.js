@@ -96,10 +96,11 @@ const NewBountyBody = () => {
                         <label className='input-label'>Dead Line</label>
                         <div className="input-control">
                           <select name="bDeadLine" className='input-main'>
-                            <option>More than 6 months</option>
-                            <option>3 to 6 months</option>
-                            <option>1 to 3 months</option>
-                            <option>Less than 1 month</option>
+                            <option value="" disabled selected hidden>Select Duraion</option>
+                            <option value="1">More than 6 months</option>
+                            <option value="2">3 to 6 months</option>
+                            <option value="3">1 to 3 months</option>
+                            <option value="4">Less than 1 month</option>
                           </select>
                         </div>
                       </div>
@@ -108,7 +109,12 @@ const NewBountyBody = () => {
                       <div className='input-form-control'>
                         <label className='input-label'>Bounty Type</label>
                         <div className="input-control">
-                          <input type="text" name="bType" value={bType} className='input-main' onChange={handleBType}></input>
+                          <select name="bType" className='input-main'>
+                            <option value="" disabled selected hidden>Select Type</option>
+                            <option value="1">Competitive</option>
+                            <option value="2">Cooperative</option>
+                            <option value="3">Hackatho</option>
+                          </select>
                         </div>
                       </div>
                     </div>
@@ -116,7 +122,12 @@ const NewBountyBody = () => {
                       <div className='input-form-control'>
                         <label className='input-label'>Bounty Difficulty</label>
                         <div className="input-control">
-                          <input type="text" name="bDifficulty" value={bDifficulty} className='input-main' onChange={handleBDifficulty}></input>
+                          <select name="bDifficulty" className='input-main'>
+                            <option value="" disabled selected hidden>Select Difficulty</option>
+                            <option value="1">Begin</option>
+                            <option value="2">Intermediate</option>
+                            <option value="3">Expert</option>
+                          </select>
                         </div>
                       </div>
                     </div>
@@ -124,7 +135,14 @@ const NewBountyBody = () => {
                       <div className='input-form-control'>
                         <label className='input-label'>Bounty Topic</label>
                         <div className="input-control">
-                          <input type="text" name="bTopic" value={bTopic} className='input-main' onChange={handleBTopic}></input>
+                          <select name="bTopic" className='input-main'>
+                            <option value="" disabled selected hidden>Select Topic</option>
+                            <option value="1">Design</option>
+                            <option value="2">Development</option>
+                            <option value="3">Smart Contracts</option>
+                            <option value="3">Data</option>
+                            <option value="3">AI</option>
+                          </select>
                         </div>
                       </div>
                     </div>
