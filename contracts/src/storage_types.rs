@@ -15,28 +15,30 @@ pub enum Error {
 
     GetErrorFailed = 100,
 
+    // admin
+    IncorrectAdmin = 110,
+    InvalidAdmin = 111,
     // Fee
-    FeeNotSet = 110,
-    
-    // Participance
-    AlreadyParticipated = 120,
-    NotParticipated = 121,
+    FeeNotSet = 115,
     
     // Work
-    WorkNotFound = 130,
+    WorkNotFound = 120,
+    AlreadyApplied = 121,
+    NotApplied = 122,
     
     // Bounty
-    BountyNotFound = 140,
-    InvalidBountyStatus = 141,
-    InvalidName = 142,
-    InvalidReward = 143,
-    InvalidDeadline = 144,
-    InsuffCreatorBalance = 145,
-    InsuffCreatorAllowance = 146,
-    CreatorBountyMismatch = 147,
-    InvalidBountyID = 148,
-    InvalidWorkRepo = 149,
-    NoTimeout = 150,
+    BountyNotFound = 130,
+    InvalidBountyStatus = 131,
+    EmptyName = 132,
+    ZeroReward = 133,
+    ZeroDeadline = 134,
+    InsuffCreatorBalance = 135,
+    InsuffCreatorAllowance = 136,
+    InvalidCreator = 137,
+    InvalidParticipant = 138,
+    InvalidBountyID = 139,
+    InvalidWorkRepo = 140,
+    NoTimeout = 141
 }
 
 #[derive(Clone)]
@@ -46,45 +48,24 @@ pub struct FeeInfo {
     pub fee_wallet: Address,
 }
 
-// #[derive(Clone, Copy, PartialEq)]
-// #[contracttype]
-// pub enum BountyType {
-//     NONE = 0,
-//     COMPETITIVE = 1,
-//     COOPERATIVE = 2,
-//     HACKATHON = 3,
-// }
-
-// #[derive(Clone, Copy, PartialEq)]
-// #[contracttype]
-// pub enum BountyDifficulty {
-//     NONE = 0, 
-//     BEGINNER = 1, 
-//     INTERMEDIATE = 2, 
-//     ADVANCED = 3
-// }
-
 #[derive(Clone, Copy, PartialEq)]
 #[contracttype]
 pub enum BountyStatus {
     INIT = 0,
-    CREATED = 1,
-    FUNDED = 2,
-    APPLIED = 3,
-    SUBMITTED = 4,
-    APPROVED = 5,
-    REJECTED = 6,
-    CANCELLED = 7,
-    CLOSED = 8
+    ACTIVE = 1,
+    CANCELLED = 2,
+    COMPLETE = 3,
+    CLOSED = 4
 }
 
 #[derive(Clone, Copy, PartialEq)]
 #[contracttype]
 pub enum WorkStatus {
     INIT = 0,
-    CREATED = 1,
-    APPROVED = 2,
-    REJECTED = 3
+    APPLIED = 1,
+    SUBMITTED = 2,
+    APPROVED = 3,
+    REJECTED = 4
 }
 
 
@@ -94,16 +75,11 @@ pub struct BountyInfo {
     pub creator: Address,
     
     pub name: String,
-    // pub description: String,
-    // pub repo_link: String,
     pub reward_amount: u64,
+    pub pay_token: Address,
     pub end_date: u64,
-    // pub bounty_type: BountyType,
-    // pub difficulty: BountyDifficulty,
 
-    pub status: BountyStatus,
-
-    pub pay_token: Address
+    pub status: BountyStatus
 }
 
 #[derive(Clone)]
@@ -120,8 +96,8 @@ pub struct WorkInfo {
 #[contracttype]
 pub enum DataKey {
     ErrorCode,
+    Admin,
     Fee,
-    Participance(Address, u32),
     BountyCount,
     RegBounties(u32),
     WorkCount,

@@ -1,7 +1,7 @@
 #![cfg(test)]
 extern crate std;
 
-use soroban_sdk::{ /* log,  */token };
+use soroban_sdk::{ log, token };
 use crate::storage_types::{ DEF_FEE_RATE, FEE_DECIMALS, TOKEN_DECIMALS, INSTANCE_BUMP_AMOUNT, Error };
 use crate::{ BountyHunter, BountyHunterClient };
 use soroban_sdk::{
@@ -57,30 +57,28 @@ fn test1_approve() {
     pay_token_admin_client.mint(&creator.clone(), &(10000 * MUL_VAL as i128));
     pay_token_client.approve(&creator.clone(), &bounty_contract.address.clone(), &(10000 * MUL_VAL as i128), &INSTANCE_BUMP_AMOUNT);
     
+    // set admin
+    bounty_contract.set_admin(&admin, &admin);
+    
     // init fee
     let fee_rate = DEF_FEE_RATE;
     let fee_wallet = Address::random(&e);
     bounty_contract.set_fee(&admin, &fee_rate, &fee_wallet);
 
-    let old_timestamp = e.ledger().timestamp();
-    let new_timestamp = old_timestamp + ONE_DAY * 5;
+    let old_timestamp: u64 = e.ledger().timestamp();
+    let new_timestamp: u64 = old_timestamp + ONE_DAY * 5;
+    let bounty_name: String = String::from_slice(&e, "Test1");
 
     // create bounty
     let bounty_id: u32 = bounty_contract.create_bounty(
         &creator,
-        &String::from_slice(&e, "Test4"),
+        &bounty_name,
         &(1000 * MUL_VAL),
         &pay_token_id,
         &new_timestamp
     );
     assert_eq!(bounty_id, 0);
-
-    // fund bounty
-    let ret1 = bounty_contract.fund_bounty(
-        &creator,
-        &bounty_id
-    );
-    assert_eq!(ret1, Error::Success);
+    log!(&e, "bounty_id", bounty_id);
     // check transfer
     assert_eq!(
         e.auths(),
@@ -89,10 +87,13 @@ fn test1_approve() {
             AuthorizedInvocation {
                 function: AuthorizedFunction::Contract((
                     bounty_contract.address.clone(),
-                    Symbol::new(&e, "fund_bounty"),
+                    Symbol::new(&e, "create_bounty"),
                     (
                         creator.clone(),
-                        bounty_id
+                        bounty_name,
+                        (1000 * MUL_VAL),
+                        pay_token_id.clone(),
+                        new_timestamp
                     ).into_val(&e)
                 )),
                 sub_invocations: std::vec![
@@ -126,26 +127,26 @@ fn test1_approve() {
     );
 
     // apply to bounty
-    let ret2 = bounty_contract.participate_bounty(
+    let work_id = bounty_contract.apply_bounty(
         &worker,
         &bounty_id
     );
-    assert_eq!(ret2, Error::Success);
-
-    // submit work
-    let work_id = bounty_contract.submit_work(
-        &worker,
-        &bounty_id,
-        &String::from_slice(&e, "https://github.com/test_acc/test_repo")
-    );
     assert_eq!(work_id, 0);
 
+    // submit work
+    let ret1: Error = bounty_contract.submit_work(
+        &worker,
+        &work_id,
+        &String::from_slice(&e, "https://github.com/test_acc/test_repo")
+    );
+    assert_eq!(ret1, Error::Success);
+
     // approve work
-    let ret4 = bounty_contract.approve_work(
+    let ret2: Error = bounty_contract.approve_work(
         &creator,
         &work_id
     );
-    assert_eq!(ret4, Error::Success);
+    assert_eq!(ret2, Error::Success);
     assert_eq!(
         e.auths(),
         std::vec![(
@@ -190,30 +191,27 @@ fn test2_reject() {
     pay_token_admin_client.mint(&creator.clone(), &(10000 * MUL_VAL as i128));
     pay_token_client.approve(&creator.clone(), &bounty_contract.address.clone(), &(10000 * MUL_VAL as i128), &INSTANCE_BUMP_AMOUNT);
     
+    // set admin
+    bounty_contract.set_admin(&admin, &admin);
+    
     // init fee
     let fee_rate = DEF_FEE_RATE;
     let fee_wallet = Address::random(&e);
     bounty_contract.set_fee(&admin, &fee_rate, &fee_wallet);
 
-    let old_timestamp = e.ledger().timestamp();
-    let new_timestamp = old_timestamp + ONE_DAY * 5;
+    let old_timestamp: u64 = e.ledger().timestamp();
+    let new_timestamp: u64 = old_timestamp + ONE_DAY * 5;
+    let bounty_name: String = String::from_slice(&e, "Test2");
 
     // create bounty
     let bounty_id: u32 = bounty_contract.create_bounty(
         &creator,
-        &String::from_slice(&e, "Test4"),
+        &bounty_name,
         &(1000 * MUL_VAL),
         &pay_token_id,
         &new_timestamp
     );
     assert_eq!(bounty_id, 0);
-
-    // fund bounty
-    let ret1 = bounty_contract.fund_bounty(
-        &creator,
-        &bounty_id
-    );
-    assert_eq!(ret1, Error::Success);
     // check transfer
     assert_eq!(
         e.auths(),
@@ -222,10 +220,13 @@ fn test2_reject() {
             AuthorizedInvocation {
                 function: AuthorizedFunction::Contract((
                     bounty_contract.address.clone(),
-                    Symbol::new(&e, "fund_bounty"),
+                    Symbol::new(&e, "create_bounty"),
                     (
                         creator.clone(),
-                        bounty_id
+                        bounty_name,
+                        (1000 * MUL_VAL),
+                        pay_token_id.clone(),
+                        new_timestamp
                     ).into_val(&e)
                 )),
                 sub_invocations: std::vec![
@@ -259,19 +260,19 @@ fn test2_reject() {
     );
 
     // apply to bounty
-    let ret2 = bounty_contract.participate_bounty(
+    let work_id = bounty_contract.apply_bounty(
         &worker,
         &bounty_id
     );
-    assert_eq!(ret2, Error::Success);
+    assert_eq!(work_id, 0);
 
     // submit work
-    let work_id = bounty_contract.submit_work(
+    let ret1: Error = bounty_contract.submit_work(
         &worker,
-        &bounty_id,
+        &work_id,
         &String::from_slice(&e, "https://github.com/test_acc/test_repo")
     );
-    assert_eq!(work_id, 0);
+    assert_eq!(ret1, Error::Success);
 
     // reject work
     let ret4 = bounty_contract.reject_work(
@@ -319,30 +320,27 @@ fn test3_cancel() {
     pay_token_admin_client.mint(&creator.clone(), &(10000 * MUL_VAL as i128));
     pay_token_client.approve(&creator.clone(), &bounty_contract.address.clone(), &(10000 * MUL_VAL as i128), &INSTANCE_BUMP_AMOUNT);
     
+    // set admin
+    bounty_contract.set_admin(&admin, &admin);
+    
     // init fee
     let fee_rate = DEF_FEE_RATE;
     let fee_wallet = Address::random(&e);
     bounty_contract.set_fee(&admin, &fee_rate, &fee_wallet);
 
-    let old_timestamp = e.ledger().timestamp();
-    let new_timestamp = old_timestamp + ONE_DAY * 5;
+    let old_timestamp: u64 = e.ledger().timestamp();
+    let new_timestamp: u64 = old_timestamp + ONE_DAY * 5;
+    let bounty_name: String = String::from_slice(&e, "Test3");
 
     // create bounty
     let bounty_id: u32 = bounty_contract.create_bounty(
         &creator,
-        &String::from_slice(&e, "Test4"),
+        &bounty_name,
         &(1000 * MUL_VAL),
         &pay_token_id,
         &new_timestamp
     );
     assert_eq!(bounty_id, 0);
-
-    // fund bounty
-    let ret1 = bounty_contract.fund_bounty(
-        &creator,
-        &bounty_id
-    );
-    assert_eq!(ret1, Error::Success);
     // check transfer
     assert_eq!(
         e.auths(),
@@ -351,10 +349,13 @@ fn test3_cancel() {
             AuthorizedInvocation {
                 function: AuthorizedFunction::Contract((
                     bounty_contract.address.clone(),
-                    Symbol::new(&e, "fund_bounty"),
+                    Symbol::new(&e, "create_bounty"),
                     (
                         creator.clone(),
-                        bounty_id
+                        bounty_name,
+                        (1000 * MUL_VAL),
+                        pay_token_id.clone(),
+                        new_timestamp
                     ).into_val(&e)
                 )),
                 sub_invocations: std::vec![
@@ -388,11 +389,11 @@ fn test3_cancel() {
     );
 
     // cancel bounty
-    let ret2 = bounty_contract.cancel_bounty(
+    let ret1 = bounty_contract.cancel_bounty(
         &creator,
         &bounty_id
     );
-    assert_eq!(ret2, Error::Success);
+    assert_eq!(ret1, Error::Success);
     assert_eq!(
         e.auths(),
         std::vec![(
@@ -435,31 +436,28 @@ fn test4_close() {
     let pay_token_admin_client = pay_token.2;
     pay_token_admin_client.mint(&creator.clone(), &(10000 * MUL_VAL as i128));
     pay_token_client.approve(&creator.clone(), &bounty_contract.address.clone(), &(10000 * MUL_VAL as i128), &INSTANCE_BUMP_AMOUNT);
+
+    // set admin
+    bounty_contract.set_admin(&admin, &admin);
     
     // init fee
     let fee_rate = DEF_FEE_RATE;
     let fee_wallet = Address::random(&e);
     bounty_contract.set_fee(&admin, &fee_rate, &fee_wallet);
 
-    let old_timestamp = e.ledger().timestamp();
-    let new_timestamp = old_timestamp + ONE_DAY * 5;
+    let old_timestamp: u64 = e.ledger().timestamp();
+    let new_timestamp: u64 = old_timestamp + ONE_DAY * 5;
+    let bounty_name: String = String::from_slice(&e, "Test4");
 
     // create bounty
     let bounty_id: u32 = bounty_contract.create_bounty(
         &creator,
-        &String::from_slice(&e, "Test4"),
+        &bounty_name,
         &(1000 * MUL_VAL),
         &pay_token_id,
         &new_timestamp
     );
     assert_eq!(bounty_id, 0);
-
-    // fund bounty
-    let ret1 = bounty_contract.fund_bounty(
-        &creator,
-        &bounty_id
-    );
-    assert_eq!(ret1, Error::Success);
     // check transfer
     assert_eq!(
         e.auths(),
@@ -468,10 +466,13 @@ fn test4_close() {
             AuthorizedInvocation {
                 function: AuthorizedFunction::Contract((
                     bounty_contract.address.clone(),
-                    Symbol::new(&e, "fund_bounty"),
+                    Symbol::new(&e, "create_bounty"),
                     (
                         creator.clone(),
-                        bounty_id
+                        bounty_name,
+                        (1000 * MUL_VAL),
+                        pay_token_id.clone(),
+                        new_timestamp
                     ).into_val(&e)
                 )),
                 sub_invocations: std::vec![

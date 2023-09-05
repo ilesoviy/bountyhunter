@@ -8,8 +8,7 @@ use crate::storage_types::{ INSTANCE_BUMP_AMOUNT, WorkStatus, WorkInfo, DataKey 
 pub fn work_create(
     e: &Env, 
     participant: &Address, 
-    bounty_id: u32, 
-    work_repo: &String
+    bounty_id: u32
 ) -> u32 {
     // write work info
     let work_count: u32 = e.storage().instance().get(&DataKey::WorkCount).unwrap_or(0);
@@ -21,8 +20,8 @@ pub fn work_create(
         &WorkInfo {
             participant: participant.clone(), 
             bounty_id, 
-            work_repo: work_repo.clone(), 
-            status: WorkStatus::CREATED,
+            status: WorkStatus::APPLIED,
+            work_repo: String::from_slice(&e, "")
         },
     );
     

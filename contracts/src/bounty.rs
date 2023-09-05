@@ -6,7 +6,6 @@ use soroban_sdk::{
 };
 use crate::storage_types::{ INSTANCE_BUMP_AMOUNT, FeeInfo, WorkStatus, WorkInfo, BountyStatus, BountyInfo, DataKey, Error };
 use crate::fee::{ fee_check, fee_get, fee_calculate };
-use crate::participance::{ participance_get };
 use crate::work::{ work_create, work_write, work_get };
 
 
@@ -33,26 +32,49 @@ pub fn bounty_create(
     name: &String, 
     reward_amount: u64, 
     pay_token: &Address, 
-    deadline: u64, 
-    // b_type: u32, 
-    // difficulty: u32
+    deadline: u64
 ) -> u32 {
     // check args
     if name.len() == 0 {
-        // panic!("invalid name");
-        return Error::InvalidName as u32
+        // panic!("empty name");
+        return Error::EmptyName as u32
     }
     if reward_amount == 0 {
-        // panic!("zero reward isn't allowed");
-        return Error::InvalidReward as u32
+        // panic!("zero reward");
+        return Error::ZeroReward as u32
     }
     if deadline == 0 {
-        // panic!("invalid deadline");
-        return Error::InvalidDeadline as u32
+        // panic!("zero deadline");
+        return Error::ZeroDeadline as u32
+    }
+
+	if !fee_check(e) {
+        // panic!("fee not set");
+        return Error::FeeNotSet as u32
     }
     
     // Authorize the `create` call by creator to verify his/her identity.
     creator.require_auth();
+
+	let fee_info: FeeInfo = fee_get(e);
+    let reward_amount: u64 = reward_amount;
+    let fee_amount: u64 = fee_calculate(e, &fee_info, reward_amount);
+    let transfer_amount: i128 = (reward_amount + fee_amount) as i128;
+    
+    let contract = e.current_contract_address();
+    let pay_token_client = token::Client::new(e, &pay_token);
+
+    if pay_token_client.balance(&creator) < transfer_amount {
+        // panic!("insufficient creator's balance");
+        return Error::InsuffCreatorBalance as u32
+    }
+    if pay_token_client.allowance(&creator, &contract) < transfer_amount {
+        // panic!("insufficient creator's allowance");
+        return Error::InsuffCreatorAllowance as u32
+    }
+
+    pay_token_client.transfer(&creator, &contract, &(reward_amount as i128));
+    pay_token_client.transfer(&creator, &fee_info.fee_wallet, &(fee_amount as i128));
 
     // write bounty info
     let bounty_count: u32 = e.storage().instance().get(&DataKey::BountyCount).unwrap_or(0);
@@ -67,7 +89,7 @@ pub fn bounty_create(
             reward_amount, 
             pay_token: pay_token.clone(), 
             end_date: deadline, 
-            status: BountyStatus::CREATED
+            status: BountyStatus::ACTIVE
         },
     );
     
@@ -75,97 +97,27 @@ pub fn bounty_create(
     e.storage().instance().set(&DataKey::BountyCount, &(bounty_count + 1));
     e.storage().instance().bump(INSTANCE_BUMP_AMOUNT);
 
-    // emit BountyCreated event
-    e.events().publish((BOUNTY, symbol_short!("BCreate")), 
-        (bounty_id, creator.clone(), name.clone(), reward_amount, deadline)
+    // emit BountyActive event
+    e.events().publish((BOUNTY, symbol_short!("BActive")), 
+        (creator.clone(), name.clone(), reward_amount, deadline, bounty_id)
     );
 
     bounty_id
 }
 
-pub fn bounty_fund(
-    e: &Env, 
-    creator: &Address, 
-    bounty_id: u32
-) -> Error {
-    if !fee_check(e) {
-        // panic!("fee hasn't been set yet");
-        return Error::FeeNotSet
-    }
-
-    if !e.storage().instance().has(&DataKey::RegBounties(bounty_id)) {
-        // panic!("can't find bounty");
-        return Error::BountyNotFound
-    }
-
-    let mut bounty: BountyInfo = bounty_load(e, bounty_id);
-
-    if bounty.creator != *creator {
-        // panic!("creator and bounty mismatch");
-        return Error::CreatorBountyMismatch
-    }
-    if bounty.status != BountyStatus::CREATED {
-        // panic!("invalid bounty status");
-        return Error::InvalidBountyStatus
-    }
-
-    creator.require_auth();
-
-    let fee_info: FeeInfo = fee_get(e);
-    let reward_amount: u64 = bounty.reward_amount;
-    let fee_amount: u64 = fee_calculate(e, &fee_info, reward_amount);
-    let transfer_amount: i128 = (reward_amount + fee_amount) as i128;
-    
-    let contract = e.current_contract_address();
-    let pay_token_client = token::Client::new(e, &bounty.pay_token);
-
-    if pay_token_client.balance(&creator) < transfer_amount {
-        // panic!("creator's balance insufficient");
-        return Error::InsuffCreatorBalance
-    }
-    if pay_token_client.allowance(&creator, &contract) < transfer_amount {
-        // panic!("creator's allowance insufficient");
-        return Error::InsuffCreatorAllowance
-    }
-
-    pay_token_client.transfer(&creator, &contract, &(reward_amount as i128));
-    pay_token_client.transfer(&creator, &fee_info.fee_wallet, &(fee_amount as i128));
-
-    bounty.status = BountyStatus::FUNDED;
-    bounty_write(e, bounty_id, &bounty);
-
-    // emit BountyFunded event
-    e.events().publish((BOUNTY, symbol_short!("BFund")), 
-        (creator.clone(), bounty_id, bounty.reward_amount)
-    );
-
-    Error::Success
-}
-
-pub fn bounty_submit(
+pub fn bounty_apply(
     e: &Env, 
     participant: &Address, 
-    bounty_id: u32, 
-    work_repo: &String
+    bounty_id: u32
 ) -> u32 {
     // check args
-    if work_repo.len() == 0 {
-        // panic!("invalid repo");
-        return Error::InvalidWorkRepo as u32
-    }
-    
-    if !participance_get(e, participant, bounty_id) {
-        // panic!("not participated");
-        return Error::NotParticipated as u32
-    }
-
     if !bounty_check(e, bounty_id) {
         // panic!("bounty not found");
         return Error::BountyNotFound as u32
     }
 
     let bounty = bounty_load(e, bounty_id);
-    if bounty.status != BountyStatus::FUNDED {
+    if bounty.status != BountyStatus::ACTIVE {
         // panic!("invalid bounty status");
         return Error::InvalidBountyStatus as u32
     }
@@ -173,16 +125,52 @@ pub fn bounty_submit(
     // Authorize the `create` call by participant to verify his/her identity.
     participant.require_auth();
 
-    let ret: u32 = work_create(&e, &participant, bounty_id, &work_repo);
+    let ret: u32 = work_create(&e, &participant, bounty_id);
 
     e.storage().instance().set(&DataKey::ErrorCode, &ret);
-    e.storage().instance().bump(INSTANCE_BUMP_AMOUNT);// emit WorkCreated event
+    e.storage().instance().bump(INSTANCE_BUMP_AMOUNT);
     
-    e.events().publish((BOUNTY, symbol_short!("WCreate")), 
-        (participant.clone(), bounty_id, work_repo.clone(), ret)
+    // emit BountyApplied event
+    e.events().publish((BOUNTY, symbol_short!("BApply")), 
+        (participant.clone(), bounty_id, ret)
     );
 
     ret
+}
+
+pub fn bounty_submit(
+    e: &Env, 
+    participant: &Address, 
+    work_id: u32, 
+    work_repo: &String
+) -> Error {
+    // check args
+    if work_repo.len() == 0 {
+        // panic!("invalid repo");
+        return Error::InvalidWorkRepo
+    }
+    
+    let mut work = work_get(e, work_id);
+    if work.participant != *participant {
+        // panic!("invalid participant");
+        return Error::InvalidParticipant
+    }
+    if work.status != WorkStatus::APPLIED {
+        // panic!("not applied");
+        return Error::NotApplied
+    }
+
+    participant.require_auth();
+
+	work.status = WorkStatus::SUBMITTED;
+    work_write(&e, work_id, &work);
+
+    // emit WorkSubmitted event
+    e.events().publish((BOUNTY, symbol_short!("WSubmit")), 
+        (participant.clone(), work_id, work_repo.clone())
+    );
+
+    Error::Success
 }
 
 pub fn bounty_approve(e: &Env, 
@@ -199,19 +187,18 @@ pub fn bounty_approve(e: &Env,
         // panic!("can't find bounty");
         return Error::BountyNotFound
     }
-    let mut bounty: BountyInfo = bounty_load(e, work.bounty_id);
-
+    let bounty: BountyInfo = bounty_load(e, work.bounty_id);
     if bounty.creator != *creator {
-        // panic!("creator and bounty mismatch");
-        return Error::CreatorBountyMismatch;
+        // panic!("invalid creator");
+        return Error::InvalidCreator;
     }
-    if bounty.status != BountyStatus::FUNDED {
+    if bounty.status != BountyStatus::ACTIVE {
         // panic!("invalid bounty status");
         return Error::InvalidBountyStatus
     }
 
     // if !fee_check(e) {
-    //     // panic!("fee isn't set");
+    //     // panic!("fee not set");
     //     return Error::FeeNotSet
     // }
     
@@ -230,9 +217,6 @@ pub fn bounty_approve(e: &Env,
     work.status = WorkStatus::APPROVED;
     work_write(e, work_id, &work);
     
-    bounty.status = BountyStatus::APPROVED;
-    bounty_write(e, work.bounty_id, &bounty);
-
     // emit WorkAccepted event
     e.events().publish((BOUNTY, symbol_short!("WApprove")), 
         (creator.clone(), work.bounty_id, work.participant, work_id)
@@ -257,7 +241,7 @@ pub fn bounty_reject(e: &Env,
     }
     let bounty: BountyInfo = bounty_load(e, work.bounty_id);
 
-    if bounty.status != BountyStatus::FUNDED {
+    if bounty.status != BountyStatus::ACTIVE {
         // panic!("invaid bounty status");
         return Error::InvalidBountyStatus;
     }
@@ -286,10 +270,10 @@ pub fn bounty_cancel(e: &Env,
     let mut bounty = bounty_load(e, bounty_id);
 
     if bounty.creator != *creator {
-        // panic!("creator and bounty mismatch");
-        return Error::CreatorBountyMismatch
+        // panic!("invalid creator");
+        return Error::InvalidCreator
     }
-    if bounty.status != BountyStatus::FUNDED {
+    if bounty.status != BountyStatus::ACTIVE {
         // panic!("invalid bounty status");
         return Error::InvalidBountyStatus
     }
@@ -324,7 +308,7 @@ pub fn bounty_close(e: &Env,
     }
     let mut bounty: BountyInfo = bounty_load(e, bounty_id);
 
-    if bounty.status != BountyStatus::FUNDED {
+    if bounty.status != BountyStatus::ACTIVE {
         // panic!("bounty not available");
         return Error::InvalidBountyStatus
     }
