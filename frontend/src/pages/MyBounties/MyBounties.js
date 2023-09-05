@@ -15,7 +15,7 @@ import { fadeInUp, fadeIn, IsSmMobile, numberWithCommas } from '../../utils';
 import { config, def_config } from '../../config';
 import Subheader from '../../components/menu/SubHeader';
 import MainHeader from '../../components/menu/MainHeader';
-import MyBountyListing from './MyBountyListing';
+import MyBountiesBody from './MyBountiesBody';
 
 const GlobalStyles = createGlobalStyle`
   .swap-card {
@@ -172,20 +172,20 @@ const MyBounties = () => (
             <Subheader path="MyBounties" />
             <Reveal keyframes={fadeInUp} className='onStep' delay={0} duration={800} triggerOnce>
               <div className='app-title'>
-                <p className='text-[40px] sm:text-center text-white'>Review</p>
+                <p className='text-[40px] sm:text-center text-white'>My Bounties</p>
               </div>
             </Reveal>
             
           </div>
           <div className='app-content'>
             {IsSmMobile() ? (
-              <MyBountyListing />
+              <MyBountiesBody />
             ) : (
               <Scrollbars autoHide style={{ height: "100%" }}
                 renderThumbVertical={({ style, ...props }) =>
                   <div {...props} className={'thumb-horizontal'} />
                 }>
-                <MyBountyListing />
+                <MyBountiesBody />
               </Scrollbars>
             )}
           </div>

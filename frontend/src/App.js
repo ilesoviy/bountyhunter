@@ -15,6 +15,7 @@ import ExBountyListing from './pages/ExploreBounties/BountyListing/ExBountyListi
 import PreviewNewBounty from './pages/NewBounty/PreviewNewBounty';
 import InProgress from './pages/InProgress/InProgress';
 import InBountyListing from './pages/InProgress/InBountyListing';
+import MyBountiesListing from './pages/MyBounties/MyBountiesListing';
 
 const PosedRouter = ({ children }) => (
   <Location>
@@ -48,6 +49,7 @@ function App() {
             <NewBounty path="NewBounty" />
             <ExBountyListing path="ExploreBounties/:id" />
             <InBountyListing path="InProgress/:id" />
+            <MyBountiesListing path="MyBounties/:id" />
             <ExploreBounty path="ExploreBounties" />            
             <InProgress path="InProgress" />
             <MyBounties path="MyBounties" />

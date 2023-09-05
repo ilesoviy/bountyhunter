@@ -144,7 +144,7 @@ const InBountyListingBody = ({ callback }) => {
             </div>
           </Reveal>
           <div className='w-full my-2 py-3'>
-            <button className='text-[24px] w-full border rounded-2xl px-2' onClick={() => { callback() }}>Submit Work</button>
+            <button className='text-[18px] w-full border rounded-2xl px-2 py-2' onClick={() => { callback() }}>Submit Work</button>
           </div>
         </div>
       </div>
@@ -184,7 +184,7 @@ const InBountyListing = () => {
       <div className='container'>
         <MainHeader />
         <div className='bounty-listing-container'>
-          <Link to="/ExploreBounties">
+          <Link to="/InProgress">
             <div className='flex gap-3'>
               <span className="text-xl"><i className='fa fa-arrow-left'></i></span>
               <span className='text-xl'>Back</span>
@@ -192,7 +192,6 @@ const InBountyListing = () => {
           </Link>
           <div className='app-header px-0 xl:items-center sm:flex-col'>
             <div className='app-title'>
-              <Link to="/NewBounty"> <span></span> </Link>
               <p className='text-[40px] sm:text-center text-white pt-3'>Bounty Listing</p>
             </div>
           </div>

@@ -5,7 +5,7 @@ import { fadeInUp } from '../../../utils';
 import MainHeader from '../../../components/menu/MainHeader';
 import { Link } from '@reach/router';
 
-const ExBountyListing = () => {
+const ExBountyListingBody = () => {
 
   return (
     <div className='app-content'>
@@ -144,7 +144,7 @@ const ExBountyListing = () => {
             </div>
           </Reveal>
           <div className='w-full my-2 py-3'>
-            <button className='text-[24px] w-full border rounded-2xl px-2' >Apply</button>
+            <button className='text-[18px] w-full border rounded-2xl px-2' >Apply</button>
           </div>
         </div>
       </div>
@@ -152,7 +152,7 @@ const ExBountyListing = () => {
   )
 }
 
-const BountyListing = () => {
+const ExBountyListing = () => {
 
   return (
     <div className='full-container overflow-auto'>
@@ -167,15 +167,14 @@ const BountyListing = () => {
           </Link>
           <div className='app-header px-0 xl:items-center sm:flex-col'>
             <div className='app-title'>
-              <Link to="/NewBounty"> <span></span> </Link>
               <p className='text-[40px] sm:text-center text-white pt-3'>Bounty Listing</p>
             </div>
           </div>
-          <ExBountyListing/>
+          <ExBountyListingBody/>
         </div>
       </div>
     </div>
   )
 }
 
-export default BountyListing;
+export default ExBountyListing;

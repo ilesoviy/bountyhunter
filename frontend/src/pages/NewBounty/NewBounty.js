@@ -10,6 +10,7 @@ import ConnectWallet from '../../components/menu/ConnectWallet';
 import { useSigningClient } from '../../context/web3Context';
 import MainHeader from '../../components/menu/MainHeader';
 import { Link } from '@reach/router';
+import HelpButton from '../../components/menu/HelpButton';
 
 const NewBountyBody = () => {
   const {
@@ -204,6 +205,7 @@ const NewBounty = () => (
         </div>
       </div>
     </div>
+    <HelpButton/>
   </div>
 )
 export default NewBounty;

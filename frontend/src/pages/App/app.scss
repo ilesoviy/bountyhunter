@@ -1043,3 +1043,30 @@ select option {
   right: 0;
   left: auto;
 }
+
+.my-badge {
+  position: absolute ;
+  right: -10px;
+  top: -15px;
+  padding: 0px 7px;
+  border-radius: 10px;
+  background: red;
+}
+
+.my-help-btn {
+  display: flex;
+  align-items: center;
+  position: fixed;
+  bottom: 50px;
+  left: 50px;
+  gap: 0.5em!important;
+  background: linear-gradient(to bottom right, rgba(0,0,0,0.36), rgba(0,0,0,0.06));
+  padding: 10px;
+  border-radius: 20px;
+}
+
+.review-item {
+  border-radius: 20px;
+  padding: 10px 20px!important;
+  background: linear-gradient(to bottom right, rgba(0,0,0,0.36), rgba(0,0,0,0.06));
+}
