@@ -11,20 +11,25 @@ import { useSigningClient } from '../../context/web3Context';
 import MainHeader from '../../components/menu/MainHeader';
 import HelpButton from '../../components/menu/HelpButton';
 
-const ChartURL = `https://teams.bogged.finance/embeds/chart?address=${config.ETR_CONTRACT}&chain=bsc&charttype=line&theme=bg:06302566|bg2:036b60FF|primary:024643FF|secondary:5cf28fff|text:F3F6FBFF|text2:F3F6FBFF|candlesUp:1BC870FF|candlesDown:ff4976ff|chartLine:15d465FF&defaultinterval=15m&showchartbutton=true`;
 
 const SettingsBody = () => {
   const {
     balance
   } = useSigningClient();
 
-  const DEF_APY = (def_config.APY * 100).toFixed(2);
-  const [ETRPrice, setETRPrice] = useState('0.07');
-  const [title, setTitle] = useState('');
-  const [apy, setAPY] = useState(DEF_APY);
-  const [purchasePrice, setPurchasePrice] = useState(0);
-  const [futurePrice, setFuturePrice] = useState(0);
-  const [days, setDays] = useState(30);
+  const [name, setName] = useState('');
+  const [bGitHub, setGitHub] = useState('');
+  const [discord, setDiscord] = useState('');
+
+  const handleName = useCallback((event) => {
+    setName(event.target.value);
+  }, []);
+  const handleGitHub = useCallback((event) => {
+    setGitHub(event.target.value);
+  }, []);
+  const handleDiscord = useCallback((event) => {
+    setDiscord(event.target.value);
+  }, []);
 
   useEffect(() => {
     // setInitAmount((Number(title) * Number(purchasePrice)));
@@ -32,35 +37,8 @@ const SettingsBody = () => {
     // const rewards = ((((Number(apy) + 100) / 100) ** (days / 365)) * Number(title));
     // setRewardEst(rewards);
     // setPotentialReturn((rewards * Number(futurePrice)));
-  }, [title, apy, purchasePrice, futurePrice, days, ETRPrice]);
+  }, [name, bGitHub, discord]);
 
-  const handleSlide = useCallback((event, value) => {
-    setDays(value);
-  }, []);
-
-  const handleTitle = useCallback((event) => {
-    setTitle(event.target.value);
-  }, []);
-
-  const handleAPY = useCallback((event) => {
-    setAPY(event.target.value);
-  }, []);
-
-  const handlePurchasePrice = useCallback((event) => {
-    setPurchasePrice(event.target.value);
-  }, []);
-
-  const handleFuturePrice = useCallback((event) => {
-    setFuturePrice(event.target.value);
-  }, []);
-
-  const handleMax = useCallback(() => {
-    if (balance.ETR !== '')
-      setTitle(Number(balance.ETR));
-    else {
-      setTitle(0);
-    }
-  }, [balance]);
 
   return (
     <Reveal keyframes={fadeInUp} className='onStep' delay={400} duration={1000} triggerOnce>
@@ -76,7 +54,7 @@ const SettingsBody = () => {
                         <div className='input-form-control'>
                             <label className='input-label'>Name</label>
                             <div className="input-control">
-                            <input type="text" name="amount" value={title} className='input-main' onChange={handleTitle}></input>
+                            <input type="text" name="name" value={name} className='input-main' onChange={handleName}></input>
                             </div>
                         </div>
                         </div>
@@ -84,15 +62,15 @@ const SettingsBody = () => {
                         <div className='input-form-control'>
                             <label className='input-label'>GitHub Profile</label>
                             <div className="input-control">
-                            <input type="text" name="apy" value={apy} className='input-main' onChange={handleAPY}></input>
+                            <input type="text" name="bGitHub" value={bGitHub} className='input-main' onChange={handleGitHub}></input>
                             </div>
                         </div>
                         </div>
                         <div className='w-full pb-3'>
                         <div className='input-form-control'>
-                            <label className='input-label'>Bounty Type</label>
+                            <label className='input-label'>Discord#</label>
                             <div className="input-control">
-                            <input type="number" name="purchasePrice" value={purchasePrice} className='input-main' onChange={handlePurchasePrice}></input>
+                            <input type="text" name="discord" value={discord} className='input-main' onChange={handleDiscord}></input>
                             </div>
                         </div>
                         

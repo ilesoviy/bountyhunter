@@ -29,10 +29,10 @@ const BannerBody = () => (
       <div className='row'>
         <div className="col-lg-3 col-md-6 mb-3">
           <div className="feature-box f-boxed style-3">
-            <img className='i-boxed' src="img/icons/feature_1.png" alt=""></img>
+            <img className='i-boxed w-[24px] h-[24px]' src="/images/icons/add.png" alt=""></img>
             <div className="text">
-              <h4 className="">Create Bounties</h4>
-              <p className="">Lorem ipsum dolor sit amet, consectetur adipiscing elit. </p>
+              <h4 className="font-bold text-2xl mt-2">Create Bounties</h4>
+              <p className="mt-2">Kickstart your project by offering bounties.</p>
             </div>
             <i className="wm icon_wallet"></i>
           </div>
@@ -41,14 +41,14 @@ const BannerBody = () => (
         <div className="col-lg-3 col-md-6 mb-3">
           <div className="feature-box f-boxed style-3">
             <Reveal className='onStep' keyframes={fadeInUp} delay={0} duration={600} triggerOnce>
-              <img className='i-boxed' src="img/icons/feature_2.png" alt=""></img>
+              <img className='i-boxed w-[24px] h-[24px]' src="/images/icons/participate.png" alt=""></img>
             </Reveal>
             <div className="text">
               <Reveal className='onStep' keyframes={fadeInUp} delay={100} duration={600} triggerOnce>
-                <h4 className="">Participate</h4>
+                <h4 className="font-bold text-2xl mt-2">Participate</h4>
               </Reveal>
               <Reveal className='onStep' keyframes={fadeInUp} delay={200} duration={600} triggerOnce>
-                <p className="">Lorem ipsum dolor sit amet, consectetur adipiscing elit. </p>
+                <p className=" mt-2">Join the community and cooperate.</p>
               </Reveal>
             </div>
             <i className="wm icon_cloud-upload_alt"></i>
@@ -58,14 +58,14 @@ const BannerBody = () => (
         <div className="col-lg-3 col-md-6 mb-3">
           <div className="feature-box f-boxed style-3">
             <Reveal className='onStep' keyframes={fadeInUp} delay={0} duration={600} triggerOnce>
-              <img className='i-boxed' src="img/icons/feature_3.png" alt=""></img>
+              <img className='i-boxed w-[24px] h-[24px]' src="/images/icons/build.png" alt=""></img>
             </Reveal>
             <div className="text">
               <Reveal className='onStep' keyframes={fadeInUp} delay={100} duration={600} triggerOnce>
-                <h4 className="">Build</h4>
+                <h4 className="font-bold text-2xl mt-2">Build</h4>
               </Reveal>
               <Reveal className='onStep' keyframes={fadeInUp} delay={200} duration={600} triggerOnce>
-                <p className="">Lorem ipsum dolor sit amet, consectetur adipiscing elit. </p>
+                <p className=" mt-2">Complete tasks and contribute to web3 projects. </p>
               </Reveal>
             </div>
             <i className="wm icon_tags_alt"></i>
@@ -75,14 +75,14 @@ const BannerBody = () => (
         <div className="col-lg-3 col-md-6 mb-3">
           <div className="feature-box f-boxed style-3">
             <Reveal className='onStep' keyframes={fadeInUp} delay={0} duration={600} triggerOnce>
-              <img className='i-boxed' src="img/icons/feature_3.png" alt=""></img>
+              <img className='i-boxed w-[24px] h-[24px]' src="/images/icons/earn.png" alt=""></img>
             </Reveal>
             <div className="text">
               <Reveal className='onStep' keyframes={fadeInUp} delay={100} duration={600} triggerOnce>
-                <h4 className="">Earn</h4>
+                <h4 className="font-bold text-2xl mt-2">Earn</h4>
               </Reveal>
               <Reveal className='onStep' keyframes={fadeInUp} delay={200} duration={600} triggerOnce>
-                <p className="">Lorem ipsum dolor sit amet, consectetur adipiscing elit. </p>
+                <p className=" mt-2">Get rewarded in crypto for your valuable contributions. </p>
               </Reveal>
             </div>
             <i className="wm icon_tags_alt"></i>

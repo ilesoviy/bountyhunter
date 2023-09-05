@@ -119,9 +119,6 @@ const MyBountiesListingBody = () => {
               </div>
             </div>
           </Reveal>
-          <div className='w-full my-2 py-3'>
-            <button className='text-[18px] w-full border rounded-2xl px-2 py-2' >Apply</button>
-          </div>
         </div>
       </div>
     </div>
