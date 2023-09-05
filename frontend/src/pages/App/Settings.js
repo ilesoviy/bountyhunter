@@ -12,6 +12,7 @@ import MainHeader from '../../components/menu/MainHeader';
 import HelpButton from '../../components/menu/HelpButton';
 import { Link } from '@reach/router';
 
+
 const SettingsBody = () => {
   const {
     balance
