@@ -7,6 +7,7 @@ import { createGlobalStyle } from 'styled-components';
 // import { getMagicPriceInWeb3 } from '../../core/web3';
 import '../../pages/App/app.scss';
 import ConnectWallet from './ConnectWallet';
+import UploadAndDisplayImage from '../../pages/App/UploadAndDisplayImage';
 
 const GlobalStyles = createGlobalStyle`
   .social-icons span {
@@ -29,8 +30,6 @@ const GlobalStyles = createGlobalStyle`
   }
 `;
 
-const path_list = ['', 'ExploreBounties', 'NewBounty', 'MyBounties', 'InProgress', 'Settings'];
-
 const Sidebar = ({ path }) => {
 
   useEffect(() => {
@@ -43,15 +42,7 @@ const Sidebar = ({ path }) => {
         <div className="navbar-content z-50">
           <div className='logo-img flex flex-col space-y-2 items-center pt-3 pb-4'>
             {/* <Link className='cursor-pointer' to='/'> */}
-            <div className='relative'>
-              <img alt='' src={'/images/banner/unknown.png'} width={120} height={120} className='rounded-full' />
-              <div className='absolute right-0 bottom-0 w-[30px] h-[30px] '>
-                <div className='flex w-full h-full justify-center items-center rounded-full bg-[#011829] cursor-pointer'>
-                  <i className='fa fa-pencil'/>
-                </div>
-                
-              </div>
-            </div>
+            <UploadAndDisplayImage />
             {/* </Link> */}
             <ConnectWallet />
           </div>
