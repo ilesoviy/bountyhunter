@@ -4,6 +4,7 @@ import { Reveal } from 'react-awesome-reveal';
 import { fadeInUp } from '../../../utils';
 import MainHeader from '../../../components/menu/MainHeader';
 import { Link } from '@reach/router';
+import HelpButton from '../../../components/menu/HelpButton';
 
 const ExBountyListingBody = () => {
 
@@ -23,7 +24,7 @@ const ExBountyListingBody = () => {
           <Reveal keyframes={fadeInUp} className='onStep' delay={0} duration={800} triggerOnce>
             <div className='info-box pb-3 mt-[40px]'>
               <div className='info-header'>
-                <div className='flex justify-between sm:flex-col sm:text-center px-3'>
+                <div className='flex justify-around sm:flex-col sm:text-center px-3'>
                   <div className='flex flex-col'>
                     <div className='flex my-2 text-[24px]'><span>Participants</span></div>
                   </div>
@@ -144,10 +145,11 @@ const ExBountyListingBody = () => {
             </div>
           </Reveal>
           <div className='w-full my-2 py-3'>
-            <button className='text-[18px] w-full border rounded-2xl px-2' >Apply</button>
+            <button className='text-[18px] w-full border rounded-2xl px-2 py-2' >Apply</button>
           </div>
         </div>
       </div>
+      <HelpButton/>
     </div>
   )
 }

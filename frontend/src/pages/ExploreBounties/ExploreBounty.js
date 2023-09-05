@@ -7,6 +7,7 @@ import Subheader from '../../components/menu/SubHeader';
 import { numberWithCommas, IsSmMobile, fadeInUp, fadeIn, getUTCNow, getUTCDate, isEmpty } from '../../utils';
 import MainHeader from '../../components/menu/MainHeader';
 import ExBountiesBody from './ExBountiesBody';
+import HelpButton from '../../components/menu/HelpButton';
 
 const ExploreBounty = () => {
 
@@ -76,7 +77,7 @@ const ExploreBounty = () => {
   }, []);
 
   return (
-    <div className='full-container'>
+    <div className='full-container' >
       <div className='container'>
         <MainHeader />
         <Sidebar path="ExploreBounties" />
@@ -101,7 +102,7 @@ const ExploreBounty = () => {
                   </div>
                   {
                     isSearchShow &&
-                    <div className='blur-page z-0'></div>
+                    <div className='left-0 right-0 top-0 bottom-0 fixed z-0' onClick={() => setSearchShow(isSearchShow => false)}></div>
                   }
                   {isSearchShow &&
                     <section className='absolute right-0 top-0 left-0 rounded-3xl border-0 bg-[#00263e]'>
@@ -164,6 +165,7 @@ const ExploreBounty = () => {
           </div>
         </div>
       </div>
+      <HelpButton/>
     </div>
   )
 }

@@ -6,6 +6,7 @@ import { IsSmMobile, fadeInUp, fadeIn } from '../../utils';
 import Subheader from '../../components/menu/SubHeader';
 import MainHeader from '../../components/menu/MainHeader';
 import InBountiesBody from './InBountiesBody';
+import HelpButton from '../../components/menu/HelpButton';
 
 const InProgress = () => (
   <div className='full-container'>
@@ -34,7 +35,8 @@ const InProgress = () => (
             )}
           </div>
         </div>
-      </div>      
+      </div>  
+      <HelpButton/>    
     </div>
 )
 export default InProgress;

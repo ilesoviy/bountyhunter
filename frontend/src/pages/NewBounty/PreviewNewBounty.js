@@ -5,6 +5,7 @@ import Subheader from '../../components/menu/SubHeader';
 import { numberWithCommas, IsSmMobile, fadeInUp, fadeIn, getUTCNow, getUTCDate, isEmpty } from '../../utils';
 import MainHeader from '../../components/menu/MainHeader';
 import { Link } from '@reach/router';
+import HelpButton from '../../components/menu/HelpButton';
 
 const PreviewBody = () => {
   return (
@@ -163,6 +164,7 @@ const PreviewNewBounty = () => {
           )} */}
         </div>
       </div>
+      <HelpButton/>
     </div>
   )
 }

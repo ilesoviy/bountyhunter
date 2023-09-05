@@ -4,6 +4,7 @@ import { fadeInUp } from '../../utils';
 import MainHeader from '../../components/menu/MainHeader';
 import { Link } from '@reach/router';
 import { Drawer } from './Drawer';
+import HelpButton from '../../components/menu/HelpButton';
 
 const InBountyListingBody = ({ callback }) => {
 
@@ -23,7 +24,7 @@ const InBountyListingBody = ({ callback }) => {
           <Reveal keyframes={fadeInUp} className='onStep' delay={0} duration={800} triggerOnce>
             <div className='info-box pb-3 mt-[40px]'>
               <div className='info-header'>
-                <div className='flex justify-between sm:flex-col sm:text-center px-3'>
+                <div className='flex justify-around sm:flex-col sm:text-center px-3'>
                   <div className='flex flex-col'>
                     <div className='flex my-2 text-[24px]'><span>Participants</span></div>
                   </div>
@@ -37,7 +38,7 @@ const InBountyListingBody = ({ callback }) => {
               </div>
               <div className='info-body'>
                 {[1, 1, 1].map((v, i) => (
-                  <div className='flex justify-between sm:flex-col sm:text-center px-3'>
+                  <div className='flex justify-around sm:flex-col sm:text-center px-3'>
                     <div className='flex flex-col'>
                       <div className='flex my-2 text-[16px]'><span>GS573KASDHK...AZEW (Worker 1)</span></div>
                     </div>
@@ -198,6 +199,7 @@ const InBountyListing = () => {
           <InBountyListingBody callback={handleDrawerOpen} />
         </div>
       </div>
+      <HelpButton />
       <Drawer anchor="right" open={drawerOpen} onClose={handleDrawerClose}>
         <button onClick={handleDrawerClose}>
           <div className='flex gap-3'>

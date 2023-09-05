@@ -136,7 +136,7 @@ const NewBountyBody = () => {
                         </div>
                       </div>
                     </div>
-                    
+
                     <div className='col-md-12 pb-3'>
                       <div className='input-form-control'>
                         <label className='input-label'>Github Link</label>
@@ -205,7 +205,7 @@ const NewBounty = () => (
         </div>
       </div>
     </div>
-    <HelpButton/>
+    <HelpButton />
   </div>
 )
 export default NewBounty;

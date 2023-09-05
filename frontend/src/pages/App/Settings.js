@@ -9,6 +9,7 @@ import Subheader from '../../components/menu/SubHeader';
 import ConnectWallet from '../../components/menu/ConnectWallet';
 import { useSigningClient } from '../../context/web3Context';
 import MainHeader from '../../components/menu/MainHeader';
+import HelpButton from '../../components/menu/HelpButton';
 
 const ChartURL = `https://teams.bogged.finance/embeds/chart?address=${config.ETR_CONTRACT}&chain=bsc&charttype=line&theme=bg:06302566|bg2:036b60FF|primary:024643FF|secondary:5cf28fff|text:F3F6FBFF|text2:F3F6FBFF|candlesUp:1BC870FF|candlesDown:ff4976ff|chartLine:15d465FF&defaultinterval=15m&showchartbutton=true`;
 
@@ -144,7 +145,7 @@ const Settings = () => {
         </div>
       </div>
     </div>
-    
+    <HelpButton/>
   </div>
 )}
 

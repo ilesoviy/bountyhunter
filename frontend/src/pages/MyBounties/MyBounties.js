@@ -16,6 +16,7 @@ import { config, def_config } from '../../config';
 import Subheader from '../../components/menu/SubHeader';
 import MainHeader from '../../components/menu/MainHeader';
 import MyBountiesBody from './MyBountiesBody';
+import HelpButton from '../../components/menu/HelpButton';
 
 const GlobalStyles = createGlobalStyle`
   .swap-card {
@@ -190,7 +191,8 @@ const MyBounties = () => (
             )}
           </div>
         </div>
-      </div>      
+      </div>
+      <HelpButton/>
     </div>
 );
 
