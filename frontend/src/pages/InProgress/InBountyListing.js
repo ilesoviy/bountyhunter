@@ -1,18 +1,20 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { Reveal } from 'react-awesome-reveal';
-import { fadeInUp } from '../../utils';
+import { IsSmMobile, fadeInUp } from '../../utils';
 import MainHeader from '../../components/menu/MainHeader';
 import { Link } from '@reach/router';
 import { Drawer } from './Drawer';
 import HelpButton from '../../components/menu/HelpButton';
+import Scrollbars from 'react-custom-scrollbars';
+import Subheader from '../../components/menu/SubHeader';
 
 const InBountyListingBody = ({ callback }) => {
 
   return (
     <div className='app-content'>
       <div className='row'>
-        <div className='col-md-7 px-0 pt-7'>
-          <div className='flex justify-between sm:flex-col sm:text-center py-2'>
+        <div className='col-lg-7 pr-3 pt-7'>
+          <div className='flex justify-between xsm:flex-col xsm:text-center xsm:items-center py-2'>
             <div className='flex flex-col'>
               <button className='text-[18px] border rounded-2xl px-4'>Active</button>
             </div>
@@ -54,7 +56,7 @@ const InBountyListingBody = ({ callback }) => {
             </div>
           </Reveal>
         </div>
-        <div className='col-md-5 py-2 pl-7'>
+        <div className='col-lg-5 py-2 md:pl-7'>
           <Reveal keyframes={fadeInUp} className='onStep' delay={0} duration={800} triggerOnce>
             <div className='info-box pb-3'>
               <div className='info-header'>
@@ -181,10 +183,11 @@ const InBountyListing = () => {
   }, []);
 
   return (
-    <div className='full-container overflow-auto'>
+    <div className='full-container'>
       <div className='container'>
         <MainHeader />
         <div className='bounty-listing-container'>
+          <Subheader/>
           <Link to="/InProgress">
             <div className='flex gap-3'>
               <span className="text-xl"><i className='fa fa-arrow-left'></i></span>
@@ -196,7 +199,16 @@ const InBountyListing = () => {
               <p className='text-[40px] sm:text-center text-white pt-3'>Bounty Listing</p>
             </div>
           </div>
-          <InBountyListingBody callback={handleDrawerOpen} />
+          {IsSmMobile() ? (
+              <InBountyListingBody callback={handleDrawerOpen} />
+            ) : (
+              <Scrollbars id='body-scroll-bar' autoHide style={{ height: "100%" }}
+                renderThumbVertical={({ style, ...props }) =>
+                  <div {...props} className={'thumb-horizontal'} />
+                }>
+                <InBountyListingBody callback={handleDrawerOpen} />
+              </Scrollbars>
+            )}
         </div>
       </div>
       <HelpButton />

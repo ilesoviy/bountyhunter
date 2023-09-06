@@ -234,8 +234,8 @@ const MyBounties = () => {
         <MainHeader />
         <Sidebar path="MyBounties" />
         <div className='app-container'>
-          <div className='app-header items-center sm:flex-col pl-[40px] pr-0 relative z-[99]'>
-            <Subheader path="MyBounties" />
+          <Subheader path="MyBounties" />
+          <div className='app-header items-center sm:flex-col lg:pl-0 pl-[40px] pr-0 relative z-[99]'>
             <Reveal keyframes={fadeInUp} className='onStep' delay={0} duration={800} triggerOnce>
               <div className='app-title'>
                 <p className='text-[40px] sm:text-center text-white'>My Bounties</p>

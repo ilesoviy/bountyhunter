@@ -10,10 +10,10 @@ const ExBounty = (pathTo) => {
     <div className='app-body'>
       <Reveal keyframes={fadeInUp} className='onStep' delay={400} duration={1000} triggerOnce>
         <div className='row'>
-          <div className='w-full mt-[20px] pr-0'>
+          <div className='w-full lg:pl-0 mt-[20px] pr-0'>
             <div className='app-card cursor-pointer' onClick={()=>nav('/ExploreBounties/0')}>
               <div className='app-card-header text-left'>
-                <div className='flex justify-between sm:flex-col sm:text-center'>
+                <div className='flex justify-between xsm:flex-col sm:text-center'>
                   <div className='flex flex-col'>
                     <div className='flex flex-row items-center'>
                       <img className="h-[30px] logo" src="./images/banner/user.png" alt="" />
@@ -22,8 +22,8 @@ const ExBounty = (pathTo) => {
                   </div>
                   <div className='flex flex-col'>
                     <div className='flex flex-row space-x-2 '>
-                      <div className='flex-col app-gray justify-around sm:flex-col sm:text-center border rounded-2xl px-2'> {`${numberWithCommas(1000,3)} XLM`}</div>
-                      <div className='flex-col app-gray justify-around sm:flex-col sm:text-center border rounded-2xl px-2'>Active</div>
+                      <div className='flex-col app-gray justify-around xsm:flex-col xsm:text-center border rounded-2xl px-2'> {`${numberWithCommas(1000,3)} XLM`}</div>
+                      <div className='flex-col app-gray justify-around xsm:flex-col xsm:text-center border rounded-2xl px-2'>Active</div>
                     </div>
                   </div>
                 </div>

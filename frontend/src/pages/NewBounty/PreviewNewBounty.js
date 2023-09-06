@@ -11,8 +11,8 @@ const PreviewBody = () => {
   return (
     <div className='app-content'>
       <div className='row'>
-        <div className='col-md-7 px-0 pt-7'>
-          <div className='flex justify-between sm:flex-col sm:text-center pt-2 pb-3'>
+        <div className='col-lg-7 pr-3 pt-7'>
+          <div className='flex justify-between xsm:flex-col sm:items-center pt-2 pb-3'>
             <div className='flex flex-col'>
               <button className='text-[18px] border rounded-2xl px-4'>Active</button>
             </div>
@@ -36,7 +36,7 @@ const PreviewBody = () => {
             </div>
           </Reveal>
         </div>
-        <div className='col-md-5 py-2 pl-7'>
+        <div className='col-lg-5 py-2 md:pl-7'>
           <div className='info-box pb-3'>
             <div className='info-header'>
               <div className='flex my-2 text-[24px]'><span>Information</span></div>
@@ -140,6 +140,7 @@ const PreviewNewBounty = () => {
       <div className='container'>
         <MainHeader />
         <div className='bounty-listing-container'>
+          <Subheader/>
           <Link to="/NewBounty">
             <div className='flex gap-3'>
               <span className="text-xl"><i className='fa fa-arrow-left'></i></span>
@@ -152,16 +153,16 @@ const PreviewNewBounty = () => {
               <p className='text-[40px] sm:text-center text-white pt-3'>Bounty Preview</p>
             </div>
           </div>
-          {/* {IsSmMobile() ? ( */}
+          {IsSmMobile() ? (
             <PreviewBody />
-          {/* ) : (
-            <Scrollbars autoHide style={{ height: "100%" }}
+            ) : (
+            <Scrollbars id='body-scroll-bar' autoHide style={{ height: "100%" }}
               renderThumbVertical={({ style, ...props }) =>
                 <div {...props} className={'thumb-horizontal'} />
               }>
               <PreviewBody />
             </Scrollbars>
-          )} */}
+          )} 
         </div>
       </div>
       <HelpButton/>

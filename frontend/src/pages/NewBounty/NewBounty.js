@@ -64,122 +64,119 @@ const NewBountyBody = () => {
   }, []);
 
   return (
-    <div className='app-body pl-[20px] pr-0'>
+    <div className='app-body lg:pl-0 pl-[20px] pr-0 mt-3'>
       <Reveal keyframes={fadeInUp} className='onStep' delay={400} duration={1000} triggerOnce>
-        <div className='row'>
-          <div className='w-full xl:w-full xl:h-fit lg:w-full md:w-full'>
-            <div className='mt-3'>
-              <div className='row'>
-                <div className='col-md-12'>
-                  <div className='row'>
-                    <div className='col-md-12 pb-3'>
-                      <div className='input-form-control'>
-                        <label className='input-label'>Title</label>
-                        <div className="input-control">
-                          <input type="text" name="title" value={title} className='input-main' onChange={handleTitle}></input>
-                        </div>
-                      </div>
-                    </div>
-                    <div className='col-md-6 pb-3'>
-                      <div className='input-form-control'>
-                        <label className='input-label'>Payment Amount</label>
-                        <div className="input-control">
-                          <input type="number" name="apy" value={apy} className='input-main' onChange={handleAPY}></input>
-                        </div>
-                      </div>
-                    </div>
-                    <div className='col-md-6 pb-3'>
-                      <div className='input-form-control'>
-                        <label className='input-label'>Dead Line</label>
-                        <div className="input-control">
-                          <select name="bDeadLine" className='input-main'>
-                            <option value="" disabled selected hidden>Select Duraion</option>
-                            <option value="1">More than 6 months</option>
-                            <option value="2">3 to 6 months</option>
-                            <option value="3">1 to 3 months</option>
-                            <option value="4">Less than 1 month</option>
-                          </select>
-                        </div>
-                      </div>
-                    </div>
-                    <div className='col-md-4 pb-3'>
-                      <div className='input-form-control'>
-                        <label className='input-label'>Bounty Type</label>
-                        <div className="input-control">
-                          <select name="bType" className='input-main'>
-                            <option value="" disabled selected hidden>Select Type</option>
-                            <option value="1">Competitive</option>
-                            <option value="2">Cooperative</option>
-                            <option value="3">Hackathon</option>
-                          </select>
-                        </div>
-                      </div>
-                    </div>
-                    <div className='col-md-4 pb-3'>
-                      <div className='input-form-control'>
-                        <label className='input-label'>Bounty Difficulty</label>
-                        <div className="input-control">
-                          <select name="bDifficulty" className='input-main'>
-                            <option value="" disabled selected hidden>Select Difficulty</option>
-                            <option value="1">Beginner</option>
-                            <option value="2">Intermediate</option>
-                            <option value="3">Advanced</option>
-                          </select>
-                        </div>
-                      </div>
-                    </div>
-                    <div className='col-md-4 pb-3'>
-                      <div className='input-form-control'>
-                        <label className='input-label'>Bounty Topic</label>
-                        <div className="input-control">
-                          <select name="bTopic" className='input-main'>
-                            <option value="" disabled selected hidden>Select Topic</option>
-                            <option value="1">Design</option>
-                            <option value="2">Development</option>
-                            <option value="3">Smart Contracts</option>
-                            <option value="3">Data</option>
-                            <option value="3">AI</option>
-                          </select>
-                        </div>
-                      </div>
-                    </div>
-                    <div className='col-md-12 pb-3'>
-                      <div className='input-form-control'>
-                        <label className='input-label'>Description</label>
-                        <div className="input-control h-[70px]">
-                          <textarea type="text" name="bDesc" value={bDesc} className='input-main' onChange={handleBDesc}></textarea>
-                        </div>
-                      </div>
-                    </div>
 
-                    <div className='col-md-12 pb-3'>
-                      <div className='input-form-control'>
-                        <label className='input-label'>Github Link</label>
-                        <div className="input-control">
-                          <input type="text" name="bGitHub" value={bGitHub} className='input-main' onChange={handleBGitHub}></input>
-                        </div>
-                      </div>
-                    </div>
-                    <div className='col-md-4 pb-3'>
-                      <div className='input-form-control'>
-                        <div className="input-control">
-                          {/* <button className='input-main' onClick={navigateToPreview}>Preview</button> */}
-                          <Link to="/NewBounty/preview" className='w-full text-center'>Prevew</Link>
-                        </div>
-                      </div>
-                    </div>
-                    <div className='col-md-4 pb-3'>
-                      <div className='input-form-control'>
-                        <div className="input-control">
-                          <button className='input-main text-white' onClick={() => { }}>Submit</button></div>
-                      </div>
-                    </div>
+        <div className='w-full xl:w-full xl:h-fit lg:w-full md:w-full'>
+          <div className='col-md-12'>
+            <div className='row m-0'>
+              <div className='col-md-12 pb-3'>
+                <div className='input-form-control'>
+                  <label className='input-label'>Title</label>
+                  <div className="input-control">
+                    <input type="text" name="title" value={title} className='input-main' onChange={handleTitle}></input>
                   </div>
+                </div>
+              </div>
+              <div className='col-md-6 pb-3'>
+                <div className='input-form-control'>
+                  <label className='input-label'>Payment Amount</label>
+                  <div className="input-control">
+                    <input type="number" name="apy" value={apy} className='input-main' onChange={handleAPY}></input>
+                  </div>
+                </div>
+              </div>
+              <div className='col-md-6 pb-3'>
+                <div className='input-form-control'>
+                  <label className='input-label'>Dead Line</label>
+                  <div className="input-control">
+                    <select name="bDeadLine" className='input-main'>
+                      <option value="" disabled selected hidden>Select Duraion</option>
+                      <option value="1">More than 6 months</option>
+                      <option value="2">3 to 6 months</option>
+                      <option value="3">1 to 3 months</option>
+                      <option value="4">Less than 1 month</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div className='col-md-4 pb-3'>
+                <div className='input-form-control'>
+                  <label className='input-label'>Bounty Type</label>
+                  <div className="input-control">
+                    <select name="bType" className='input-main'>
+                      <option value="" disabled selected hidden>Select Type</option>
+                      <option value="1">Competitive</option>
+                      <option value="2">Cooperative</option>
+                      <option value="3">Hackathon</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div className='col-md-4 pb-3'>
+                <div className='input-form-control'>
+                  <label className='input-label'>Bounty Difficulty</label>
+                  <div className="input-control">
+                    <select name="bDifficulty" className='input-main'>
+                      <option value="" disabled selected hidden>Select Difficulty</option>
+                      <option value="1">Beginner</option>
+                      <option value="2">Intermediate</option>
+                      <option value="3">Advanced</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div className='col-md-4 pb-3'>
+                <div className='input-form-control'>
+                  <label className='input-label'>Bounty Topic</label>
+                  <div className="input-control">
+                    <select name="bTopic" className='input-main'>
+                      <option value="" disabled selected hidden>Select Topic</option>
+                      <option value="1">Design</option>
+                      <option value="2">Development</option>
+                      <option value="3">Smart Contracts</option>
+                      <option value="3">Data</option>
+                      <option value="3">AI</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div className='col-md-12 pb-3'>
+                <div className='input-form-control'>
+                  <label className='input-label'>Description</label>
+                  <div className="input-control h-[70px]">
+                    <textarea type="text" name="bDesc" value={bDesc} className='input-main' onChange={handleBDesc}></textarea>
+                  </div>
+                </div>
+              </div>
+
+              <div className='col-md-12 pb-3'>
+                <div className='input-form-control'>
+                  <label className='input-label'>Github Link</label>
+                  <div className="input-control">
+                    <input type="text" name="bGitHub" value={bGitHub} className='input-main' onChange={handleBGitHub}></input>
+                  </div>
+                </div>
+              </div>
+              <div className='col-md-4 pb-3'>
+                <div className='input-form-control'>
+                  <div className="input-control">
+                    {/* <button className='input-main' onClick={navigateToPreview}>Preview</button> */}
+                    <Link to="/NewBounty/preview" className='w-full text-center'>Prevew</Link>
+                  </div>
+                </div>
+              </div>
+              <div className='col-md-4 pb-3'>
+                <div className='input-form-control'>
+                  <div className="input-control">
+                    <button className='input-main text-white' onClick={() => { }}>Submit</button></div>
                 </div>
               </div>
             </div>
           </div>
+
         </div>
+
       </Reveal>
     </div>
   )
@@ -193,7 +190,7 @@ const NewBounty = () => (
       <div className='app-container'>
         <Subheader path="NewBounty" />
         <Reveal keyframes={fadeInUp} className='onStep' delay={200} duration={400} triggerOnce>
-          <div className='app-header pl-[40px] pr-0 '>
+          <div className='app-header xl:pl-[40px] lg:pl-0 pr-0 '>
             <div className='app-card w-full bg-[#0092DC] py-4'>
               <div className='flex gap-3'>
                 <span className="text-xl"><i className='fa fa-exclamation-circle'></i></span>

@@ -11,10 +11,10 @@ const InBounty = (pathTo) => {
     <div className='app-body'>
       <Reveal keyframes={fadeInUp} className='onStep' delay={400} duration={1000} triggerOnce>
         <div className='row'>
-          <div className='w-full mt-[20px] pr-0'>
+          <div className='w-full lg:pl-0 mt-[20px] pr-0'>
             <div className='app-card cursor-pointer' onClick={()=>nav('/InProgress/0')}>
               <div className='app-card-header text-left'>
-                <div className='flex justify-between sm:flex-col sm:text-center'>
+                <div className='flex justify-between xsm:flex-col sm:text-center'>
                   <div className='flex flex-col'>
                     <div className='flex flex-row items-center'>
                       <img className="h-[30px] logo" src="./images/banner/user.png" alt="" />
