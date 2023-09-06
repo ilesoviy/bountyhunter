@@ -156,7 +156,7 @@ const InProgress = () =>  {
           {IsSmMobile() ? (
             <InBountiesBody />
           ) : (
-            <Scrollbars autoHide style={{ height: "100%" }}
+            <Scrollbars id='body-scroll-bar' autoHide style={{ height: "100%" }}
               renderThumbVertical={({ style, ...props }) =>
                 <div {...props} className={'thumb-horizontal'} />
               }>

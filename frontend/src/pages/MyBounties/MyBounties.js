@@ -308,7 +308,7 @@ const MyBounties = () => {
             {IsSmMobile() ? (
               <MyBountiesBody />
             ) : (
-              <Scrollbars autoHide style={{ height: "100%" }}
+              <Scrollbars id='body-scroll-bar' autoHide style={{ height: "100%" }}
                 renderThumbVertical={({ style, ...props }) =>
                   <div {...props} className={'thumb-horizontal'} />
                 }>

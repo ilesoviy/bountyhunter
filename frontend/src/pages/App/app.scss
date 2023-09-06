@@ -1070,3 +1070,15 @@ select option {
   padding: 10px 20px!important;
   background: linear-gradient(to bottom right, rgba(0,0,0,0.36), rgba(0,0,0,0.06));
 }
+
+#body-scroll-bar > div {
+    margin: 0px !important;
+    overflow: scroll !important;
+    
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+}
+
+#body-scroll-bar > div::-webkit-scrollbar {
+  display: none !important;
+}

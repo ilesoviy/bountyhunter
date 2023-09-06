@@ -1,12 +1,9 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Scrollbars } from 'react-custom-scrollbars';
-import Slider from '@mui/material/Slider';
 import { Reveal } from 'react-awesome-reveal';
 import Sidebar from '../../components/menu/SideBar';
-import { IsSmMobile, numberWithCommas, fadeInUp, fadeIn } from '../../utils';
-import { config, def_config } from '../../config';
+import { IsSmMobile, fadeInUp, fadeIn } from '../../utils';
 import Subheader from '../../components/menu/SubHeader';
-import ConnectWallet from '../../components/menu/ConnectWallet';
 import { useSigningClient } from '../../context/web3Context';
 import MainHeader from '../../components/menu/MainHeader';
 import { Link } from '@reach/router';
@@ -213,7 +210,7 @@ const NewBounty = () => (
           {IsSmMobile() ? (
             <NewBountyBody />
           ) : (
-            <Scrollbars autoHide style={{ height: "100%" }}
+            <Scrollbars id='body-scroll-bar' className='' style={{ height: "100%" }}
               renderThumbVertical={({ style, ...props }) =>
                 <div {...props} className={'thumb-horizontal'} />
               }>

@@ -108,7 +108,7 @@ const Settings = () => {
             {IsSmMobile() ? (
               <SettingsBody />
             ) : (
-              <Scrollbars autoHide style={{ height: "100%" }}
+              <Scrollbars id='body-scroll-bar' style={{ height: "100%" }}
                 renderThumbVertical={({ style, ...props }) =>
                   <div {...props} className={'thumb-horizontal'} />
                 }>
