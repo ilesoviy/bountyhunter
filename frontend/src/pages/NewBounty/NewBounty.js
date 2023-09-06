@@ -113,7 +113,7 @@ const NewBountyBody = () => {
                             <option value="" disabled selected hidden>Select Type</option>
                             <option value="1">Competitive</option>
                             <option value="2">Cooperative</option>
-                            <option value="3">Hackatho</option>
+                            <option value="3">Hackathon</option>
                           </select>
                         </div>
                       </div>
@@ -124,9 +124,9 @@ const NewBountyBody = () => {
                         <div className="input-control">
                           <select name="bDifficulty" className='input-main'>
                             <option value="" disabled selected hidden>Select Difficulty</option>
-                            <option value="1">Begin</option>
+                            <option value="1">Beginner</option>
                             <option value="2">Intermediate</option>
-                            <option value="3">Expert</option>
+                            <option value="3">Advanced</option>
                           </select>
                         </div>
                       </div>
