@@ -1,0 +1,31 @@
+const dotenv = require('dotenv');
+const express = require('express');
+const { connect } = require('./db');
+const cors = require('cors');
+
+dotenv.config();
+if (process.env.NODE_ENV == ('development' || 'development ')) {
+    dotenv.config({ path: path.join(__dirname, '..', '.env.development') });
+} else if (process.env.NODE_ENV == ('production' || 'production ')) {
+    dotenv.config({ path: path.join(__dirname, '..', '.env') });
+} else if (process.env.NODE_ENV == ('staging' || 'staging ')) {
+    dotenv.config({ path: path.join(__dirname, '..', '.env.staging') });
+}
+
+const app = express();
+
+app.use(express.json());
+app.use(cors({origin: '*'}));
+
+app.use('/', require('./routes/app.routes'));
+
+app.get('/', (request, response) => {
+    response.send('BountyHunter Alive Check');
+});
+
+app.use('/bounty', require('./routes/bounty'));
+
+app.listen(process.env.PORT, async function () {
+    console.log(`Ready to go. listening on port:[${process.env.PORT}] on pid:[${process.pid}]`);
+    await connect()
+});
