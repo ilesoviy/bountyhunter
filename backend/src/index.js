@@ -23,9 +23,7 @@ app.get('/', (request, response) => {
     response.send('BountyHunter Alive Check');
 });
 
-app.use('/auth', require('./routes/auth'));
-app.use('/wallet', require('./routes/wallet'));
-app.use('/post', require('./routes/post'));
+app.use('/bounty', require('./routes/bounty'));
 
 app.listen(process.env.PORT, async function () {
     console.log(`Ready to go. listening on port:[${process.env.PORT}] on pid:[${process.pid}]`);

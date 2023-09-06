@@ -130,7 +130,7 @@ router.get('/count_submissions', async (request, response) => {
     }
 
     try {
-        const count = await getFollowCount(user, query.id)
+        const count = await countSubmissions(user, query.id)
         response.send({ status: 'success', count: count })
     } catch (err) {
         response.send({ status: 'failed', error: err.message })

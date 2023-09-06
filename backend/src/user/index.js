@@ -1,5 +1,4 @@
 const UserModel = require("../models/user");
-const { createNewWallet } = require("../wallet");
 
 async function createNewUserPending(mail, loginType, token) {
     if (0 < await UserModel.countDocuments({mail: mail})) {
