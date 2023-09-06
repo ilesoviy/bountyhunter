@@ -6,7 +6,7 @@ import { fadeInUp, fadeIn, IsSmMobile } from '../../utils';
 import { Scrollbars } from 'react-custom-scrollbars';
 
 const BannerBody = () => (
-  <div className='relative z-50'>
+  <div className='relative z-1'>
     <div className="row items-center py-[64px]">
       <div className="col-md-6 bg-[#0000005c] p-5 rounded-3xl">
         <ColorGroup />
@@ -25,7 +25,7 @@ const BannerBody = () => (
         <div className="mb-sm-30"></div>
       </div>
     </div>
-    <div className='container relative z-50 border-solid border-2 rounded-3xl bg-[#0000005c] p-5'>
+    <div className='container relative z-1 border-solid border-2 rounded-3xl bg-[#0000005c] p-5'>
       <div className='row'>
         <div className="col-lg-3 col-md-6 mb-3">
           <div className="feature-box f-boxed style-3">
