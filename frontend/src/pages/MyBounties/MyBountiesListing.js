@@ -45,8 +45,8 @@ const MyBountiesListing = () => {
         <div className='bounty-listing-container'>
           <Subheader />
           <Link to="/MyBounties">
-            <div className='flex gap-3'>
-              <span className="text-xl"><i className='fa fa-arrow-left'></i></span>
+            <div className='flex gap-2'>
+              <span className="text-xl"><i className='fa fa-angle-left' /></span>
               <span className='text-xl'>Back</span>
             </div>
           </Link>

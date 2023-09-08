@@ -92,7 +92,7 @@ const NewBountyBody = () => {
                   <label className='input-label'>Dead Line</label>
                   <div className="input-control">
                     <select name="bDeadLine" className='input-main'>
-                      <option value="" disabled selected hidden>Select Duraion</option>
+                      <option value="" disabled selected hidden>Select Duration</option>
                       <option value="1">More than 6 months</option>
                       <option value="2">3 to 6 months</option>
                       <option value="3">1 to 3 months</option>
@@ -191,7 +191,7 @@ const NewBounty = () => (
       <div className='app-container'>
         <Subheader path="NewBounty" />
 
-        <div className='pl-[40px]'>
+        <div className='pl-[40px] lg:pl-0'>
           <WarningMsg msg='You need to connect your wallet in order to create a bounty.' />
         </div>
 

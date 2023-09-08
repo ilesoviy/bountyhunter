@@ -43,7 +43,7 @@ const SettingsBody = () => {
   return (
     <Reveal keyframes={fadeInUp} className='onStep' delay={400} duration={1000} triggerOnce>
       <div className='app-card h-auto'>
-        <div className='w-2/3 md:w-full xl:h-fit'>
+        <div className='w-3/3 md:w-full xl:h-fit'>
           <div className='row'>
               <div className='w-full pb-3'>
                 <div className='input-form-control'>
