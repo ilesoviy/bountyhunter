@@ -9,7 +9,6 @@ import ExploreBounty from './pages/ExploreBounties/ExploreBounty';
 import NewBounty from './pages/NewBounty/NewBounty';
 import MyBounties from './pages/MyBounties/MyBounties';
 import ScrollToTopBtn from './components/menu/ScrollToTop';
-import { SingingWeb3Provider } from './context/web3Context';
 import Settings from './pages/App/Settings';
 import ExBountyListing from './pages/ExploreBounties/BountyListing/ExBountyListing';
 import PreviewNewBounty from './pages/NewBounty/PreviewNewBounty';
@@ -39,24 +38,22 @@ export const ScrollTop = ({ children, location }) => {
 function App() {
   return (
     <div className='app'>
-      <SingingWeb3Provider>
-        <PosedRouter>
-          <ScrollTop path="/">
-            <Home exact path="/">
-              <Redirect to="/" />
-            </Home>
-            <PreviewNewBounty path="NewBounty/preview" />
-            <NewBounty path="NewBounty" />
-            <ExBountyListing path="ExploreBounties/:id" />
-            <InBountyListing path="InProgress/:id" />
-            <MyBountiesListing path="MyBounties/:id" />
-            <ExploreBounty path="ExploreBounties" />            
-            <InProgress path="InProgress" />
-            <MyBounties path="MyBounties" />
-            <Settings path="Settings" />
-          </ScrollTop>
-        </PosedRouter>
-      </SingingWeb3Provider>
+      <PosedRouter>
+        <ScrollTop path="/">
+          <Home exact path="/">
+            <Redirect to="/" />
+          </Home>
+          <PreviewNewBounty path="NewBounty/preview" />
+          <NewBounty path="NewBounty" />
+          <ExBountyListing path="ExploreBounties/:id" />
+          <InBountyListing path="InProgress/:id" />
+          <MyBountiesListing path="MyBounties/:id" />
+          <ExploreBounty path="ExploreBounties" />            
+          <InProgress path="InProgress" />
+          <MyBounties path="MyBounties" />
+          <Settings path="Settings" />
+        </ScrollTop>
+      </PosedRouter>
       <ScrollToTopBtn />
       <ToastContainer
         position="top-right"

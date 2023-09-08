@@ -7,17 +7,12 @@ import { IsSmMobile, numberWithCommas, fadeInUp, fadeIn } from '../../utils';
 import { config, def_config } from '../../config';
 import Subheader from '../../components/menu/SubHeader';
 import ConnectWallet from '../../components/menu/ConnectWallet';
-import { useSigningClient } from '../../context/web3Context';
 import MainHeader from '../../components/menu/MainHeader';
 import HelpButton from '../../components/menu/HelpButton';
 import { Link } from '@reach/router';
 
 
 const SettingsBody = () => {
-  const {
-    balance
-  } = useSigningClient();
-
   const [name, setName] = useState('');
   const [bGitHub, setGitHub] = useState('');
   const [discord, setDiscord] = useState('');
@@ -33,12 +28,7 @@ const SettingsBody = () => {
   }, []);
 
   useEffect(() => {
-    // setInitAmount((Number(title) * Number(purchasePrice)));
-    // setWealth((Number(title) * Number(ETRPrice)));
-    // const rewards = ((((Number(apy) + 100) / 100) ** (days / 365)) * Number(title));
-    // setRewardEst(rewards);
-    // setPotentialReturn((rewards * Number(futurePrice)));
-  }, [name, bGitHub, discord]);
+  }, []);
 
   return (
     <Reveal keyframes={fadeInUp} className='onStep' delay={400} duration={1000} triggerOnce>

@@ -22,8 +22,15 @@ module.exports = (config, context) => {
             "source-map-loader"
           ],
         },
+        {
+          test: /\.jsx?$/,
+          loader: 'babel-loader',
+          exclude: /node_modules/,
+        },
+        { test: /\.m?js/, type: "javascript/auto" }
       ],
     },
+    resolve: { modules: ['node_modules'] },
     ignoreWarnings: [/Failed to parse source map/],
   };
 };
