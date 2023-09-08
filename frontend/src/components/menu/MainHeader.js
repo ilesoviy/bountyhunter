@@ -62,7 +62,7 @@ const MainHeader = function () {
   return (
     <header id="myHeader" className='navbar white'>
       <div className='container'>
-        <div className='row w-100-nav'>
+        <div className='row w-100-nav relative'>
           <div className='logo px-0'>
             <div className='navbar-title navbar-item'>
               <NavLink to="/">
@@ -92,7 +92,7 @@ const MainHeader = function () {
             </Breakpoint>
           </BreakpointProvider>
 
-          <div className='mainside'>
+          <div className='mainside lg:hidden'>
             {/* <Reveal keyframes={fadeIn} className='onStep' delay={0} duration={1000} triggerOnce> */}
                 <ConnectWallet />
             {/* </Reveal> */}

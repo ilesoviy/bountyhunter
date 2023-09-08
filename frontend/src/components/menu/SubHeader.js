@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { Link } from '@reach/router';
 import Breakpoint, { BreakpointProvider } from "react-socks";
 import Popover from '@mui/material/Popover';
+import UploadAndDisplayImage from '../../pages/App/UploadAndDisplayImage';
+import ConnectWallet from './ConnectWallet';
 
 const Subheader = ({ path }) => {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -39,6 +41,9 @@ const Subheader = ({ path }) => {
               vertical: 'top',
               horizontal: 'right',
             }}>
+            <UploadAndDisplayImage />
+            {/* </Link> */}
+            <ConnectWallet />
             <div className={path === 'NewBounty' ? 'navbar-item menu-active-item' : 'navbar-item'}>
               <Link to="/NewBounty">
                 <div className='flex gap-2 items-center'>

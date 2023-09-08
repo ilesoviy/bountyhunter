@@ -199,14 +199,6 @@ h5 {
     display: none;
   }
 
-  @media only screen and (max-width: 641px) {
-    .mainside {
-      position: absolute;
-      right: 85px;
-      top: 10px;
-    }
-  }
-
   @media only screen and (max-width: 1199px) {
     .m-2-hor {
       padding: 0px 2%;
@@ -238,7 +230,7 @@ h5 {
 
       .mainside {
         position: absolute;
-        right: 140px;
+        right: 0px;
         top: 10px;
       }
 
@@ -330,6 +322,129 @@ h5 {
     }
   }
 
+  @media only screen and (max-width: 1023px) {
+    .m-2-hor {
+      padding: 0px 2%;
+    }
+
+    .menu {
+      display: block;
+      padding: 15px 0 10px;
+    }
+
+    &.navbar {
+
+      // position: relative;
+      .logo {
+        position: relative;
+        left: -10px;
+        display: inline-block;
+      }
+
+      .search {
+        display: inline-block;
+        position: relative;
+        top: -9px;
+
+        #quick_search {
+          width: 100%;
+        }
+      }
+
+      .mainside {
+        position: absolute;
+        right: 65px;
+        top: 10px;
+      }
+
+      .dropdown-custom.btn {
+        color: $gray;
+        width: 100%;
+        text-align: left;
+
+        &::after {
+          float: right;
+          font-size: .9rem;
+        }
+      }
+    }
+
+    .w-100-nav {
+      display: block;
+      padding: 20px 2%;
+    }
+
+    .navbar-item {
+      display: block;
+      padding: 15px 0;
+      border-bottom: 1px solid rgba(0, 0, 0, .1);
+    }
+
+    .nav-icon {
+      position: absolute;
+      top: 35px;
+      right: 25px;
+      display: block;
+      width: 20px;
+      height: 10px;
+      padding-top: 13px;
+      line-height: 0;
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 0;
+      z-index: 9999;
+    }
+
+    .bg-nav-icon {
+      width: 32px;
+      height: 24px;
+      background: rgba(255, 255, 255, 0);
+      border-radius: 2px;
+      -moz-border-radius: 2px;
+      -webkit-border-radius: 2px;
+    }
+
+    #nav-icon span,
+    .nav-icon span {
+      display: none;
+      position: absolute;
+      top: 5px;
+      left: -40px;
+      font-size: .62rem;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    .menu-line {
+      position: absolute;
+      width: 100%;
+      height: 2px;
+      top: 0px;
+      background-color: white;
+    }
+
+    .menu-line1 {
+      position: absolute;
+      width: 100%;
+      height: 2px;
+      top: 5px;
+      background-color: white;
+    }
+
+    .menu-line2 {
+      position: absolute;
+      width: 100%;
+      height: 2px;
+      top: 10px;
+      background-color: white;
+    }
+
+    &.sticky {
+      position: absolute !important;
+    }
+  }
+  
   @media only screen and (max-width: 641px) {
     &.navbar {
       .search {
@@ -337,6 +452,9 @@ h5 {
       }
 
       .mainside {
+        position: absolute;
+        right: 38px;
+        bottom: 0px;
         a {
           font-size: 13px;
           padding: 10px;
@@ -344,6 +462,7 @@ h5 {
       }
     }
   }
+
 
   &.sticky {
     position: fixed;

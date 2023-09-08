@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback, useEffect, createRef, useRef } from 'react';
 import { Scrollbars } from 'react-custom-scrollbars';
 import { Reveal } from 'react-awesome-reveal';
 
@@ -8,6 +8,7 @@ import { numberWithCommas, IsSmMobile, fadeInUp, fadeIn, getUTCNow, getUTCDate, 
 import MainHeader from '../../components/menu/MainHeader';
 import ExBountiesBody from './ExBountiesBody';
 import HelpButton from '../../components/menu/HelpButton';
+import SearchBox from '../../components/menu/SearchBox';
 
 const ExploreBounty = () => {
 
@@ -70,11 +71,15 @@ const ExploreBounty = () => {
 
   const handleSearchShow = useCallback(() => {
     setSearchShow(isSearchShow=>!isSearchShow);
+
   }, []);
 
   const handleKeyword = useCallback((event) => {
     setKeyword(event.target.value);
   }, []);
+
+  const searchbox = useRef(null);
+  // searchbox.current.get....
 
   return (
     <div className='full-container' >
@@ -82,25 +87,24 @@ const ExploreBounty = () => {
         <MainHeader />
         <Sidebar path="ExploreBounties" />
         <div className='app-container'>
-          <div className='app-header items-center sm:flex-col pl-[40px] pr-0 relative z-[99]'>
-            <Subheader path="ExploreBounties" />
+          <Subheader path="ExploreBounties" />
+          <div className='app-header items-center md:items-start sm:flex-col lg:pl-0 pl-[40px] pr-0 relative z-[99]'>
             <Reveal keyframes={fadeInUp} className='onStep' delay={0} duration={800} triggerOnce>
               <div className='app-title'>
-                <p className='text-[40px] sm:text-center text-white'>Explore Bounties</p>
+                <p className='text-[40px] md:text-[24px] text-white'>Explore Bounties</p>
                 <p className='text-[16px] app-gray'><span className='app-color'>3</span> Results </p>
               </div>
             </Reveal>
-
 
             {/* SearchBox start */}
             <Reveal keyframes={fadeIn} className='onStep' delay={0} duration={1000} triggerOnce>
               <div className='flex gap-4 items-center'>
                 <div className='input-form-control relative z-50'>
                   <div className={`input-control rounded-3xl h-[60px] ${isSearchShow ? 'invisible' : ''}`}>
-                    <i className="fa fa-search"></i>
-                    <input type="text" value={keyword} onChange={handleKeyword} className='input-main border-r-1 mx-3' placeholder='Search'></input>
+                    <i className="fa input-prefix fa-search"></i>
+                    <input type="text" value={keyword} onChange={handleKeyword} className='input-main mx-3' placeholder='Search'></input>
                     <button className="input-suffix flex items-center gap-2 border-l-1" onClick={handleSearchShow}>
-                      <span>Filter</span><i className='fa fa-angle-down' />
+                      Filter<i className='fa fa-angle-down' />
                     </button>
                   </div>
                   {
@@ -110,7 +114,7 @@ const ExploreBounty = () => {
                   {isSearchShow &&
                     <section className='absolute right-0 top-0 left-0 rounded-3xl border-0 bg-[#00263e]'>
                       <div className="input-control h-[60px]  border-0">
-                        <i className="fa fa-search"></i>
+                        <i className="fa fa-search input-prefix"></i>
                         <input type="text" value={keyword} onChange={handleKeyword} className='input-main border-r-1 mx-3' placeholder='Search'></input>
                         <button className="input-suffix flex items-center gap-2 border-l-1" onClick={handleSearchShow}>
                           <i className='fa fa-angle-up' />
@@ -154,6 +158,7 @@ const ExploreBounty = () => {
               </div>
             </Reveal>
             {/* SearchBox end */}
+            {/* <SearchBox ref={searchbox}/> */}
 
             
           </div>
