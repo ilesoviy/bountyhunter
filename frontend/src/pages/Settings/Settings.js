@@ -4,7 +4,6 @@ import Slider from '@mui/material/Slider';
 import { Reveal } from 'react-awesome-reveal';
 import Sidebar from '../../components/menu/SideBar';
 import { IsSmMobile, numberWithCommas, fadeInUp, fadeIn } from '../../utils';
-import { config, def_config } from '../../config';
 import Subheader from '../../components/menu/SubHeader';
 import ConnectWallet from '../../components/menu/ConnectWallet';
 import MainHeader from '../../components/menu/MainHeader';

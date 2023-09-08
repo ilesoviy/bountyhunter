@@ -12,7 +12,6 @@ import { Scrollbars } from 'react-custom-scrollbars';
 import Sidebar from '../../components/menu/SideBar';
 // import SelectCoin from '../../components/app/SelectCoin';
 import { fadeInUp, fadeIn, IsSmMobile, numberWithCommas } from '../../utils';
-import { config, def_config } from '../../config';
 import Subheader from '../../components/menu/SubHeader';
 import MainHeader from '../../components/menu/MainHeader';
 import MyBountiesBody from './MyBountiesBody';

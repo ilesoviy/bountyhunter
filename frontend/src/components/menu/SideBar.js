@@ -5,9 +5,10 @@ import { createGlobalStyle } from 'styled-components';
 // import { getMarketCap } from '../../core/web3';
 // import * as selectors from '../../store/selectors';
 // import { getMagicPriceInWeb3 } from '../../core/web3';
-import '../../pages/App/app.scss';
+
+import '../../app.scss'
 import ConnectWallet from './ConnectWallet';
-import UploadAndDisplayImage from '../../pages/App/UploadAndDisplayImage';
+import UploadAndDisplayImage from '../UploadAndDisplayImage';
 
 const GlobalStyles = createGlobalStyle`
   .social-icons span {

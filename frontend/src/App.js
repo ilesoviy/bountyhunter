@@ -9,7 +9,7 @@ import ExploreBounty from './pages/ExploreBounties/ExploreBounty';
 import NewBounty from './pages/NewBounty/NewBounty';
 import MyBounties from './pages/MyBounties/MyBounties';
 import ScrollToTopBtn from './components/menu/ScrollToTop';
-import Settings from './pages/App/Settings';
+import Settings from './pages/Settings/Settings';
 import ExBountyListing from './pages/ExploreBounties/BountyListing/ExBountyListing';
 import PreviewNewBounty from './pages/NewBounty/PreviewNewBounty';
 import InProgress from './pages/InProgress/InProgress';

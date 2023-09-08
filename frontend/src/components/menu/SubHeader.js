@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link } from '@reach/router';
 import Breakpoint, { BreakpointProvider } from "react-socks";
 import Popover from '@mui/material/Popover';
-import UploadAndDisplayImage from '../../pages/App/UploadAndDisplayImage';
+import UploadAndDisplayImage from '../UploadAndDisplayImage';
 import ConnectWallet from './ConnectWallet';
 
 const Subheader = ({ path }) => {
