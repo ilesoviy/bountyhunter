@@ -2,7 +2,7 @@
 extern crate std;
 
 use soroban_sdk::{ log, token };
-use crate::storage_types::{ DEF_FEE_RATE, FEE_DECIMALS, TOKEN_DECIMALS, INSTANCE_BUMP_AMOUNT, Error };
+use crate::storage_types::{ DEF_FEE_RATE, FEE_DECIMALS, TOKEN_DECIMALS, INSTANCE_BUMP_AMOUNT, ErrorCode };
 use crate::{ BountyHunter, BountyHunterClient };
 use soroban_sdk::{
     symbol_short, Symbol,
@@ -134,19 +134,19 @@ fn test1_approve() {
     assert_eq!(work_id, 0);
 
     // submit work
-    let ret1: Error = bounty_contract.submit_work(
+    let ret1: ErrorCode = bounty_contract.submit_work(
         &worker,
         &work_id,
         &String::from_slice(&e, "https://github.com/test_acc/test_repo")
     );
-    assert_eq!(ret1, Error::Success);
+    assert_eq!(ret1, ErrorCode::Success);
 
     // approve work
-    let ret2: Error = bounty_contract.approve_work(
+    let ret2: ErrorCode = bounty_contract.approve_work(
         &creator,
         &work_id
     );
-    assert_eq!(ret2, Error::Success);
+    assert_eq!(ret2, ErrorCode::Success);
     assert_eq!(
         e.auths(),
         std::vec![(
@@ -267,19 +267,19 @@ fn test2_reject() {
     assert_eq!(work_id, 0);
 
     // submit work
-    let ret1: Error = bounty_contract.submit_work(
+    let ret1: ErrorCode = bounty_contract.submit_work(
         &worker,
         &work_id,
         &String::from_slice(&e, "https://github.com/test_acc/test_repo")
     );
-    assert_eq!(ret1, Error::Success);
+    assert_eq!(ret1, ErrorCode::Success);
 
     // reject work
     let ret4 = bounty_contract.reject_work(
         &creator,
         &work_id
     );
-    assert_eq!(ret4, Error::Success);
+    assert_eq!(ret4, ErrorCode::Success);
     assert_eq!(
         e.auths(),
         std::vec![(
@@ -393,7 +393,7 @@ fn test3_cancel() {
         &creator,
         &bounty_id
     );
-    assert_eq!(ret1, Error::Success);
+    assert_eq!(ret1, ErrorCode::Success);
     assert_eq!(
         e.auths(),
         std::vec![(
@@ -517,7 +517,7 @@ fn test4_close() {
         &admin,
         &bounty_id
     );
-    assert_eq!(ret2, Error::Success);
+    assert_eq!(ret2, ErrorCode::Success);
     assert_eq!(
         e.auths(),
         std::vec![(

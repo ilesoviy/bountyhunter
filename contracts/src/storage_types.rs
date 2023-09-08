@@ -10,7 +10,7 @@ pub(crate) const INSTANCE_BUMP_AMOUNT: u32 = 34560; // 2 days
 
 #[derive(Clone, Copy, PartialEq, Debug)]
 #[contracttype]
-pub enum Error {
+pub enum ErrorCode {
     Success = 0,
 
     GetErrorFailed = 100,

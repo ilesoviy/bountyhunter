@@ -11,7 +11,7 @@ use soroban_sdk::{
     token, contract, contractimpl, 
     Env, Address, String
 };
-use crate::storage_types::{ INSTANCE_BUMP_AMOUNT, FeeInfo, DataKey, Error };
+use crate::storage_types::{ INSTANCE_BUMP_AMOUNT, FeeInfo, DataKey, ErrorCode };
 use crate::admin::{ has_administrator, read_administrator, write_administrator };
 use crate::fee::{ fee_set };
 use crate::bounty::{
@@ -28,44 +28,44 @@ pub struct BountyHunter;
 #[contractimpl]
 impl BountyHunter {
     // set admin
-    pub fn set_admin(e: Env, old_admin: Address, new_admin: Address) -> Error {
+    pub fn set_admin(e: Env, old_admin: Address, new_admin: Address) -> ErrorCode {
         if !has_administrator(&e) {
             write_administrator(&e, &new_admin);
-            return Error::Success
+            return ErrorCode::Success
         }
 
         let cur_admin = read_administrator(&e);
         if cur_admin != old_admin {
             // panic!("incorrect admin!");
-            return Error::IncorrectAdmin
+            return ErrorCode::IncorrectAdmin
         }
 
         old_admin.require_auth();
 
         write_administrator(&e, &new_admin);
-        return Error::Success
+        return ErrorCode::Success
     }
 
     // only admin can set fee
-    pub fn set_fee(e: Env, admin: Address, fee_rate: u32, fee_wallet: Address) -> Error {
+    pub fn set_fee(e: Env, admin: Address, fee_rate: u32, fee_wallet: Address) -> ErrorCode {
         if !has_administrator(&e) {
             // panic!("invalid admin!");
-            return Error::InvalidAdmin
+            return ErrorCode::InvalidAdmin
         }
 
         let cur_admin = read_administrator(&e);
         if cur_admin != admin {
             // panic!("incorrect admin!");
-            return Error::IncorrectAdmin
+            return ErrorCode::IncorrectAdmin
         }
 
         let fee_info: FeeInfo = FeeInfo {fee_rate, fee_wallet};
         fee_set(&e, &admin, &fee_info);
 
-        return Error::Success
+        return ErrorCode::Success
     }
 
-    pub fn get_error(e: Env) -> u32 {
+    pub fn get_last_error(e: Env) -> u32 {
         error(&e)
     }
 
@@ -112,8 +112,8 @@ impl BountyHunter {
         participant: Address, 
         work_id: u32, 
         work_repo: String
-    ) -> Error {
-        let ret: Error = bounty_submit(&e, &participant, work_id, &work_repo);
+    ) -> ErrorCode {
+        let ret: ErrorCode = bounty_submit(&e, &participant, work_id, &work_repo);
 
         e.storage().instance().set(&DataKey::ErrorCode, &ret);
         e.storage().instance().bump(INSTANCE_BUMP_AMOUNT);
@@ -124,8 +124,8 @@ impl BountyHunter {
     pub fn approve_work(e: Env, 
         creator: Address, 
         work_id: u32
-    ) -> Error {
-        let ret: Error = bounty_approve(&e, &creator, work_id);
+    ) -> ErrorCode {
+        let ret: ErrorCode = bounty_approve(&e, &creator, work_id);
 
         e.storage().instance().set(&DataKey::ErrorCode, &ret);
         e.storage().instance().bump(INSTANCE_BUMP_AMOUNT);
@@ -136,8 +136,8 @@ impl BountyHunter {
     pub fn reject_work(e: Env, 
         creator: Address, 
         work_id: u32
-    ) -> Error {
-        let ret: Error = bounty_reject(&e, &creator, work_id);
+    ) -> ErrorCode {
+        let ret: ErrorCode = bounty_reject(&e, &creator, work_id);
 
         e.storage().instance().set(&DataKey::ErrorCode, &ret);
         e.storage().instance().bump(INSTANCE_BUMP_AMOUNT);
@@ -148,8 +148,8 @@ impl BountyHunter {
     pub fn cancel_bounty(e: Env, 
         creator: Address, 
         bounty_id: u32
-    ) -> Error {
-        let ret: Error = bounty_cancel(&e, &creator, bounty_id);
+    ) -> ErrorCode {
+        let ret: ErrorCode = bounty_cancel(&e, &creator, bounty_id);
 
         e.storage().instance().set(&DataKey::ErrorCode, &ret);
         e.storage().instance().bump(INSTANCE_BUMP_AMOUNT);
@@ -160,8 +160,8 @@ impl BountyHunter {
     pub fn close_bounty(e: Env, 
         admin: Address, 
         bounty_id: u32
-    ) -> Error {
-        let ret: Error = bounty_close(&e, &admin, bounty_id);
+    ) -> ErrorCode {
+        let ret: ErrorCode = bounty_close(&e, &admin, bounty_id);
 
         e.storage().instance().set(&DataKey::ErrorCode, &ret);
         e.storage().instance().bump(INSTANCE_BUMP_AMOUNT);
