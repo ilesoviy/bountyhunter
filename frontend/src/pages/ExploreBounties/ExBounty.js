@@ -13,11 +13,11 @@ const ExBounty = (pathTo) => {
           <div className='w-full lg:pl-0 mt-[20px] pr-0'>
             <div className='app-card cursor-pointer' onClick={()=>nav('/ExploreBounties/0')}>
               <div className='app-card-header text-left'>
-                <div className='flex justify-between xsm:flex-col sm:text-center'>
+                <div className='flex justify-between xsm:text-[10px] sm:text-center items-center'>
                   <div className='flex flex-col'>
                     <div className='flex flex-row items-center'>
                       <img className="h-[30px] logo" src="./images/banner/user.png" alt="" />
-                      <span className='app-gray text-[20px]'>GAD..RARW</span>
+                      <span className='app-gray text-[20px] xsm:text-[10px]'>GAD..RARW</span>
                     </div>
                   </div>
                   <div className='flex flex-col'>
@@ -35,7 +35,7 @@ const ExBounty = (pathTo) => {
                 </div>
               </div>
               <div className='app-card-footer'>
-                <div className='flex justify-between sm:flex-col sm:text-center'>
+                <div className='flex justify-between xsm:text-[10px] sm:text-center items-center'>
                   <div className='flex flex-col'>
                     <span className='app-gray text-[14px]'>{`${5} hours ago`}</span>
                   </div>

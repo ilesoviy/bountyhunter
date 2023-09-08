@@ -92,7 +92,7 @@ const MainHeader = function () {
             </Breakpoint>
           </BreakpointProvider>
 
-          <div className='mainside'>
+          <div className='mainside lg:hidden'>
             {/* <Reveal keyframes={fadeIn} className='onStep' delay={0} duration={1000} triggerOnce> */}
                 <ConnectWallet />
             {/* </Reveal> */}

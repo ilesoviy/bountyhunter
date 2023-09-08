@@ -7,7 +7,7 @@ const UploadAndDisplayImage = () => {
   return (
     <div className="relative">
       {selectedImage ?
-        <div> <img alt="" width={"120px"} height={"120px"} src={URL.createObjectURL(selectedImage)}/></div>
+        <div> <img alt="" className="w-[120px] h-[120px]" src={URL.createObjectURL(selectedImage)}/></div>
        : <img src={'/images/banner/unknown.png'} />}
       <div className='relative'>
         <div className='absolute right-0 bottom-0 w-[30px] h-[30px] bg-[#011829] flex justify-center items-center rounded-full cursor-pointer'>

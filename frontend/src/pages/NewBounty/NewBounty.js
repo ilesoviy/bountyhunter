@@ -8,6 +8,7 @@ import { useSigningClient } from '../../context/web3Context';
 import MainHeader from '../../components/menu/MainHeader';
 import { Link } from '@reach/router';
 import HelpButton from '../../components/menu/HelpButton';
+import WarningMsg from '../../components/WarningMsg';
 
 const NewBountyBody = () => {
   const {
@@ -189,7 +190,13 @@ const NewBounty = () => (
       <Sidebar path="NewBounty" />
       <div className='app-container'>
         <Subheader path="NewBounty" />
-        <Reveal keyframes={fadeInUp} className='onStep' delay={200} duration={400} triggerOnce>
+
+        <div className='pl-[40px]'>
+          <WarningMsg msg='You need to connect your wallet in order to create a bounty.' />
+        </div>
+
+
+        {/* <Reveal keyframes={fadeInUp} className='onStep' delay={200} duration={400} triggerOnce>
           <div className='app-header xl:pl-[40px] lg:pl-0 pr-0 '>
             <div className='app-card w-full bg-[#0092DC] py-4'>
               <div className='flex gap-3'>
@@ -200,9 +207,9 @@ const NewBounty = () => (
                 </div>
               </div>
             </div>
-            {/* <Subheader path="NewBounty" /> */}
+            {/* <Subheader path="NewBounty" /> 
           </div>
-        </Reveal>
+        </Reveal> */}
         <div className='app-content'>
           {IsSmMobile() ? (
             <NewBountyBody />

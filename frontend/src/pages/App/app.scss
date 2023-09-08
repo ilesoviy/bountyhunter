@@ -49,7 +49,7 @@ $app_yellow: #FDC114;
   margin-top: 125px;
   // padding: 20px;
   // background: $main_color;
-  background: linear-gradient(to bottom right, rgba(0,0,0,0.36), rgba(0,0,0,0.06));
+  background: linear-gradient(to bottom right, rgba(0, 0, 0, 0.36), rgba(0, 0, 0, 0.06));
   // box-shadow: inset 8px 8px 15px rgba(0, 0, 0, 0.4);
   border: none;
   // backdrop-filter: blur(25px);
@@ -160,7 +160,7 @@ $app_yellow: #FDC114;
   display: inline-block;
   position: relative;
   width: calc(100% - 300px);
-  height: calc(100vh - 70px );
+  height: calc(100vh - 70px);
   margin: 35px;
   padding: 60px 0;
   margin-left: 300px;
@@ -235,7 +235,7 @@ $app_yellow: #FDC114;
 .app-card {
   // background: $more_color;
   // backdrop-filter: blur(50px);
-  background: linear-gradient(to bottom right, rgba(0,0,0,0.36), rgba(0,0,0,0.06));
+  background: linear-gradient(to bottom right, rgba(0, 0, 0, 0.36), rgba(0, 0, 0, 0.06));
   border: none;
   border-radius: 20px;
   padding: 15px 25px;
@@ -563,7 +563,7 @@ $app_yellow: #FDC114;
   height: 40px;
   border-radius: 8px;
   background-color: transparent;
-  border: solid 1px white;
+  border: solid 1px gray;
   padding: 15px 20px;
   display: flex;
   align-items: center;
@@ -578,10 +578,12 @@ $app_yellow: #FDC114;
   .input-suffix {
     cursor: pointer;
     background: transparent;
+    color: rgba(255, 255, 255, 0.6);
+
     &:hover {
-      color: gray;
+      color: white;
     }
-  }  
+  }
 
   background-clip: padding-box;
   $border: 1px;
@@ -605,7 +607,33 @@ $app_yellow: #FDC114;
   width: 100%;
   border: none;
   outline: none;
-  color: rgba(255, 255, 255, 0.7);
+
+  font-family: 'Montserrat';
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 200;
+  line-height: normal;
+
+  &:focus {
+    &::placeholder {
+      color: rgba(255, 255, 255, 1);;
+    }
+  }
+  // color: rgba(255, 255, 255, 0.7);
+}
+
+.searchbar-main {
+  background-color: transparent;
+  width: 100%;
+  border: none;
+  outline: none;
+  color: rgba(255, 255, 255, 1);
+
+  ::placeholder {
+    & :hover {
+      color: red;
+    }
+  }
 }
 
 .MuiSlider-thumb {
@@ -648,9 +676,10 @@ $app_yellow: #FDC114;
   height: 100%;
   top: 0;
   left: 0;
+
   .space {
-    width: inherit!important;
-    height: inherit!important;
+    width: inherit !important;
+    height: inherit !important;
     position: absolute;
     top: 0px;
     left: 0px;
@@ -659,142 +688,6 @@ $app_yellow: #FDC114;
       top: 0px;
       left: 0px;
     }
-  }
-}
-
-.app-star-group {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-
-  .planet1 {
-    width: 50px;
-    position: absolute;
-    top: -20px;
-    left: -20px;
-
-    @media only screen and (max-width: 1023px) {
-      top: -10px;
-      left: -10px;
-    }
-  }
-
-  .planet2 {
-    width: 80px;
-    position: absolute;
-    top: -60px;
-    right: -50px;
-  }
-
-  .planet3 {
-    width: 20px;
-    position: absolute;
-    top: 30px;
-    left: 0;
-    right: 0;
-    margin: 0 auto;
-  }
-
-  .star1 {
-    width: 40px;
-    position: absolute;
-    top: 50px;
-    right: 40%;
-    transform: translate3D(0, 0, 0);
-    will-change: transform;
-    // animation: flickerAnimation 5s linear infinite;
-  }
-
-  .star2 {
-    width: 10px;
-    position: absolute;
-    top: 15px;
-    left: 25%;
-    transform: translate3D(0, 0, 0);
-    will-change: transform;
-    // animation: flickerAnimation 4s linear infinite;
-  }
-
-  .star3 {
-    width: 8px;
-    position: absolute;
-    top: 60px;
-    left: 40%;
-    transform: translate3D(0, 0, 0);
-    will-change: transform;
-    // animation: flickerAnimation 3s linear infinite;
-  }
-
-  .star4 {
-    width: 40px;
-    position: absolute;
-    bottom: 100px;
-    left: 10%;
-    transform: translate3D(0, 0, 0);
-    will-change: transform;
-    // animation: flickerAnimation 3s linear infinite;
-  }
-
-  .star5 {
-    width: 8px;
-    position: absolute;
-    bottom: 40px;
-    right: 15%;
-    transform: translate3D(0, 0, 0);
-    will-change: transform;
-    // animation: flickerAnimation 3s linear infinite;
-  }
-
-  .star6 {
-    width: 13px;
-    position: absolute;
-    top: 20%;
-    left: 20%;
-    transform: translate3D(0, 0, 0);
-    will-change: transform;
-    // animation: flickerAnimation 3s linear infinite;
-  }
-
-  .star7 {
-    width: 12px;
-    position: absolute;
-    top: 50%;
-    left: 25%;
-    transform: translate3D(0, 0, 0);
-    will-change: transform;
-    // animation: flickerAnimation 4s linear infinite;
-  }
-
-  .star8 {
-    width: 10px;
-    position: absolute;
-    top: 30%;
-    right: 20%;
-    transform: translate3D(0, 0, 0);
-    will-change: transform;
-    // animation: flickerAnimation 2s linear infinite;
-  }
-
-  .star9 {
-    width: 10px;
-    position: absolute;
-    top: 65%;
-    right: 5%;
-    transform: translate3D(0, 0, 0);
-    will-change: transform;
-    // animation: flickerAnimation 3s linear infinite;
-  }
-
-  .star10 {
-    width: 40px;
-    position: absolute;
-    top: 70%;
-    right: 50%;
-    transform: translate3D(0, 0, 0);
-    will-change: transform;
-    // animation: flickerAnimation 4s linear infinite;
   }
 }
 
@@ -904,8 +797,8 @@ $app_yellow: #FDC114;
 .bounty-listing-container {
   display: inline-block;
   position: relative;
-  width: calc(100% );
-  height: calc(100vh - 70px );
+  width: calc(100%);
+  height: calc(100vh - 70px);
   padding: 50px 0;
   background: transparent;
   // box-shadow: inset 8px 8px 15px rgba(0, 0, 0, 0.4);
@@ -926,13 +819,14 @@ $app_yellow: #FDC114;
     margin: 0;
   }
 }
+
 .info-box {
-  background: linear-gradient(to bottom right, rgba(0,0,0,0.36), rgba(0,0,0,0.06));
+  background: linear-gradient(to bottom right, rgba(0, 0, 0, 0.36), rgba(0, 0, 0, 0.06));
   border-radius: 25px;
 }
 
 .info-header {
-  background: linear-gradient(to bottom right, rgba(0,0,0,0.36), rgba(0,0,0,0.06));
+  background: linear-gradient(to bottom right, rgba(0, 0, 0, 0.36), rgba(0, 0, 0, 0.06));
   border-top-left-radius: 25px;
   border-top-right-radius: 25px;
   padding-left: 35px;
@@ -949,7 +843,7 @@ $app_yellow: #FDC114;
 
 select option {
   // margin: 40px;
-  background: rgba(0, 146, 220, 1)!important;
+  background: rgba(0, 146, 220, 1) !important;
   color: #fff;
   // text-shadow: 0 1px 0 rgba(0, 0, 0, 0.4);
 }
@@ -959,23 +853,23 @@ select option {
   position: relative;
   width: calc(100%);
   height: calc(100%);
-  padding: 60px;
+  padding-top: 80px;
+  padding-bottom: 60px;
+  padding-left: 60px;
+  padding-right: 60px;
   // backdrop-filter: blur(25px);
-
-  @media only screen and (max-width: 1023px) {
+  @media only screen and (max-width: 700px) {
     width: 100%;
-    height: 100%;
-  }
-
-  @media only screen and (max-width: 639px) {
-    width: 100%;
-    height: 100%;
+    padding-bottom: 20px;
+    padding-left: 20px;
+    padding-right: 20px;
+    
   }
   background: #001829;
 }
 
 .search-expanded {
-  background: linear-gradient(to bottom right, rgba(0,0,0,0.36), rgba(0,0,0,0.06));
+  background: linear-gradient(to bottom right, rgba(0, 0, 0, 0.36), rgba(0, 0, 0, 0.06));
   border: 0px;
 }
 
@@ -1019,7 +913,7 @@ select option {
   flex-shrink: 0;
 
   // transition: box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,
-    // transform 225ms cubic-bezier(0, 0, 0.2, 1) 0ms;
+  // transform 225ms cubic-bezier(0, 0, 0.2, 1) 0ms;
 }
 
 .searchHidden {
@@ -1050,7 +944,7 @@ select option {
 }
 
 .my-badge {
-  position: absolute ;
+  position: absolute;
   right: -10px;
   top: -15px;
   padding: 0px 7px;
@@ -1064,26 +958,28 @@ select option {
   position: fixed;
   bottom: 30px;
   left: 30px;
-  gap: 0.5em!important;
-  background: linear-gradient(to bottom right, rgba(0,0,0,0.36), rgba(0,0,0,0.06));
+  gap: 0.5em !important;
+  background: linear-gradient(to bottom right, rgba(0, 0, 0, 0.36), rgba(0, 0, 0, 0.06));
   padding: 10px;
   border-radius: 20px;
 }
 
 .review-item {
   border-radius: 20px;
-  padding: 10px 20px!important;
-  background: linear-gradient(to bottom right, rgba(0,0,0,0.36), rgba(0,0,0,0.06));
+  padding: 10px 20px !important;
+  background: linear-gradient(to bottom right, rgba(0, 0, 0, 0.36), rgba(0, 0, 0, 0.06));
 }
 
-#body-scroll-bar > div {
-    margin: 0px !important;
-    overflow: scroll !important;
-    
-    -ms-overflow-style: none;  /* IE and Edge */
-    scrollbar-width: none;  /* Firefox */
+#body-scroll-bar>div {
+  margin: 0px !important;
+  overflow: scroll !important;
+
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
 }
 
-#body-scroll-bar > div::-webkit-scrollbar {
+#body-scroll-bar>div::-webkit-scrollbar {
   display: none !important;
 }
