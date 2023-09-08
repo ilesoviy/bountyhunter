@@ -4,20 +4,12 @@ import { Reveal } from 'react-awesome-reveal';
 import Sidebar from '../../components/menu/SideBar';
 import { IsSmMobile, fadeInUp, fadeIn } from '../../utils';
 import Subheader from '../../components/menu/SubHeader';
-import { useSigningClient } from '../../context/web3Context';
 import MainHeader from '../../components/menu/MainHeader';
 import { Link } from '@reach/router';
 import HelpButton from '../../components/menu/HelpButton';
 import WarningMsg from '../../components/WarningMsg';
 
 const NewBountyBody = () => {
-  const {
-    balance
-  } = useSigningClient();
-
-  // const navigation = useNavigate();
-
-  // const DEF_APY = (def_config.APY * 100).toFixed(2);
   const DEF_APY = 0;
 
   const [title, setTitle] = useState('');
@@ -29,12 +21,7 @@ const NewBountyBody = () => {
   const [bGitHub, setBGitHub] = useState('');
 
   useEffect(() => {
-    // setInitAmount((Number(title) * Number(purchasePrice)));
-    // setWealth((Number(title) * Number(ETRPrice)));
-    // const rewards = ((((Number(apy) + 100) / 100) ** (days / 365)) * Number(title));
-    // setRewardEst(rewards);
-    // setPotentialReturn((rewards * Number(futurePrice)));
-  }, [title, apy, bType, bDifficulty, bTopic, bDesc, bGitHub]);
+  }, []);
 
   const handleTitle = useCallback((event) => {
     setTitle(event.target.value);
