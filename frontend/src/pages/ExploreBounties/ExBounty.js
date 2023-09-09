@@ -35,7 +35,7 @@ const ExBounty = (pathTo) => {
                 </div>
               </div>
               <div className='app-card-footer'>
-                <div className='flex justify-between xsm:text-[10px] sm:text-center items-center'>
+                <div className='flex justify-between sm:text-[10px] sm:text-center items-center'>
                   <div className='flex flex-col'>
                     <span className='app-gray text-[14px]'>{`${5} hours ago`}</span>
                   </div>

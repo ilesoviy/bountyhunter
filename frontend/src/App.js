@@ -5,14 +5,14 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 import Home from './pages/Home';
-import ExploreBounty from './pages/ExploreBounties/ExploreBounty';
-import NewBounty from './pages/NewBounty/NewBounty';
-import MyBounties from './pages/MyBounties/MyBounties';
+import ExploreBounty from './pages/ExploreBounties';
+import NewBounty from './pages/NewBounty';
+import MyBounties from './pages/MyBounties';
 import ScrollToTopBtn from './components/menu/ScrollToTop';
 import Settings from './pages/Settings/Settings';
 import ExBountyListing from './pages/ExploreBounties/BountyListing/ExBountyListing';
 import PreviewNewBounty from './pages/NewBounty/PreviewNewBounty';
-import InProgress from './pages/InProgress/InProgress';
+import InProgress from './pages/InProgress';
 import InBountyListing from './pages/InProgress/InBountyListing';
 import MyBountiesListing from './pages/MyBounties/MyBountiesListing';
 
