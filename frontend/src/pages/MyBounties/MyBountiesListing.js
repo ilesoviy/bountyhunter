@@ -9,15 +9,16 @@ import HelpButton from '../../components/menu/HelpButton';
 import Subheader from '../../components/menu/SubHeader';
 import { Information } from '../../components/Information';
 import { ListingDescription } from '../../components/ListingDescription';
+import BackButton from '../../components/menu/BackButton';
 
 const MyBountiesListingBody = () => {
   return (
-    <div className='app-content pb-0 pr-4'>
+    <div className='app-content pr-4'>
       {!IsSmMobile() ?
         <div className='flex gap-3'>
-          <div className='col-lg-7 px-0 pt-7'>
+          <div className='col-lg-7 px-0 pt-0'>
             <ListingDescription />
-            <div className='flex flex-col gap-3 mt-4'>
+            <div className='flex flex-col gap-3'>
               <MyBountiesReviewItem />
               <MyBountiesReviewItem />
             </div>
@@ -44,12 +45,7 @@ const MyBountiesListing = () => {
         <MainHeader />
         <div className='bounty-listing-container'>
           <Subheader />
-          <Link to="/MyBounties">
-            <div className='flex gap-2'>
-              <span className="text-xl"><i className='fa fa-angle-left' /></span>
-              <span className='text-xl'>Back</span>
-            </div>
-          </Link>
+          <BackButton to="/MyBounties"/>
           <div className='app-header px-0 xl:items-center sm:flex-col'>
             <div className='app-title'>
               <p className='text-[40px] sm:text-center text-white pt-3'>Bounty Listing</p>

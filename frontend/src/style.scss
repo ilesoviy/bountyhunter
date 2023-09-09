@@ -248,7 +248,7 @@ h5 {
 
     .w-100-nav {
       display: block;
-      padding: 20px 2%;
+      padding: 0px 2%;
     }
 
     .navbar-item {
@@ -371,7 +371,7 @@ h5 {
 
     .w-100-nav {
       display: block;
-      padding: 20px 2%;
+      padding: 0px 2%;
     }
 
     .navbar-item {
@@ -480,7 +480,7 @@ h5 {
       }
 
       a {
-        color: black;
+        color: white;
       }
     }
   }
@@ -940,4 +940,25 @@ footer {
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
   -webkit-appearance: none;
+}
+
+.btn-hover {
+  text-align: center;
+  color: white !important;
+  background: transparent;
+  border-radius: 20px;
+  outline: 0;
+  font-family: 'Roboto', sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  text-decoration: none;
+  padding: 10px 20px;
+  border: solid 2px white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  &:hover {
+    box-shadow: 2px 2px 4px 0px rgb(255 255 255);
+    transition: all 0.3s ease;
+  }
 }

@@ -18,7 +18,7 @@ const BannerBody = () => (
           <h1 className="text-[20px] md:text-[16px] md:text-center gray mt-3">Maximize your potential with Stellar Soroban in the world of bounties.</h1>
         </Reveal>
         <Reveal className='onStep' keyframes={fadeInUp} delay={600} duration={900} triggerOnce>
-          <div className='mainside mt-4'>
+          <div className='mainside mt-4 flex sm:justify-center'>
             <Link to="/ExploreBounties">Explore</Link>
           </div>
         </Reveal>

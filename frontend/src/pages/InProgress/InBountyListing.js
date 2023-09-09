@@ -11,6 +11,7 @@ import { Information } from '../../components/Information';
 import { ListingDescription } from '../../components/ListingDescription';
 import { Participants } from '../../components/Participants';
 import WarningMsg from '../../components/WarningMsg';
+import BackButton from '../../components/menu/BackButton'
 
 const InBountyListingBody = ({ callback }) => {
 
@@ -26,7 +27,7 @@ const InBountyListingBody = ({ callback }) => {
             <Information />
             <div className='w-full my-2 py-3'>
           <div className='w-full my-2 py-3'>
-            <button className='text-[18px] w-full border rounded-2xl px-2 py-2' onClick={() => { callback() }}>Submit Work</button>
+            <button className='text-[18px] w-full border rounded-2xl px-2 py-2 btn-hover' onClick={() => { callback() }}>Submit Work</button>
           </div>
             </div>
           </div>
@@ -36,7 +37,7 @@ const InBountyListingBody = ({ callback }) => {
           <Information />
           <Participants />
           <div className='w-full my-2 py-3'>
-            <button className='text-[18px] w-full border rounded-2xl px-2 py-2' onClick={() => { callback() }}>Submit Work</button>
+            <button className='text-[18px] w-full border rounded-2xl px-2 py-2 btn-hover' onClick={() => { callback() }}>Submit Work</button>
           </div>
         </div>}
       <HelpButton />
@@ -78,12 +79,8 @@ const InBountyListing = () => {
         <MainHeader />
         <div className='bounty-listing-container'>
           <Subheader />
-          <Link to="/InProgress">
-            <div className='flex gap-2'>
-              <span className="text-xl"><i className='fa fa-angle-left' /></span>
-              <span className='text-xl'>Back</span>
-            </div>
-          </Link>
+          {/* <Link to="/InProgress" className="text-xl"><i className='fa fa-angle-left' />Back</Link> */}
+          <BackButton to="/InProgress"/>
           <div className='app-header px-0 sm:flex-col'>
             <div className='app-title'>
               <p className='text-[40px] sm:text-center text-white pt-3'>Bounty Listing</p>
@@ -132,8 +129,8 @@ const InBountyListing = () => {
           </div>
         </div>
         <div className='input-form-control mt-3'>
-          <div className="input-control w-1/2">
-            <button className='input-main' onClick={onApplyClicked}>Submit Work</button></div>
+          <div className="input-control w-1/2 border-0">
+            <button className='input-main btn-hover' onClick={onApplyClicked}>Submit Work</button></div>
         </div>
       </Drawer>
     </div>

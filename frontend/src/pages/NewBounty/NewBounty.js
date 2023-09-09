@@ -148,16 +148,16 @@ const NewBountyBody = () => {
               </div>
               <div className='col-md-4 pb-3'>
                 <div className='input-form-control'>
-                  <div className="input-control">
+                  <div className="input-control border-0">
                     {/* <button className='input-main' onClick={navigateToPreview}>Preview</button> */}
-                    <Link to="/NewBounty/preview" className='w-full text-center'>Prevew</Link>
+                    <Link to="/NewBounty/preview" className='w-full text-center btn-hover'>Prevew</Link>
                   </div>
                 </div>
               </div>
               <div className='col-md-4 pb-3'>
                 <div className='input-form-control'>
-                  <div className="input-control">
-                    <button className='input-main text-white' onClick={() => { }}>Submit</button></div>
+                  <div className="input-control border-0">
+                    <button className='input-main btn-hover text-white' onClick={() => { }}>Submit</button></div>
                 </div>
               </div>
             </div>

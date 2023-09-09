@@ -61,12 +61,19 @@ const MainHeader = function () {
 
   return (
     <header id="myHeader" className='navbar white'>
-      <div className='container'>
+      <div className='container h-full'>
         <div className='row w-100-nav relative'>
           <div className='logo px-0'>
             <div className='navbar-title navbar-item'>
               <NavLink to="/">
-                BountyHunter
+                <div className="flex items-center gap-2">
+                  <img
+                    src="/images/logo/logo.png"
+                    className="img-fluid"
+                    alt="#"
+                  />
+                  Bounty Hunter
+                </div>
               </NavLink>
             </div>
           </div>
@@ -94,7 +101,7 @@ const MainHeader = function () {
 
           <div className='mainside lg:hidden'>
             {/* <Reveal keyframes={fadeIn} className='onStep' delay={0} duration={1000} triggerOnce> */}
-                <ConnectWallet />
+            <ConnectWallet />
             {/* </Reveal> */}
           </div>
         </div>

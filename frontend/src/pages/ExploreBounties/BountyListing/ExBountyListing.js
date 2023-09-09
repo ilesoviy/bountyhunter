@@ -9,6 +9,7 @@ import Subheader from '../../../components/menu/SubHeader';
 import { ListingDescription } from '../../../components/ListingDescription';
 import { Information } from '../../../components/Information';
 import { Participants } from '../../../components/Participants';
+import BackButton from '../../../components/menu/BackButton';
 
 const ExBountyListingBody = () => {
   return (
@@ -22,7 +23,7 @@ const ExBountyListingBody = () => {
           <div className='col-lg-5'>
             <Information />
             <div className='w-full my-2 py-3'>
-              <button className='text-[18px] w-full border rounded-2xl px-2 py-2' >Apply</button>
+              <button className='text-[18px] w-full border rounded-2xl px-2 py-2 btn-hover' >Apply</button>
             </div>
           </div>
         </div> :
@@ -31,7 +32,7 @@ const ExBountyListingBody = () => {
           <Information />
           <Participants />
           <div className='w-full my-2 py-3'>
-            <button className='text-[18px] w-full border rounded-2xl px-2 py-2' >Apply</button>
+            <button className='text-[18px] w-full border rounded-2xl px-2 py-2 btn-hover' >Apply</button>
           </div>
         </div>}
       <HelpButton />
@@ -47,12 +48,7 @@ const ExBountyListing = () => {
         <MainHeader />
         <div className='bounty-listing-container'>
           <Subheader />
-          <Link to="/ExploreBounties">
-            <div className='flex gap-2'>
-              <span className="text-xl"><i className='fa fa-angle-left' /></span>
-              <span className='text-xl'>Back</span>
-            </div>
-          </Link>
+          <BackButton to="/ExploreBounties"/>
           <div className='app-header px-0 xsm:items-start xl:items-center xsm:flex-col'>
             <div className='app-title'>
               <p className='text-[40px] sm:text-center text-white pt-3'>Bounty Listing</p>

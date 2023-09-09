@@ -47,7 +47,7 @@ export const Information = () => {
           </div>
           <div className='flex justify-between sm:text-center items-center gap-3'>
             <span className='text-[18px]'>Repository:</span>
-            <span className='text-[18px]'><i className='fa fa-send' /></span>
+            <span className='text-[18px]'><i class="fa-regular fa-arrow-up-right-from-square"></i></span>
           </div>
         </div>
       </div>

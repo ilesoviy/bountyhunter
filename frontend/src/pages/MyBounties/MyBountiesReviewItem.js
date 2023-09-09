@@ -12,12 +12,12 @@ const MyBountiesReviewItem = () => {
   return (
     <div className='app-body review-item'>
       {/* <Reveal keyframes={fadeInUp} className='onStep' delay={400} duration={1000} triggerOnce> */}
-        <div className='flex justify-between xsm:flex-col sm:text-center'>
+        <div className='flex justify-between items-center xsm:flex-col sm:text-center'>
           <div className='flex flex-col'>
             <div className='text-[16px] font-bold'>GS573KASDHK...AZEW (Worker 1)</div>
           </div>
           <div className='space-x-2'>
-            <button className='flex-col justify-around space-x-2  sm:flex-col sm:text-center border rounded-2xl px-4' onClick={handleExpanded}>
+            <button className='flex-col justify-around space-x-2  sm:flex-col sm:text-center btn-hover border rounded-2xl px-4' onClick={handleExpanded}>
               Review
             </button>
           </div>

@@ -5,14 +5,14 @@ const UploadAndDisplayImage = () => {
   const [selectedImage, setSelectedImage] = useState(null);
   
   return (
-    <div className="relative">
+    <div className="relative flex items-center justify-center">
       {selectedImage ?
-        <div> <img alt="" className="w-[120px] h-[120px]" src={URL.createObjectURL(selectedImage)}/></div>
+        <img alt="" className="w-[120px] h-[120px] rounded-full" src={URL.createObjectURL(selectedImage)}/>
        : <img src={'/images/banner/unknown.png'} />}
-      <div className='relative'>
-        <div className='absolute right-0 bottom-0 w-[30px] h-[30px] bg-[#011829] flex justify-center items-center rounded-full cursor-pointer'>
+      <div className='absolute right-0 bottom-0 w-[30px] h-[30px] flex bg-[#011829] flex justify-center items-center rounded-full cursor-pointer'>
+        {/* <div className=' bg-[#011829] flex justify-center items-center rounded-full cursor-pointer'> */}
           <i className='fa fa-pencil' />
-        </div>
+        {/* </div> */}
       </div>
       <input
         type="file"

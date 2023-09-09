@@ -8,8 +8,8 @@ const WarningMsg = ({msg}) => {
       <div className='flex gap-3'>
         <span className="text-xl"><i className='fa fa-exclamation-circle'></i></span>
         <div className='flex flex-col'>
-          <p className='text-[17px] sm:text-[15px]'>{msg}</p>
-          <a className='font-bold' href='#'>Learn More</a>
+          <div><p className='text-[17px] sm:text-[15px]'>{msg}</p></div>
+          <div><a className='font-bold' href='#'>Learn More</a></div>
         </div>
       </div>
     </div>

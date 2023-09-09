@@ -41,9 +41,12 @@ const Subheader = ({ path }) => {
               vertical: 'top',
               horizontal: 'right',
             }}>
-            <UploadAndDisplayImage />
+            <div className='flex flex-col items-center gap-3'>
+              <UploadAndDisplayImage />
+              <ConnectWallet />
+            </div>
+            
             {/* </Link> */}
-            <ConnectWallet />
             <div className={path === 'NewBounty' ? 'navbar-item menu-active-item' : 'navbar-item'}>
               <Link to="/NewBounty">
                 <div className='flex gap-2 items-center'>

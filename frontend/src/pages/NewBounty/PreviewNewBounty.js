@@ -7,6 +7,8 @@ import MainHeader from '../../components/menu/MainHeader';
 import { Link } from '@reach/router';
 import HelpButton from '../../components/menu/HelpButton';
 import WarningMsg from '../../components/WarningMsg';
+import { Information } from '../../components/Information';
+import BackButton from '../../components/menu/BackButton';
 
 const PreviewBody = () => {
   return (
@@ -24,8 +26,8 @@ const PreviewBody = () => {
           <span className='py-2'>This is a preview from a bounty and contains the information written in the description.</span>
           <WarningMsg msg='You need to connect your wallet in order to create a bounty.'/>
         </div>
-        <div className='col-lg-5 py-2 md:pl-7'>
-          <div className='info-box pb-3'>
+        <div className='col-lg-5 py-2 md:pl-0'>
+          {/* <div className='info-box pb-3'>
             <div className='info-header'>
               <div className='flex my-2 text-[24px]'><span>Information</span></div>
             </div>
@@ -111,10 +113,11 @@ const PreviewBody = () => {
                 </div>
               </div>
             </div>
-          </div>
+          </div> */}
+          <Information/>
           <div className='w-full my-2 py-3'>
-            <button className='text-[18px] w-full border rounded-2xl px-2 py-2'>Edit</button>
-            <button className='text-[18px] w-full border rounded-2xl px-2 py-2 mt-2'>Create Bounty</button>
+            <button className='text-[18px] w-full border rounded-2xl px-2 py-2 btn-hover'>Edit</button>
+            <button className='text-[18px] w-full border rounded-2xl px-2 py-2 btn-hover mt-2'>Create Bounty</button>
           </div>
         </div>
       </div>
@@ -129,15 +132,9 @@ const PreviewNewBounty = () => {
         <MainHeader />
         <div className='bounty-listing-container'>
           <Subheader/>
-          <Link to="/NewBounty">
-            <div className='flex gap-2'>
-              <span className="text-xl"><i className='fa fa-angle-left' /></span>
-              <span className='text-xl'>Back</span>
-            </div>
-          </Link>
+          <BackButton to="/NewBounty"/>
           <div className='app-header px-0 xl:items-center xsm:items-start sm:flex-col'>
             <div className='app-title'>
-              <Link to="/NewBounty"> <span></span> </Link>
               <p className='text-[40px] sm:text-center text-white pt-3'>Bounty Preview</p>
             </div>
           </div>

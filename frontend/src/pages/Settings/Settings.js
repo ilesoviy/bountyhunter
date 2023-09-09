@@ -58,10 +58,10 @@ const SettingsBody = () => {
                   </div>
                 </div>
               </div>
-              <div className='w-1/2 pb-3'>
+              <div className='md:w-2/3 pb-3 w-1/3'>
                 <div className='input-form-control'>
-                  <div className="input-control">
-                    <button className='input-main text-white' onClick={() => { }}>Submit</button></div>
+                  <div className="input-control border-0 ">
+                    <button className='input-main btn-hover text-white text-[]' onClick={() => { }}>Save Changes</button></div>
                 </div>
               </div> 
           </div>
@@ -78,8 +78,8 @@ const Settings = () => {
       <div className='container'>
         <MainHeader />
         <Sidebar path="Settings" />
-        <div className='app-container'>
-          <div className='app-header xl:items-center sm:flex-col'>
+        <div className='app-container '>
+          <div className='app-header md:items-start sm:flex-col'>
             <Subheader path="Settings" />
             <Reveal keyframes={fadeInUp} className='onStep' delay={0} duration={800} triggerOnce>
               <div className='app-title'>
