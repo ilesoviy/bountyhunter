@@ -61,7 +61,7 @@ const MainHeader = function () {
 
   return (
     <header id="myHeader" className='navbar white'>
-      <div className='container h-full'>
+      <div className='container'>
         <div className='row w-100-nav relative'>
           <div className='logo px-0'>
             <div className='navbar-title navbar-item'>
