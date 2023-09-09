@@ -48,7 +48,7 @@ function App() {
           <ExBountyListing path="ExploreBounties/:id" />
           <InBountyListing path="InProgress/:id" />
           <MyBountiesListing path="MyBounties/:id" />
-          <ExploreBounty path="ExploreBounties" />            
+          <ExploreBounty path="ExploreBounties" />
           <InProgress path="InProgress" />
           <MyBounties path="MyBounties" />
           <Settings path="Settings" />
