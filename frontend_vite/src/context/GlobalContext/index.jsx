@@ -10,11 +10,9 @@ export const GlobalProvider = ({ children }) => {
     }
 
     return (
-        <React.StrictMode>
-            <GlobalContext.Provider value={{ refreshPage, chainId }}>
-                {children}
-            </GlobalContext.Provider>
-        </React.StrictMode>
+        <GlobalContext.Provider value={{ refreshPage, chainId }}>
+            {children}
+        </GlobalContext.Provider>
     )
 }
 
