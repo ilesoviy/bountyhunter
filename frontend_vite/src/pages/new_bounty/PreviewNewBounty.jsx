@@ -20,7 +20,7 @@ const PreviewBody = () => {
               <button className='text-[18px] border rounded-2xl px-4'>Active</button>
             </div>
             <div className='flex'>
-              <button className='text-[18px] mr-2'><i class="fa-regular fa-arrow-up-from-square mr-2"></i>Share</button>
+              <button className='text-[18px] mr-2'><i className="fa-regular fa-arrow-up-from-square mr-2"></i>Share</button>
             </div>
           </div>
           <span className='py-2'>This is a preview from a bounty and contains the information written in the description.</span>

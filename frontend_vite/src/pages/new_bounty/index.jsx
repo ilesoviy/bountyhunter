@@ -78,12 +78,12 @@ const NewBountyBody = () => {
                 <div className='input-form-control'>
                   <label className='input-label'>Dead Line</label>
                   <div className="input-control">
-                    <select name="bDeadLine" className='input-main'>
-                      <option value="" disabled selected hidden>Select Duration</option>
-                      <option value="1">More than 6 months</option>
-                      <option value="2">3 to 6 months</option>
-                      <option value="3">1 to 3 months</option>
-                      <option value="4">Less than 1 month</option>
+                    <select name="bDeadLine" defaultValue={0} className='input-main'>
+                      <option value={0} disabled hidden>Select Duration</option>
+                      <option value={1}>More than 6 months</option>
+                      <option value={2}>3 to 6 months</option>
+                      <option value={3}>1 to 3 months</option>
+                      <option value={4}>Less than 1 month</option>
                     </select>
                   </div>
                 </div>
@@ -92,11 +92,11 @@ const NewBountyBody = () => {
                 <div className='input-form-control'>
                   <label className='input-label'>Bounty Type</label>
                   <div className="input-control">
-                    <select name="bType" className='input-main'>
-                      <option value="" disabled selected hidden>Select Type</option>
-                      <option value="1">Competitive</option>
-                      <option value="2">Cooperative</option>
-                      <option value="3">Hackathon</option>
+                    <select name="bType" defaultValue={0} className='input-main'>
+                      <option value={0} disabled hidden>Select Type</option>
+                      <option value={1}>Competitive</option>
+                      <option value={2}>Cooperative</option>
+                      <option value={3}>Hackathon</option>
                     </select>
                   </div>
                 </div>
@@ -105,11 +105,11 @@ const NewBountyBody = () => {
                 <div className='input-form-control'>
                   <label className='input-label'>Bounty Difficulty</label>
                   <div className="input-control">
-                    <select name="bDifficulty" className='input-main'>
-                      <option value="" disabled selected hidden>Select Difficulty</option>
-                      <option value="1">Beginner</option>
-                      <option value="2">Intermediate</option>
-                      <option value="3">Advanced</option>
+                    <select name="bDifficulty" defaultValue={0} className='input-main'>
+                      <option value={0} disabled hidden>Select Difficulty</option>
+                      <option value={1}>Beginner</option>
+                      <option value={2}>Intermediate</option>
+                      <option value={3}>Advanced</option>
                     </select>
                   </div>
                 </div>
@@ -118,13 +118,13 @@ const NewBountyBody = () => {
                 <div className='input-form-control'>
                   <label className='input-label'>Bounty Topic</label>
                   <div className="input-control">
-                    <select name="bTopic" className='input-main'>
-                      <option value="" disabled selected hidden>Select Topic</option>
-                      <option value="1">Design</option>
-                      <option value="2">Development</option>
-                      <option value="3">Smart Contracts</option>
-                      <option value="3">Data</option>
-                      <option value="3">AI</option>
+                    <select name="bTopic" defaultValue={0} className='input-main'>
+                      <option value={0} disabled hidden>Select Topic</option>
+                      <option value={1}>Design</option>
+                      <option value={2}>Development</option>
+                      <option value={3}>Smart Contracts</option>
+                      <option value={4}>Data</option>
+                      <option value={5}>AI</option>
                     </select>
                   </div>
                 </div>

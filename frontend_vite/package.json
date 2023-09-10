@@ -20,6 +20,7 @@
     "react-awesome-reveal": "^4.2.5",
     "react-custom-scrollbars": "^4.2.1",
     "react-dom": "^18.2.0",
+    "font-awesome": "^4.7.0",
     "react-responsive": "^9.0.2",
     "react-scroll-section": "^3.2.5",
     "react-socks": "^2.2.0",

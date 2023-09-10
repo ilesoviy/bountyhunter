@@ -12,7 +12,11 @@ export const Information = () => {
                     <div className='info-body'>
                         <div className='flex justify-between items-center gap-3'>
                             <span className='text-[16px] font-bold'>Published by:</span>
-                            <span className='text-[16px] '>GAD...RARW</span>
+                            <div className='flex items-center justify-center'>
+                                <img src={'/images/banner/user.png'} className='h-[20px]' alt="" />
+                                <span className='text-[16px] '>GAD...RARW</span>
+                            </div>
+
                         </div>
                         <div className='flex justify-between items-center gap-3'>
                             <span className='text-[16px] font-bold'>Payment:</span>
@@ -48,7 +52,7 @@ export const Information = () => {
                         </div>
                         <div className='flex justify-between sm:text-center items-center gap-3'>
                             <span className='text-[18px]'>Repository:</span>
-                            <span className='text-[18px]'><i class="fa-regular fa-arrow-up-right-from-square" /></span>
+                            <span className='text-[18px]'><i className="fa-regular fa-arrow-up-right-from-square" /></span>
                         </div>
                     </div>
                 </div>

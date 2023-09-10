@@ -3,6 +3,7 @@ import Reveal from 'react-awesome-reveal';
 import { Link } from '@reach/router';
 import ColorGroup from './ColorGroup';
 import { fadeInUp, fadeIn, IsSmMobile } from '../../utils';
+import SubHeader from '../menu/SubHeader';
 
 const BannerBody = () => (
     <div className='relative z-1'>
@@ -66,7 +67,8 @@ const BannerBody = () => (
 const Banner = () => {
     return (
         <div className='relative h-full'>
-            <div className='relative container h-full'>
+            <div className='relative container h-full mt-[12px]'>
+                <SubHeader/>
                 <div className='fixed bottom-0 right-[20px]'>
                     {/* <Reveal className='onStep' keyframes={fadeIn} delay={900} duration={1500} triggerOnce> */}
                     <img className="md:h-[300px] h-[600px] logo" src="/images/banner/bot.png" alt="" />

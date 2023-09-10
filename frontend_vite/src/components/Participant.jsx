@@ -15,8 +15,8 @@ export const Participant = () => {
           </div>
           <div className='info-body'>
             {[1, 1, 1].map((v, i) => (
-              <div className='flex justify-evenly items-center sm:text-center'>
-                <div className='flex my-2 text-[16px] '><span>GS573KASDHK...AZEW (Worker 1)</span></div>
+              <div key={i} className='flex justify-evenly items-center sm:text-center'>
+                <div className='flex my-2 text-[16px] '><span>GS573KASDHK...AZEW (Worker i)</span></div>
                 <div className='flex my-2 text-[16px] '><span>In Progress</span></div>
                 <div className='flex my-2 text-[16px] '><span>10 hours ago</span></div>
               </div>

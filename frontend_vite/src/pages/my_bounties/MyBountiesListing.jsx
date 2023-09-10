@@ -18,7 +18,7 @@ const MyBountiesListingBody = () => {
         <div className='flex gap-3'>
           <div className='col-lg-7 px-0 pt-0'>
             <ListingDescription />
-            <div className='flex flex-col gap-3'>
+            <div className='flex flex-col gap-3 mt-3'>
               <MyBountiesReviewItem />
               <MyBountiesReviewItem />
             </div>

@@ -29,7 +29,7 @@ const SubHeader = ({ path }) => {
         <Breakpoint l down>
           <Popover
             id={id}
-            className='subheader-popover'
+            className='subheader-popover z-10'
             open={open}
             anchorEl={anchorEl}
             onClose={handleClose}
