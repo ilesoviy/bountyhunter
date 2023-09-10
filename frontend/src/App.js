@@ -43,14 +43,14 @@ function App() {
           <Home exact path="/">
             <Redirect to="/" />
           </Home>
-          <PreviewNewBounty path="NewBounty/preview" />
           <NewBounty path="NewBounty" />
-          <ExBountyListing path="ExploreBounties/:id" />
-          <InBountyListing path="InProgress/:id" />
-          <MyBountiesListing path="MyBounties/:id" />
+          <PreviewNewBounty path="NewBounty/preview" />
           <ExploreBounty path="ExploreBounties" />
+          <ExBountyListing path="ExploreBounties/:id" />
           <InProgress path="InProgress" />
+          <InBountyListing path="InProgress/:id" />
           <MyBounties path="MyBounties" />
+          <MyBountiesListing path="MyBounties/:id" />
           <Settings path="Settings" />
         </ScrollTop>
       </PosedRouter>
