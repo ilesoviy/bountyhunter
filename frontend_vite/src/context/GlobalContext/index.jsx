@@ -13,10 +13,10 @@ export const GlobalProvider = ({ children }) => {
         <GlobalContext.Provider value={{ refreshPage, chainId }}>
             {children}
         </GlobalContext.Provider>
-    )
+    );
 }
 
 export const useGlobal = () => {
-    const globalManager = useContext(GlobalContext)
-    return globalManager || [{}]
+    const globalManager = useContext(GlobalContext);
+    return globalManager || [{}];
 }

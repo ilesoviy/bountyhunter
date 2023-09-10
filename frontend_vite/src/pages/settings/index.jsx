@@ -2,19 +2,24 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { Scrollbars } from 'react-custom-scrollbars';
 import Slider from '@mui/material/Slider';
 import { Reveal } from 'react-awesome-reveal';
+import { Link } from '@reach/router';
+
 import Sidebar from '../../components/menu/SideBar';
 import { IsSmMobile, numberWithCommas, fadeInUp, fadeIn } from '../../utils';
 import Subheader from '../../components/menu/SubHeader';
-import ConnectWallet from '../../components/menu/ConnectWallet';
 import MainHeader from '../../components/menu/MainHeader';
 import HelpButton from '../../components/menu/HelpButton';
-import { Link } from '@reach/router';
+import { useCustomWallet } from '../../context/WalletContext';
+import useBackend from '../../hooks/useBackend';
+
 
 const SettingsBody = () => {
+  const { walletAddress, isConnected } = useCustomWallet();
   const [name, setName] = useState('');
-  const [bGitHub, setGitHub] = useState('');
+  const [github, setGitHub] = useState('');
   const [discord, setDiscord] = useState('');
-
+  const { getUser, setUser } = useBackend();
+  
   const handleName = useCallback((event) => {
     setName(event.target.value);
   }, []);
@@ -24,9 +29,34 @@ const SettingsBody = () => {
   const handleDiscord = useCallback((event) => {
     setDiscord(event.target.value);
   }, []);
+  const handleSave = useCallback((event) => {
+    if (!isConnected) {
+      console.log('Not connected!');
+      return;
+    }
+
+    if (!setUser(walletAddress, name, github, discord)) {
+      console.log('Failed to set user information!');
+      return;
+    }
+    console.log('Set user information!');
+  }, [isConnected, walletAddress, name, github, discord]);
 
   useEffect(() => {
-  }, []);
+    async function fetchUser() {
+      if (!isConnected) {
+        setName('');
+        setGitHub('');
+        setDiscord('');
+      } else {
+        const user = await getUser(walletAddress);
+        setName(user.name);
+        setGitHub(user.github);
+        setDiscord(user.discord);
+      }
+    }
+    fetchUser();
+  }, [isConnected, walletAddress]);
 
   return (
     <Reveal keyframes={fadeInUp} className='onStep' delay={400} duration={1000} triggerOnce>
@@ -45,7 +75,7 @@ const SettingsBody = () => {
               <div className='input-form-control'>
                 <label className='input-label'>GitHub Profile</label>
                 <div className="input-control">
-                  <input type="text" name="bGitHub" value={bGitHub} className='input-main' onChange={handleGitHub}></input>
+                  <input type="text" name="bGitHub" value={github} className='input-main' onChange={handleGitHub}></input>
                 </div>
               </div>
             </div>
@@ -60,7 +90,7 @@ const SettingsBody = () => {
             <div className='md:w-2/3 pb-3 w-1/3'>
               <div className='input-form-control'>
                 <div className="input-control border-0 ">
-                  <button className='input-main btn-hover text-white text-[]' onClick={() => { }}>Save Changes</button></div>
+                  <button className='input-main btn-hover text-white text-[]' onClick={handleSave}>Save Changes</button></div>
               </div>
             </div>
           </div>

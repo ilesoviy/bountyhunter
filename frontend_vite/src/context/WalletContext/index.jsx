@@ -119,6 +119,6 @@ export const WalletProvider = (props) => {
 }
 
 export const useCustomWallet = () => {
-    const dataManager = useContext(WalletContext)
-    return dataManager || [{}]
+    const dataManager = useContext(WalletContext);
+    return dataManager || [{}];
 }

@@ -1,9 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import { LocationProvider } from '@reach/router';
 import { GlobalProvider } from './context/GlobalContext';
 import { WalletProvider } from './context/WalletContext';
 import { ContractProvider } from './context/ContractContext';
-import { LocationProvider } from '@reach/router';
 import App from './App.jsx';
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import '../node_modules/bootstrap/dist/js/bootstrap.js';
@@ -14,11 +14,11 @@ ReactDOM.createRoot(document.getElementById('root')).render(
   <LocationProvider>
     <GlobalProvider>
       <WalletProvider>
-        {/* <ContractProvider> */}
+        <ContractProvider>
           <React.StrictMode>
             <App />
           </React.StrictMode>
-        {/* </ContractProvider> */}
+        </ContractProvider>
       </WalletProvider>
     </GlobalProvider>    
   </LocationProvider>
