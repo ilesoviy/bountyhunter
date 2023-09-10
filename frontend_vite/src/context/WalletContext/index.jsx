@@ -58,17 +58,17 @@ export const WalletProvider = (props) => {
         });
     }
 
-    // const disconnectWallet = async () => {
-    //     const sessions = await kit.getSessions();
+    const disconnectWallet = async () => {
+        // const sessions = await kit.getSessions();
 
-    //     console.log('session:', sessions)
+        // console.log('session:', sessions)
 
-    //     if (sessions.length) {
-    //         await kit.closeSession(sessions[0]?.id);
-    //     } else {
-    //         console.log('Not connected!');
-    //     }
-    // }
+        // if (sessions.length) {
+        //     await kit.closeSession(sessions[0]?.id);
+        // } else {
+        //     console.log('Not connected!');
+        // }
+    }
 
     // useEffect(() => {
     //     let _publicKey = "";
