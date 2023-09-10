@@ -37,7 +37,8 @@ const useBackend = () => {
             }
 
             return {name, github, discord};
-        }
+        }, 
+        []
     );
 
     const setUser = useCallback(
@@ -58,14 +59,15 @@ const useBackend = () => {
     
                 const resData = await res.json();
                 if (resData.error) {
-                    console.error(resData.error);
+                    console.error('error1:', resData.error);
                 } else {
                     console.log(resData.details);
                 }
             } catch (error) {
-                console.error(error);
+                console.error('error2:', error);
             }
-        }
+        }, 
+        []
     );
 
     return {
