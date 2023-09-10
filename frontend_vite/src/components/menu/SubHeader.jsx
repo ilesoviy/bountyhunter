@@ -41,7 +41,7 @@ const SubHeader = ({ path }) => {
               vertical: 'top',
               horizontal: 'right',
             }}>
-            <div className='flex flex-col items-center gap-3'>
+            <div className='flex flex-col items-center gap-3' onClick={handleClose}>
               <UploadAndDisplayImage />
               <ConnectWallet />
             </div>

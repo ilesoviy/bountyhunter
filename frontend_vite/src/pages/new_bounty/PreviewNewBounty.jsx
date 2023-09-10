@@ -9,8 +9,10 @@ import HelpButton from '../../components/menu/HelpButton';
 import WarningMsg from '../../components/WarningMsg';
 import { Information } from '../../components/Information';
 import BackButton from '../../components/menu/BackButton';
+import { useNavigate } from "@reach/router";
 
 const PreviewBody = () => {
+  const nav = useNavigate();
   return (
     <div className='app-content'>
       <div className='row'>
@@ -27,96 +29,9 @@ const PreviewBody = () => {
           <WarningMsg msg='You need to connect your wallet in order to create a bounty.' />
         </div>
         <div className='col-lg-5 py-2 md:pl-0'>
-          {/* <div className='info-box pb-3'>
-            <div className='info-header'>
-              <div className='flex my-2 text-[24px]'><span>Information</span></div>
-            </div>
-            <div className='info-body'>
-              <div className='flex justify-between sm:flex-col sm:text-center px-3'>
-                <div className='flex flex-col'>
-                  <span className='text-[18px]'>Published by:</span>
-                </div>
-                <div className='flex flex-col'>
-                  <span className='text-[18px] '>GAD...RARW</span>
-                </div>
-              </div>
-              <div className='flex justify-between sm:flex-col sm:text-center  px-3'>
-                <div className='flex flex-col'>
-                  <span className='text-[18px]'>Payment:</span>
-                </div>
-                <div className='flex flex-col'>
-                  <span className='text-[18px] '>1000 XLM</span>
-                </div>
-              </div>
-              <div className='flex justify-between sm:flex-col sm:text-center  px-3'>
-                <div className='flex flex-col'>
-                  <span className='text-[18px]'>Status</span>
-                </div>
-                <div className='flex flex-col'>
-                  <span className='text-[18px] '>Active</span>
-                </div>
-              </div>
-              <div className='flex justify-between sm:flex-col sm:text-center px-3'>
-                <div className='flex flex-col'>
-                  <span className='text-[18px]'>Start Date:</span>
-                </div>
-                <div className='flex flex-col'>
-                  <span className='text-[18px] '>January 1, 2024, 5:00 AM</span>
-                </div>
-              </div>
-              <div className='flex justify-between sm:flex-col sm:text-center px-3'>
-                <div className='flex flex-col'>
-                  <span className='text-[18px]'>End Date:</span>
-                </div>
-                <div className='flex flex-col'>
-                  <span className='text-[18px]'>January 1, 2024, 5:00 AM</span>
-                </div>
-              </div>
-              <div className='flex justify-between sm:flex-col sm:text-center px-3'>
-                <div className='flex flex-col'>
-                  <span className='text-[18px]'>Block</span>
-                </div>
-                <div className='flex flex-col'>
-                  <span className='text-[18px] '>#254121386</span>
-                </div>
-              </div>
-              <div className='flex justify-between sm:flex-col sm:text-center px-3'>
-                <div className='flex flex-col'>
-                  <span className='text-[18px]'>Level:</span>
-                </div>
-                <div className='flex flex-col'>
-                  <span className='text-[18px] '>Beginner</span>
-                </div>
-              </div>
-              <div className='flex justify-between sm:flex-col sm:text-center px-3'>
-                <div className='flex flex-col'>
-                  <span className='text-[18px]'>Topic:</span>
-                </div>
-                <div className='flex flex-col'>
-                  <span className='text-[18px] '>Vanilla Stellar</span>
-                </div>
-              </div>
-              <div className='flex justify-between sm:flex-col sm:text-center px-3'>
-                <div className='flex flex-col'>
-                  <span className='text-[18px]'>Type:</span>
-                </div>
-                <div className='flex flex-col'>
-                  <span className='text-[18px] '>Cooperative</span>
-                </div>
-              </div>
-              <div className='flex justify-between sm:flex-col sm:text-center px-3'>
-                <div className='flex flex-col'>
-                  <span className='text-[18px]'>Repository:</span>
-                </div>
-                <div className='flex flex-col'>
-                  <span className='text-[18px]'><i className='fa fa-send' /></span>
-                </div>
-              </div>
-            </div>
-          </div> */}
           <Information />
           <div className='w-full my-2 py-3'>
-            <button className='text-[18px] w-full border rounded-2xl px-2 py-2 btn-hover'>Edit</button>
+            <button className='text-[18px] w-full border rounded-2xl px-2 py-2 btn-hover' onClick={() => nav('/NewBounty')}>Edit</button>
             <button className='text-[18px] w-full border rounded-2xl px-2 py-2 btn-hover mt-2'>Create Bounty</button>
           </div>
         </div>

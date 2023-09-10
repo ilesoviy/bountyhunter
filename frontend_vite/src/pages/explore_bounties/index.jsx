@@ -116,34 +116,34 @@ const ExploreBounty = () => {
                       <div className='flex flex-col gap-2 p-4'>
                         <div className='font-bold'>Status</div>
                         <div className='flex gap-4 '>
-                          <div className='flex gap-1'><input type='checkbox' onChange={handleClosed} checked={isClosed} className=''></input><label>Closed</label></div>
-                          <div className='flex gap-1'><input type='checkbox' onChange={handleActive} checked={isActive} className=''></input><label>Active</label></div>
+                          <div className='flex gap-1 items-center'><input type='checkbox' onChange={handleClosed} checked={isClosed} className=''></input><label>Closed</label></div>
+                          <div className='flex gap-1 items-center'><input type='checkbox' onChange={handleActive} checked={isActive} className=''></input><label>Active</label></div>
                         </div>
                         <div className='font-bold'>Type</div>
                         <div className='flex gap-4'>
-                          <div className='flex gap-1'><input type='checkbox' onChange={handleComp} checked={isCompe} className=''></input><label>Competitive</label></div>
-                          <div className='flex gap-1'><input type='checkbox' onChange={handleCoop} checked={isCoop} className=''></input><label>Cooperative</label></div>
+                          <div className='flex gap-1 items-center'><input type='checkbox' onChange={handleComp} checked={isCompe} className=''></input><label>Competitive</label></div>
+                          <div className='flex gap-1 items-center'><input type='checkbox' onChange={handleCoop} checked={isCoop} className=''></input><label>Cooperative</label></div>
                         </div>
                         <div className='font gap-2'>
-                          <div className='flex gap-1'><input type='checkbox' onChange={handleHack} checked={isHack} className=''></input><label>Hackathon</label></div>
+                          <div className='flex gap-1 items-center'><input type='checkbox' onChange={handleHack} checked={isHack} className=''></input><label>Hackathon</label></div>
                         </div>
                         <div className='font-bold'>Difficulty</div>
                         <div className='flex gap-4'>
-                          <div className='flex gap-1'><input type='checkbox' onChange={handleBegin} checked={isBegin} className=''></input><label>Beginner</label></div>
-                          <div className='flex gap-1'><input type='checkbox' onChange={handleInter} checked={isInter} className=''></input><label>Intermediate</label></div>
+                          <div className='flex gap-1 items-center'><input type='checkbox' onChange={handleBegin} checked={isBegin} className=''></input><label>Beginner</label></div>
+                          <div className='flex gap-1 items-center'><input type='checkbox' onChange={handleInter} checked={isInter} className=''></input><label>Intermediate</label></div>
                         </div>
                         <div className='flex gap-4'>
-                          <div className='flex gap-1'><input type='checkbox' onChange={handleAdvan} checked={isAdvan} className=''></input><label>Advanced</label></div>
+                          <div className='flex gap-1 items-center'><input type='checkbox' onChange={handleAdvan} checked={isAdvan} className=''></input><label>Advanced</label></div>
                         </div>
                         <div className='font-bold'>Topic</div>
                         <div className='flex gap-4'>
-                          <div className='flex gap-1'><input type='checkbox' onChange={handleDesig} checked={isDesig} className=''></input><label>Design</label></div>
-                          <div className='flex gap-1'><input type='checkbox' onChange={handleDevel} checked={isDevel} className=''></input><label>Development</label></div>
+                          <div className='flex gap-1 items-center'><input type='checkbox' onChange={handleDesig} checked={isDesig} className=''></input><label>Design</label></div>
+                          <div className='flex gap-1 items-center'><input type='checkbox' onChange={handleDevel} checked={isDevel} className=''></input><label>Development</label></div>
                         </div>
                         <div className='flex gap-4'>
-                          <div className='flex gap-1'><input type='checkbox' onChange={handleSmtCt} checked={isSmtCt} className=''></input><label>Smart Contracts</label></div>
-                          <div className='flex gap-1'><input type='checkbox' onChange={handleData} checked={isData} className=''></input><label>Data</label></div>
-                          <div className='flex gap-1'><input type='checkbox' onChange={handleAI} checked={isAI} className=''></input><label>AI</label></div>
+                          <div className='flex gap-1 items-center'><input type='checkbox' onChange={handleSmtCt} checked={isSmtCt} className=''></input><label>Smart Contracts</label></div>
+                          <div className='flex gap-1 items-center'><input type='checkbox' onChange={handleData} checked={isData} className=''></input><label>Data</label></div>
+                          <div className='flex gap-1 items-center'><input type='checkbox' onChange={handleAI} checked={isAI} className=''></input><label>AI</label></div>
                         </div>
                       </div>
                     </section>}
