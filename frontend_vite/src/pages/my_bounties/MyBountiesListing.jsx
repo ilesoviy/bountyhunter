@@ -25,6 +25,9 @@ const MyBountiesListingBody = () => {
           </div>
           <div className='col-lg-5 py-2 md:pl-7'>
             <Information />
+            <div className='w-full my-2 py-3'>
+              <button className='text-[18px] w-full border rounded-2xl px-2 py-2 btn-hover' >Cancel</button>
+            </div>
           </div>
         </div> :
         <div className='flex flex-col gap-3'>
@@ -32,6 +35,9 @@ const MyBountiesListingBody = () => {
           <Information />
           <MyBountiesReviewItem />
           <MyBountiesReviewItem />
+            <div className='w-full my-2 py-3'>
+              <button className='text-[18px] w-full border rounded-2xl px-2 py-2 btn-hover' >Cancel</button>
+            </div>
         </div>}
     </div>
   )
