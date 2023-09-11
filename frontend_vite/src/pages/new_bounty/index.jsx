@@ -1,24 +1,36 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Scrollbars } from 'react-custom-scrollbars';
 import { Reveal } from 'react-awesome-reveal';
+import { Link } from '@reach/router';
+
 import Sidebar from '../../components/menu/SideBar';
-import { IsSmMobile, fadeInUp, fadeIn } from '../../utils';
 import Subheader from '../../components/menu/SubHeader';
 import MainHeader from '../../components/menu/MainHeader';
-import { Link } from '@reach/router';
 import HelpButton from '../../components/menu/HelpButton';
 import WarningMsg from '../../components/WarningMsg';
+import { IsSmMobile, fadeInUp, fadeIn } from '../../utils';
+
+import { useCustomWallet } from '../../context/WalletContext';
+import useBounty from '../../hooks/useBounty';
+import useBackend from '../../hooks/useBackend';
+
 
 const NewBountyBody = () => {
-  const DEF_APY = 0;
+  const { walletAddress, isConnected } = useCustomWallet();
+  const { createBounty } = useBounty();
+  const { addBounty } = useBackend();
+
+  const DEF_PAY_TOKEN = 'd93f5c7bb0ebc4a9c8f727c5cebc4e41194d38257e1d0d910356b43bfc5288131'; // ilesoviy - ???
+  const DEF_PAY_AMOUNT = 0;
+  const SECS_PER_DAY = 24 * 60 * 60;
 
   const [title, setTitle] = useState('');
-  const [apy, setAPY] = useState(DEF_APY);
-  const [bType, setBType] = useState('');
-  const [bDifficulty, setBDifficulty] = useState('');
-  const [bTopic, setBTopic] = useState('');
-  const [bDesc, setbDesc] = useState('');
-  const [bGitHub, setBGitHub] = useState('');
+  const [payAmount, setPayAmount] = useState(DEF_PAY_AMOUNT);
+  const [type, setType] = useState('');
+  const [difficulty, setDifficulty] = useState('');
+  const [topic, setTopic] = useState('');
+  const [desc, setDesc] = useState('');
+  const [gitHub, setGitHub] = useState('');
 
   useEffect(() => {
   }, []);
@@ -27,28 +39,63 @@ const NewBountyBody = () => {
     setTitle(event.target.value);
   }, []);
 
-  const handleAPY = useCallback((event) => {
-    setAPY(event.target.value);
+  const handlePayAmount = useCallback((event) => {
+    setPayAmount(event.target.value);
   }, []);
 
-  const handleBType = useCallback((event) => {
-    setBType(event.target.value);
+  const handleType = useCallback((event) => {
+    setType(event.target.value);
   }, []);
 
-  const handleBDifficulty = useCallback((event) => {
-    setBDifficulty(event.target.value);
+  const handleDifficulty = useCallback((event) => {
+    setDifficulty(event.target.value);
   }, []);
 
-  const handleBTopic = useCallback((event) => {
-    setBTopic(event.target.value);
+  const handleTopic = useCallback((event) => {
+    setTopic(event.target.value);
   }, []);
 
-  const handleBDesc = useCallback((event) => {
-    setbDesc(event.target.value);
+  const handleDesc = useCallback((event) => {
+    setDesc(event.target.value);
   }, []);
 
-  const handleBGitHub = useCallback((event) => {
-    setBGitHub(event.target.value);
+  const handleGitHub = useCallback((event) => {
+    setGitHub(event.target.value);
+  }, []);
+
+  const getDuration = useCallback(
+    (duration) => {
+      if (duration === 0) { // Less than 1 month
+        return 31;
+      } else if (duration === 1) { // 1~3 months
+        return 92;
+      } else if (duration === 2) { // 3~6 months
+        return 183;
+      } else/*  if (duration === 3) */ { // More than 6 months
+        return 365;
+      }
+    }, 
+    []
+  );
+
+  const handleAdd = useCallback((event) => {
+    const days = getDuration(duration);
+    const bountyId = createBounty(walletAddress, name, payAmount, DEF_PAY_TOKEN, SECS_PER_DAY * days);
+    if (bountyId === '') {
+      console.log('failed to create new bounty!');
+      return;
+    }
+
+    const res = addBounty(bountyId, walletAddress, 
+      title, payAmount, desc, SECS_PER_DAY * days, 
+      type, topic, difficulty, 
+      block, BountyClient.BountyStatus.CREATED);
+    if (!res) {
+      console.log('failed to add bounty!');
+      return;
+    }
+
+    console.log('successfully added bounty!');
   }, []);
 
   return (
@@ -70,7 +117,7 @@ const NewBountyBody = () => {
                 <div className='input-form-control'>
                   <label className='input-label'>Payment Amount</label>
                   <div className="input-control">
-                    <input type="number" name="apy" value={apy} className='input-main' onChange={handleAPY}></input>
+                    <input type="number" name="payAmount" value={payAmount} className='input-main' onChange={handlePayAmount}></input>
                   </div>
                 </div>
               </div>
@@ -78,8 +125,8 @@ const NewBountyBody = () => {
                 <div className='input-form-control'>
                   <label className='input-label'>Dead Line</label>
                   <div className="input-control">
-                    <select name="bDeadLine" defaultValue={0} className='input-main'>
-                      <option value={0} disabled hidden>Select Duration</option>
+                    <select name="deadline" defaultValue={0} className='input-main'>
+                      <option value={0} disabled hidden>Select a duration</option>
                       <option value={1}>More than 6 months</option>
                       <option value={2}>3 to 6 months</option>
                       <option value={3}>1 to 3 months</option>
@@ -92,8 +139,8 @@ const NewBountyBody = () => {
                 <div className='input-form-control'>
                   <label className='input-label'>Bounty Type</label>
                   <div className="input-control">
-                    <select name="bType" defaultValue={0} className='input-main'>
-                      <option value={0} disabled hidden>Select Type</option>
+                    <select name="type" defaultValue={0} className='input-main'>
+                      <option value={0} disabled hidden>Select a type</option>
                       <option value={1}>Competitive</option>
                       <option value={2}>Cooperative</option>
                       <option value={3}>Hackathon</option>
@@ -105,8 +152,8 @@ const NewBountyBody = () => {
                 <div className='input-form-control'>
                   <label className='input-label'>Bounty Difficulty</label>
                   <div className="input-control">
-                    <select name="bDifficulty" defaultValue={0} className='input-main'>
-                      <option value={0} disabled hidden>Select Difficulty</option>
+                    <select name="difficulty" defaultValue={0} className='input-main'>
+                      <option value={0} disabled hidden>Select a difficulty</option>
                       <option value={1}>Beginner</option>
                       <option value={2}>Intermediate</option>
                       <option value={3}>Advanced</option>
@@ -118,8 +165,8 @@ const NewBountyBody = () => {
                 <div className='input-form-control'>
                   <label className='input-label'>Bounty Topic</label>
                   <div className="input-control">
-                    <select name="bTopic" defaultValue={0} className='input-main'>
-                      <option value={0} disabled hidden>Select Topic</option>
+                    <select name="topic" defaultValue={0} className='input-main'>
+                      <option value={0} disabled hidden>Select a topic</option>
                       <option value={1}>Design</option>
                       <option value={2}>Development</option>
                       <option value={3}>Smart Contracts</option>
@@ -133,7 +180,7 @@ const NewBountyBody = () => {
                 <div className='input-form-control'>
                   <label className='input-label'>Description</label>
                   <div className="input-control h-[70px]">
-                    <textarea type="text" name="bDesc" value={bDesc} className='input-main' onChange={handleBDesc}></textarea>
+                    <textarea type="text" name="desc" value={desc} className='input-main' onChange={handleDesc}></textarea>
                   </div>
                 </div>
               </div>
@@ -142,7 +189,7 @@ const NewBountyBody = () => {
                 <div className='input-form-control'>
                   <label className='input-label'>Github Link</label>
                   <div className="input-control">
-                    <input type="text" name="bGitHub" value={bGitHub} className='input-main' onChange={handleBGitHub}></input>
+                    <input type="text" name="gitHub" value={gitHub} className='input-main' onChange={handleGitHub}></input>
                   </div>
                 </div>
               </div>
@@ -157,14 +204,14 @@ const NewBountyBody = () => {
               <div className='col-md-4 pb-3'>
                 <div className='input-form-control'>
                   <div className="input-control border-0">
-                    <button className='input-main btn-hover text-white' onClick={() => { }}>Submit</button></div>
+                    <button className='input-main btn-hover text-white' onClick={handleAdd}>Submit</button>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-
         </div>
-
+      
       </Reveal>
     </div>
   );
@@ -181,7 +228,6 @@ const NewBounty = () => (
         <div className='pl-[40px] lg:pl-0'>
           <WarningMsg msg='You need to connect your wallet in order to create a bounty.' />
         </div>
-
         {/* <Reveal keyframes={fadeInUp} className='onStep' delay={200} duration={400} triggerOnce>
           <div className='app-header xl:pl-[40px] lg:pl-0 pr-0 '>
             <div className='app-card w-full bg-[#0092DC] py-4'>
@@ -196,6 +242,7 @@ const NewBounty = () => (
             {/* <Subheader path="NewBounty" /> 
           </div>
         </Reveal> */}
+        
         <div className='app-content'>
           {IsSmMobile() ? (
             <NewBountyBody />

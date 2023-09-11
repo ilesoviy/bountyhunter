@@ -21,10 +21,12 @@ const useBackend = () => {
                 });
 
                 const resData = await res.json();
+                console.log('resData:', resData);
                 if (resData.error) {
                     console.error('error1:', resData.error);
                 } else {
                     if (resData.user !== undefined) {
+                        console.log('user:', resData.user);
                         name = resData.user['name'] ? resData.user['name'] : '';
                         github = resData.user['github'] ? resData.user['github'] : '';
                         discord = resData.user['discord'] ? resData.user['discord'] : '';
@@ -70,9 +72,46 @@ const useBackend = () => {
         []
     );
 
+    const addBounty = useCallback(
+        async (wallet, bountyId, title, payAmount, desc, duration, type, topic, difficulty, block, status) => {
+            try {
+                const res = await fetch(BACKEND_URL + 'add_bounty', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        'wallet': wallet,
+                        'bountyId': bountyId,
+                        'title': title,
+                        'payAmount': payAmount,
+                        'description': desc,
+                        'duration': duration,
+                        'type': type,
+                        'topoic': topoic,
+                        'difficulty': difficulty,
+                        'block': block,
+                        'status': BountyClient.BountyStatus.CREATED
+                    })
+                });
+    
+                const resData = await res.json();
+                if (resData.error) {
+                    console.error('error1:', resData.error);
+                } else {
+                    console.log(resData.details);
+                }
+            } catch (error) {
+                console.error('error2:', error);
+            }
+        }, 
+        []
+    );
+
     return {
         getUser, 
-        setUser
+        setUser,
+        addBounty
     }
 }
 

@@ -1,8 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Scrollbars } from 'react-custom-scrollbars';
-import Slider from '@mui/material/Slider';
 import { Reveal } from 'react-awesome-reveal';
-import { Link } from '@reach/router';
 
 import Sidebar from '../../components/menu/SideBar';
 import { IsSmMobile, numberWithCommas, fadeInUp, fadeIn } from '../../utils';
