@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useContract } from '../../context/ContractContext';
+import * as BountyHunter from 'bountyhunter';
 
 const useBounty = () => {
     const { setAdmin, setFee } = useContract();
@@ -10,17 +11,17 @@ const useBounty = () => {
     }, []);
 
     const getLastError = useCallback(
-        () => {
-            return BountyHunter.getLastError();
+        async () => {
+            return await BountyHunter.getLastError();
         }, 
-        [chainId]
+        []
     );
 
     const countBounties = useCallback(
-        () => {
-            return BountyHunter.countBounties();
+        async () => {
+            return await BountyHunter.countBounties();
         }, 
-        [chainId]
+        []
     );
 
     const createBounty = useCallback(
@@ -35,8 +36,10 @@ const useBounty = () => {
                     deadline
                 ]
             });
+
+            return countBounties();
         }, 
-        [chainId]
+        []
     );
 
     const applyBounty = useCallback(
@@ -49,7 +52,7 @@ const useBounty = () => {
                 ]
             });
         }, 
-        [chainId]
+        []
     );
 
     const submitWork = useCallback(
@@ -63,7 +66,7 @@ const useBounty = () => {
                 ]
             });
         },
-        [chainId]
+        []
     );
 
     const approveWork = useCallback(
@@ -76,7 +79,7 @@ const useBounty = () => {
                 ]
             });
         },
-        [chainId]
+        []
     );
 
     const rejectWork = useCallback(
@@ -89,7 +92,7 @@ const useBounty = () => {
                 ]
             });
         },
-        [chainId]
+        []
     );
 
     const cancelBounty = useCallback(
@@ -102,14 +105,14 @@ const useBounty = () => {
                 ]
             });
         },
-        [chainId]
+        []
     );
 
     const tokenBalances = useCallback(
-        (account, token) => {
-            return BountyHunter.countBounties(account, token);
+        async (account, token) => {
+            return await BountyHunter.countBounties(account, token);
         }, 
-        [chainId]
+        []
     );
 
     return {

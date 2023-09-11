@@ -1,7 +1,7 @@
 import { createContext, useContext, useState, useEffect, useCallback, useMemo } from 'react';
 import { useGlobal } from '../GlobalContext';
 import { useCustomWallet } from '../WalletContext';
-import * as BountyHunter from "bountyhunter";
+import * as BountyHunter from 'bountyhunter';
 
 
 export const ContractContext = createContext()

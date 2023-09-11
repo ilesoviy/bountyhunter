@@ -73,7 +73,7 @@ const useBackend = () => {
     );
 
     const addBounty = useCallback(
-        async (wallet, bountyId, title, payAmount, desc, duration, type, topic, difficulty, block, status) => {
+        async (wallet, bountyId, title, payAmount, desc, duration, type, topic, difficulty, block) => {
             try {
                 const res = await fetch(BACKEND_URL + 'add_bounty', {
                     method: 'POST',
@@ -88,10 +88,9 @@ const useBackend = () => {
                         'description': desc,
                         'duration': duration,
                         'type': type,
-                        'topoic': topoic,
+                        'topoic': topic,
                         'difficulty': difficulty,
-                        'block': block,
-                        'status': BountyClient.BountyStatus.CREATED
+                        'block': block
                     })
                 });
     
