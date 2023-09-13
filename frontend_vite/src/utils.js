@@ -129,7 +129,7 @@ export function scrollTo(scrollableElement, elmID) {
 export function getTimeDifference(date) {
   let difference =
     moment(new Date(), "YYYY-MM-DD HH:mm:ss").diff(
-      moment(date, "YYYY-MM-DD HH:mm:ss")
+      moment(new Date(date), "YYYY-MM-DD HH:mm:ss")
     ) / 1000;
 
   if (difference < 60) return `${Math.floor(difference)} seconds`;

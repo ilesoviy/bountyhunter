@@ -32,13 +32,13 @@ const ExBounty = ({bounty}) => {
               <div className='app-card-body'>
                 <div className="row text-left">
                   <div className='text-[32px]' to="/ExploreBounties/0">{bounty?.title}</div>
-                  <p className='text-[17px] sm:text-[15px]'>{bounty?.desc}</p>
+                  <p className='text-[17px] sm:text-[15px]'>{bounty?.description}</p>
                 </div>
               </div>
               <div className='app-card-footer'>
                 <div className='flex justify-between sm:text-[10px] sm:text-center items-center'>
                   <div className='flex flex-col'>
-                    <span className='app-gray text-[14px]'>{getTimeDifference(bounty?.startDate)}</span>
+                    <span className='app-gray text-[14px]'>{getTimeDifference(bounty?.startDate)} ago</span>
                   </div>
                   <div className='flex flex-col'>
                     <div className='flex flex-row space-x-2'>

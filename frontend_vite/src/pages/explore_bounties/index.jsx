@@ -184,7 +184,7 @@ const ExploreBounty = () => {
               <div>
                 {bounties?.map((item, idx) => {
                   return (
-                    <ExBounty bounty={item}/>
+                    <ExBounty key={idx} bounty={item}/>
                   );
                 })}
               </div>
