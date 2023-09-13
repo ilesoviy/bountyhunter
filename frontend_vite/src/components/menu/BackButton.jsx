@@ -1,9 +1,9 @@
 import { Link } from "@reach/router";
 import React from "react";
 
-const BackButton = ({ to }) => {
+const BackButton = ({ to, state }) => {
   return (
-    <Link to={to} className="text-xl"><i className='fa fa-angle-left' />Back</Link>
+    <Link to={to} state={state} className="text-xl"><i className='fa fa-angle-left' />Back</Link>
   );
 }
 

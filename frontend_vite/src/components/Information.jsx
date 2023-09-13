@@ -1,5 +1,6 @@
 import { Reveal } from 'react-awesome-reveal';
-import { fadeInUp, shortenAddress, getType, getLevel, getTopic, getStatus } from '../utils';
+import moment from "moment";
+import { fadeInUp, shortenAddress, getType, getLevel, getTopic, getStatus, getFormatedDate } from '../utils';
 
 export const Information = ({
     wallet, title, payAmount, duration, type, difficulty, topic, desc, gitHub, status, startDate, endDate
@@ -29,11 +30,11 @@ export const Information = ({
                         </div>
                         <div className='flex justify-between items-center gap-3'>
                             <span className='text-[16px] font-bold'>Start Date:</span>
-                            <span className='text-[16px]'>{Date(startDate)}</span>
+                            <span className='text-[16px]'>{getFormatedDate(startDate)}</span>
                         </div>
                         <div className='flex justify-between items-center gap-3'>
                             <span className='text-[16px] font-bold'>End Date:</span>
-                            <span className='text-[16px]'>{Date(endDate)}</span>
+                            <span className='text-[16px]'>{getFormatedDate(endDate)}</span>
                         </div>
                         <div className='flex justify-between items-center gap-3'>
                             <span className='text-[16px] font-bold'>Block</span>

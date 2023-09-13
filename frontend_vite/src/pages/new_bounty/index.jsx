@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Scrollbars } from 'react-custom-scrollbars';
 import { Reveal } from 'react-awesome-reveal';
-import { Link, useLocation } from '@reach/router';
+import { Link, useLocation, useNavigate } from '@reach/router';
 import { toast } from "react-toastify";
 
 import Sidebar from '../../components/menu/SideBar';
@@ -20,7 +20,9 @@ const NewBountyBody = () => {
   const { walletAddress, isConnected } = useCustomWallet();
   const { CONTRACT_ID, DEF_PAY_TOKEN, approveToken, getLastError, countBounties, createBounty } = useBounty();
   const { addBounty } = useBackend();
+
   const loc = useLocation();
+  const nav = useNavigate();
 
   const DEF_PAY_AMOUNT = 0;
   const SECS_PER_DAY = 24 * 60 * 60;
@@ -35,7 +37,7 @@ const NewBountyBody = () => {
   const [gitHub, setGitHub] = useState('');
 
   useEffect(() => {
-    const {title, payAmount, duration, type, difficulty, topic, desc, gitHub } = loc.state;
+    const { title, payAmount, duration, type, difficulty, topic, desc, gitHub } = loc.state;
     if (title) setTitle(title);
     if (payAmount) setPayAmount(payAmount);
     if (duration) setDuration(duration);
@@ -78,18 +80,73 @@ const NewBountyBody = () => {
     setGitHub(event.target.value);
   }, []);
 
-  const handleSubmit = useCallback(async (event) => {
+  function checkCondition() {
     if (!isConnected) {
       toast.warning("Wallet not connected yet!");
-      return;
+      return false;
     }
-
-    const days = getDuration(duration);
-    if (days === 0) {
-      toast.warning('Please select a duration!');
-      return;
+    if (!title) {
+      toast.warning("Please input title!");
+      return false;
     }
+    if (!payAmount) {
+      toast.warning("Please input amount!");
+      return false;
+    }
+    if ( !duration ) {
+      toast.warning("Please select duration!");
+      return false;
+    }
+    if ( !type ) {
+      toast.warning("Please select type!");
+      return false;
+    }
+    if ( !difficulty ) {
+      toast.warning("Please select difficulty!");
+      return false;
+    }
+    if ( !topic ) {
+      toast.warning("Please select topic!");
+      return false;
+    }
+    if ( !desc ) {
+      toast.warning("Please input description!");
+      return false;
+    }
+    return true;
+  }
 
+  const handlePreview = useCallback(async (event) => {
+
+    if ( !checkCondition() ) return;
+
+    nav('/NewBounty/Preview',
+      {
+        state: {
+          title, payAmount, duration, type, difficulty, topic, desc, gitHub,
+          wallet: walletAddress,
+          status: BountyStatus.INIT,
+          startDate: Date.now(),
+          endDate: Date.now() + getDuration(duration) * SECS_PER_DAY * 1000,
+        }
+      });   
+
+    }, [walletAddress, title, payAmount, desc, duration, type, topic, difficulty])
+
+  const handleSubmit = useCallback(async (event) => {
+    // if (!isConnected) {
+    //   toast.warning("Wallet not connected yet!");
+    //   return;
+    // }
+
+    // const days = getDuration(duration);
+    // if (days === 0) {
+    //   toast.warning('Please select a duration!');
+    //   return;
+    // }
+
+    if ( !checkCondition() ) return;
+    
     // approve first
     const res1 = await approveToken(walletAddress, CONTRACT_ID, payAmount * 10000000);
     if (res1) {
@@ -217,19 +274,18 @@ const NewBountyBody = () => {
               <div className='col-md-4 pb-3'>
                 <div className='input-form-control'>
                   <div className="input-control border-0">
-                    {/* <button className='input-main' onClick={navigateToPreview}>Preview</button> */}
+                    <button className='input-main btn-hover text-white' onClick={handlePreview}>Preview</button>
                     {/* <Link
-                      to={`/NewBounty/Preview?payAmount=${payAmount}`}
-                      className='w-full text-center btn-hover'>Prevew</Link> */}
-                    <Link
                       to="/NewBounty/Preview"
                       state={{
-                        title, payAmount, duration, type, difficulty, topic, desc, gitHub, 
-                        wallet: walletAddress, status: BountyStatus.INIT, 
-                        startDate: Date.now(), endDate: Date.now() + getDuration(duration) * SECS_PER_DAY * 1000
+                        title, payAmount, duration, type, difficulty, topic, desc, gitHub,
+                        wallet: walletAddress,
+                        status: BountyStatus.INIT,
+                        startDate: Date.now(),
+                        endDate: Date.now() + getDuration(duration) * SECS_PER_DAY * 1000
                       }}
                       className='w-full text-center btn-hover'
-                    >Prevew</Link>
+                    >Prevew</Link> */}
                   </div>
                 </div>
               </div>

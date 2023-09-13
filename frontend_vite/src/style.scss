@@ -833,8 +833,8 @@ footer {
   font-weight: 500;
   padding: 15px 25px;
   width: fit-content;
-  background: linear-gradient(#013425, #013425) padding-box, linear-gradient(135deg, rgba(0, 245, 255, 1) 0%, rgba(0, 232, 125, 1) 87.58%, rgba(0, 230, 106, 1) 100%) border-box;
-  background-color: #013425;
+  background: linear-gradient(#011934, #011934) padding-box, linear-gradient(135deg, rgb(0, 132, 255) 0%, rgb(0, 93, 232) 87.58%, rgb(0, 92, 230) 100%) border-box;
+  background-color: #011134;
   border: solid 2px transparent;
   color: white;
   border-radius: 5rem;
@@ -847,7 +847,7 @@ footer {
   }
 
   &:hover {
-    background: linear-gradient(135deg, rgba(0, 245, 255, 1) 0%, rgba(0, 232, 125, 1) 87.58%, rgba(0, 230, 106, 1) 100%) border-box;
+    background: linear-gradient(135deg, rgba(0, 132, 255, 1) 0%, rgba(0, 93, 232, 1) 87.58%, rgba(0, 92, 230, 1) 100%) border-box;
     color: black;
     transition: all .5s;
   }

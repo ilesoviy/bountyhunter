@@ -1,21 +1,92 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { Scrollbars } from 'react-custom-scrollbars';
-import { Reveal } from 'react-awesome-reveal';
 import Subheader from '../../components/menu/SubHeader';
 import MainHeader from '../../components/menu/MainHeader';
-import { Link } from '@reach/router';
+import { toast } from "react-toastify";
 import HelpButton from '../../components/menu/HelpButton';
 import WarningMsg from '../../components/WarningMsg';
 import { Information } from '../../components/Information';
 import BackButton from '../../components/menu/BackButton';
 import { useNavigate, useLocation } from "@reach/router";
 import { useCustomWallet } from '../../context/WalletContext';
-import { numberWithCommas, IsSmMobile, fadeInUp, fadeIn, getUTCNow, getUTCDate, isEmpty, getStatus } from '../../utils';
+import { IsSmMobile, getStatus} from '../../utils';
+import useBounty from '../../hooks/useBounty';
 
 const PreviewBody = () => {
   const nav = useNavigate();
   const loc = useLocation();
-  const { isConnected } = useCustomWallet();
+  const { walletAddress, isConnected } = useCustomWallet();
+  const { CONTRACT_ID, DEF_PAY_TOKEN, approveToken, getLastError, countBounties, createBounty } = useBounty();
+  const {title, payAmount, duration, type, difficulty, topic, desc, gitHub } = loc.state;
+
+  function checkCondition() {
+    if (!isConnected) {
+      toast.warning("Wallet not connected yet!");
+      return false;
+    }
+    if (!title) {
+      toast.warning("Please input title!");
+      return false;
+    }
+    if (!payAmount) {
+      toast.warning("Please input amount!");
+      return false;
+    }
+    if ( !duration ) {
+      toast.warning("Please select duration!");
+      return false;
+    }
+    if ( !type ) {
+      toast.warning("Please select type!");
+      return false;
+    }
+    if ( !difficulty ) {
+      toast.warning("Please select difficulty!");
+      return false;
+    }
+    if ( !topic ) {
+      toast.warning("Please select topic!");
+      return false;
+    }
+    if ( !desc ) {
+      toast.warning("Please input description!");
+      return false;
+    }
+    return true;
+  }
+
+  const handleSubmit = useCallback(async (event) => {
+
+    if ( !checkCondition() ) return;
+    
+    // approve first
+    const res1 = await approveToken(walletAddress, CONTRACT_ID, payAmount * 10000000);
+    if (res1) {
+      toast.error('Failed to approve token!');
+      return;
+    }
+
+    const bountyIdOld = await countBounties();
+    const bountyIdNew = await createBounty(walletAddress, title, payAmount * 10000000, DEF_PAY_TOKEN, SECS_PER_DAY * days);
+    if (bountyIdOld === bountyIdNew) {
+      const error = await getLastError();
+      toast.error('Failed to create new bounty!');
+      console.error('error:', error);
+      return;
+    }
+
+    const res2 = await addBounty(walletAddress, bountyIdNew,
+      title, payAmount, SECS_PER_DAY * days,
+      type, difficulty, topic,
+      desc, gitHub,
+      /* block */111);
+    if (res2) {
+      toast.errpr('Failed to add bounty!');
+      return;
+    }
+
+    toast('Successfully added bounty!');
+  }, [walletAddress, title, payAmount, desc, duration, type, topic, difficulty]);
 
   return (
     <div className='app-content'>
@@ -42,7 +113,7 @@ const PreviewBody = () => {
                 nav('/NewBounty', { state: { ...loc.state } })
               }}
             >Edit</button>
-            <button className='text-[18px] w-full border rounded-2xl px-2 py-2 btn-hover mt-2'>Create Bounty</button>
+            <button className='text-[18px] w-full border rounded-2xl px-2 py-2 btn-hover mt-2' onClick={handleSubmit}>Create Bounty</button>
           </div>
         </div>
       </div>
@@ -51,16 +122,18 @@ const PreviewBody = () => {
 }
 
 const PreviewNewBounty = () => {
+  const loc = useLocation();
+
   return (
     <div className='full-container overflow-auto'>
       <div className='container'>
         <MainHeader />
         <div className='bounty-listing-container'>
           <Subheader />
-          <BackButton to="/NewBounty" />
+          <BackButton to="/NewBounty" state={{...loc.state}}/>
           <div className='app-header px-0 xl:items-center xsm:items-start sm:flex-col'>
             <div className='app-title'>
-              <p className='text-[40px] sm:text-center text-white pt-3'>Bounty Preview</p>
+              <p className='text-[40px] sm:text-center text-white pt-3'>{loc.state.title}</p>
             </div>
           </div>
           {IsSmMobile() ? (

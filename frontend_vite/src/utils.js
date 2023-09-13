@@ -326,3 +326,20 @@ export function getStatus(status) {
 export function getTimeDiff(from) {
   return '5 hours ago'  // ilesoviy
 }
+
+export function convertUTCDateToLocalDate(date) {
+  var newDate = new Date(date.getTime()+date.getTimezoneOffset()*60*1000);
+
+  var offset = date.getTimezoneOffset() / 60;
+  var hours = date.getHours();
+
+  newDate.setHours(hours - offset);
+
+  return newDate;   
+}
+
+export function getFormatedDate(timestamp) {
+  const num_time = parseInt(timestamp);
+  const date = new Date(num_time);
+  return moment.utc(convertUTCDateToLocalDate(date)).format("MMMM DD, YYYY, hh:mm A")
+}
