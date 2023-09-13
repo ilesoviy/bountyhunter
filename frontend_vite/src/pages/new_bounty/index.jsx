@@ -80,11 +80,45 @@ const NewBountyBody = () => {
     setGitHub(event.target.value);
   }, []);
 
-  const handlePreview = useCallback(async (event) => {
+  function checkCondition() {
     if (!isConnected) {
       toast.warning("Wallet not connected yet!");
-      return;
+      return false;
     }
+    if (!title) {
+      toast.warning("Please input title!");
+      return false;
+    }
+    if (!payAmount) {
+      toast.warning("Please input amount!");
+      return false;
+    }
+    if ( !duration ) {
+      toast.warning("Please select duration!");
+      return false;
+    }
+    if ( !type ) {
+      toast.warning("Please select type!");
+      return false;
+    }
+    if ( !difficulty ) {
+      toast.warning("Please select difficulty!");
+      return false;
+    }
+    if ( !topic ) {
+      toast.warning("Please select topic!");
+      return false;
+    }
+    if ( !desc ) {
+      toast.warning("Please input description!");
+      return false;
+    }
+    return true;
+  }
+
+  const handlePreview = useCallback(async (event) => {
+
+    if ( !checkCondition() ) return;
 
     nav('/NewBounty/Preview',
       {
@@ -93,24 +127,26 @@ const NewBountyBody = () => {
           wallet: walletAddress,
           status: BountyStatus.INIT,
           startDate: Date.now(),
-          endDate: Date.now() + getDuration(duration) * SECS_PER_DAY * 1000
+          endDate: Date.now() + getDuration(duration) * SECS_PER_DAY * 1000,
         }
-      });
+      });   
 
-  }, [walletAddress, title, payAmount, desc, duration, type, topic, difficulty])
+    }, [walletAddress, title, payAmount, desc, duration, type, topic, difficulty])
 
   const handleSubmit = useCallback(async (event) => {
-    if (!isConnected) {
-      toast.warning("Wallet not connected yet!");
-      return;
-    }
+    // if (!isConnected) {
+    //   toast.warning("Wallet not connected yet!");
+    //   return;
+    // }
 
-    const days = getDuration(duration);
-    if (days === 0) {
-      toast.warning('Please select a duration!');
-      return;
-    }
+    // const days = getDuration(duration);
+    // if (days === 0) {
+    //   toast.warning('Please select a duration!');
+    //   return;
+    // }
 
+    if ( !checkCondition() ) return;
+    
     // approve first
     const res1 = await approveToken(walletAddress, CONTRACT_ID, payAmount * 10000000);
     if (res1) {
