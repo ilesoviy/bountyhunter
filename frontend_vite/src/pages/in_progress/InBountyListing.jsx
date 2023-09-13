@@ -116,7 +116,7 @@ const InBountyListing = () => {
         </div>
         <div className='input-form-control mt-3'>
           <label className='input-label'>Description</label>
-          <div className="input-control h-[70px]">
+          <div className="input-control h-auto">
             <textarea type="text" name="desc" value={desc} className='input-main' onChange={handleDesc}></textarea>
           </div>
         </div>
