@@ -15,7 +15,8 @@ import useBackend from '../../hooks/useBackend';
 import { toast } from 'react-toastify';
 
 const ExBountyListingBody = ({bounty}) => {
-  const { applyBounty } = useBounty();
+  const { countWorks, applyBounty } = useBounty();
+  const { addWork } = useBackend();
   const { isConnected, walletAddress } = useCustomWallet();
 
   const onClickApply = useCallback(async (event) => {
@@ -33,14 +34,14 @@ const ExBountyListingBody = ({bounty}) => {
       return;
     }
 
-    const res2 = await addWork(walletAddress, bounty?.bountyId, workIdNew);
-    if (res2) {
+    const res = await addWork(walletAddress, bounty?.bountyId, workIdNew);
+    if (res) {
       toast.error('Failed to add work!');
       return;
     }
 
     toast('Successfully added work!');
-  }, []);
+  }, [isConnected, walletAddress]);
 
   return (
     <div className='app-content pb-0 pr-4'>

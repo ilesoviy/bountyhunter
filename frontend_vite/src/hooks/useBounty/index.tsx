@@ -146,6 +146,13 @@ const useBounty = () => {
         []
     );
 
+    const countWorks = useCallback(
+        async () => {
+            return await BountyHunter.countWorks();
+        }, 
+        []
+    );
+
     const parseResultXdr = (xdr) => {
         console.log('xdr:', xdr);
     }
@@ -316,6 +323,7 @@ const useBounty = () => {
 
         getLastError,
         countBounties,
+        countWorks,
 
         createBounty,
         applyBounty,

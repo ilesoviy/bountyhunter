@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Reveal } from 'react-awesome-reveal';
-import { fadeInUp, getWorkStatus } from '../utils';
+import { fadeInUp, shortenAddress, getWorkStatus, getTimeDifference } from '../utils';
 import useBackend from '../hooks/useBackend';
 
 export const Participant = ({bountyId}) => {
@@ -30,7 +30,7 @@ export const Participant = ({bountyId}) => {
           <div className='info-body'>
             {works?.map((work, idx) => (
               <div key={idx} className='flex justify-evenly items-center sm:text-center'>
-                <div className='flex my-2 text-[16px] '><span>{work?.participant.wallet} ({work?.participant.name})</span></div>
+                <div className='flex my-2 text-[16px] '><span>{shortenAddress(work?.participant.wallet)} ({work?.participant.name})</span></div>
                 <div className='flex my-2 text-[16px] '><span>{getWorkStatus(work?.status)}</span></div>
                 <div className='flex my-2 text-[16px] '><span>{getTimeDifference(work?.applyDate)}</span></div>
               </div>
