@@ -357,5 +357,5 @@ export function convertUTCDateToLocalDate(date) {
 export function getFormatedDate(timestamp) {
   const num_time = parseInt(timestamp);
   const date = new Date(num_time);
-  return moment.utc(convertUTCDateToLocalDate(date)).format("MMMM DD, YYYY, hh:mm A")
+  return moment(date).format("MMMM DD, YYYY, hh:mm A")
 }
