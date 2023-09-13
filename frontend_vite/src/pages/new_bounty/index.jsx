@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { Scrollbars } from 'react-custom-scrollbars';
 import { Reveal } from 'react-awesome-reveal';
 import { Link } from '@reach/router';
+import { toast } from "react-toastify";
 
 import Sidebar from '../../components/menu/SideBar';
 import Subheader from '../../components/menu/SubHeader';
@@ -17,10 +18,9 @@ import useBackend from '../../hooks/useBackend';
 
 const NewBountyBody = () => {
   const { walletAddress, isConnected } = useCustomWallet();
-  const { createBounty } = useBounty();
+  const { CONTRACT_ID, DEF_PAY_TOKEN, approveToken, getLastError, countBounties, createBounty } = useBounty();
   const { addBounty } = useBackend();
 
-  const DEF_PAY_TOKEN = 'd93f5c7bb0ebc4a9c8f727c5cebc4e41194d38257e1d0d910356b43bfc5288131'; // ilesoviy - ???
   const DEF_PAY_AMOUNT = 0;
   const SECS_PER_DAY = 24 * 60 * 60;
 
@@ -44,12 +44,12 @@ const NewBountyBody = () => {
     setPayAmount(event.target.value);
   }, []);
 
-  const onChangeType = useCallback((event) => {
-    setType(event.target.value);
-  }, []);
-
   const onChangeDuration = useCallback((event) => {
     setDuration(event.target.value);
+  }, []);
+
+  const onChangeType = useCallback((event) => {
+    setType(event.target.value);
   }, []);
 
   const onChangeDifficulty = useCallback((event) => {
@@ -79,35 +79,51 @@ const NewBountyBody = () => {
       } else  if (duration === '4') { // Less than 1 month
         return 31;
       } else {
-        console.log('Please select a duratin!');
         return 0;
       }
     }, 
     []
   );
 
-  const handleSubmit = useCallback((event) => {
+  const handleSubmit = useCallback(async(event) => {
+    if (!isConnected) {
+      toast.warning("Wallet not connected yet!");
+      return;
+    }
+
     const days = getDuration(duration);
     if (days === 0) {
+      toast.warning('Please select a duration!');
       return;
     }
 
-    const bountyId = createBounty(walletAddress, title, payAmount, DEF_PAY_TOKEN, SECS_PER_DAY * days);
-    if (bountyId === undefined) {
-      console.log('failed to create new bounty!');
+    // approve first
+    const res1 = await approveToken(walletAddress, CONTRACT_ID, payAmount * 10000000);
+    if (res1) {
+      toast.error('Failed to approve token!');
       return;
     }
 
-    const res = addBounty(bountyId, walletAddress, 
-      title, payAmount, desc, SECS_PER_DAY * days, 
-      type, topic, difficulty, 
+    const bountyIdOld = await countBounties();
+    const bountyIdNew = await createBounty(walletAddress, title, payAmount * 10000000, DEF_PAY_TOKEN, SECS_PER_DAY * days);
+    if (bountyIdOld === bountyIdNew) {
+      const error = await getLastError();
+      toast.error('Failed to create new bounty!');
+      console.error('error:', error);
+      return;
+    }
+
+    const res2 = await addBounty(walletAddress, bountyIdNew, 
+      title, payAmount, SECS_PER_DAY * days, 
+      type, difficulty, topic, 
+      desc, gitHub, 
       /* block */111);
-    if (!res) {
-      console.log('failed to add bounty!');
+    if (res2) {
+      toast.errpr('Failed to add bounty!');
       return;
     }
 
-    console.log('successfully added bounty!');
+    toast('Successfully added bounty!');
   }, [walletAddress, title, payAmount, desc, duration, type, topic, difficulty]);
 
   return (

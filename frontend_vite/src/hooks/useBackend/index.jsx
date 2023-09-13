@@ -1,4 +1,5 @@
 import { useCallback, useEffect } from 'react';
+import * as BountyHunter from 'bountyhunter';
 
 const useBackend = () => {
     const BACKEND_URL = 'http://95.217.63.156/bounty/';
@@ -73,7 +74,7 @@ const useBackend = () => {
     );
 
     const addBounty = useCallback(
-        async (wallet, bountyId, title, payAmount, desc, duration, type, topic, difficulty, block) => {
+        async (wallet, bountyId, title, payAmount, duration, type, difficulty, topic, desc, gitHub, block) => {
             try {
                 const res = await fetch(BACKEND_URL + 'add_bounty', {
                     method: 'POST',
@@ -85,24 +86,30 @@ const useBackend = () => {
                         'bountyId': bountyId,
                         'title': title,
                         'payAmount': payAmount,
-                        'description': desc,
                         'duration': duration,
                         'type': type,
-                        'topoic': topic,
                         'difficulty': difficulty,
-                        'block': block
+                        'topic': topic,
+                        'description': desc,
+                        'gitHub': gitHub,
+                        'block': block, 
+                        'status': BountyHunter.BountyStatus.ACTIVE
                     })
                 });
     
                 const resData = await res.json();
                 if (resData.error) {
                     console.error('error1:', resData.error);
+                    return -1;
                 } else {
                     console.log(resData.details);
+                    return 0;
                 }
             } catch (error) {
                 console.error('error2:', error);
             }
+
+            return -2;
         }, 
         []
     );

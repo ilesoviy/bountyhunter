@@ -1,10 +1,11 @@
-import { createContext, useContext, useState, useEffect, useCallback, useMemo } from 'react';
+import { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import { useGlobal } from '../GlobalContext';
 import { useCustomWallet } from '../WalletContext';
-import * as BountyHunter from 'bountyhunter';
+// import * as BountyHunter from 'bountyhunter';
+import * as SorobanClient from 'soroban-client';
 
 
-export const ContractContext = createContext()
+export const ContractContext = createContext();
 
 export const ContractProvider = ({ children }) => {
     const { chainId } = useGlobal();
@@ -50,11 +51,14 @@ export const ContractProvider = ({ children }) => {
     //     chainId === 169 ? "https://horizon.stellar.org" : "https://horizon-futurenet.stellar.org"
     // )
 
-    // async function executeTransaction(operation: SorobanClient.xdr.Operation): Promise<Number> {
-    //     const sourceAcc = await server.getAccount(address);
+    // async function executeTransaction(operation) {
+        
+    //     console.log('walletAddress:', walletAddress);
+
+    //     const sourceAcc = await server.getAccount(walletAddress);
 
     //     const transaction0 = new SorobanClient.TransactionBuilder(sourceAcc, {
-    //         fee: BASE_FEE,
+    //         fee: SorobanClient.BASE_FEE,
     //         networkPassphrase: SorobanClient.Networks.FUTURENET,
     //     })
     //         .addOperation(operation)
@@ -67,7 +71,7 @@ export const ContractProvider = ({ children }) => {
     //     const signedTx = await signTransaction(txXDR, {
     //         network: 'FUTURENET',
     //         networkPassphrase: SorobanClient.Networks.FUTURENET,
-    //         accountToSign: pubKey,
+    //         accountToSign: walletAddress,
     //     });
     //     const txEnvelope = SorobanClient.xdr.TransactionEnvelope.fromXDR(signedTx, 'base64');
     //     const tx = new SorobanClient.Transaction(txEnvelope, SorobanClient.Networks.FUTURENET);
@@ -113,52 +117,37 @@ export const ContractProvider = ({ children }) => {
     // const setAdmin = useCallback(
     //     async (oldAdmin, newAdmin) => {
     //         const contract = new SorobanClient.Contract(BountyHunter.CONTRACT_ID);
-
     //         const res = await executeTransaction(
     //             contract.call("set_admin",
     //                 SorobanClient.xdr.ScVal.scvAddress(oldAdmin),
     //                 SorobanClient.xdr.ScVal.scvAddress(newAdmin)
     //             ));
-
     //         console.log('result:', res);
     //     },
     //     [chainId]
     // );
 
-    const setAdmin = useCallback(
-        (oldAdmin, newAdmin) => {
-            BountyHunter.invoke({
-                method: "set_admin", 
-                args: [
-                    oldAdmin, 
-                    newAdmin
-                ]
-            });
-        }, 
-        [chainId]
-    );
-
-    const setFee = useCallback(
-        (admin, feeRate, feeWallet) => {
-            BountyHunter.invoke({
-                method: "set_fee", 
-                args: [
-                    admin, 
-                    feeRate, 
-                    feeWallet
-                ]
-            });
-        }, 
-        [chainId]
-    );
+    // const setFee = useCallback(
+    //     async (admin, feeRate, feeWallet) => {
+    //         const contract = new SorobanClient.Contract(BountyHunter.CONTRACT_ID);
+    //         const res = await executeTransaction(
+    //             contract.call("set_fee",
+    //                 SorobanClient.xdr.ScVal.scvAddress(admin),
+    //                 SorobanClient.xdr.ScVal.scvU64(new SorobanClient.xdr.UInt64(feeRate)),
+    //                 SorobanClient.xdr.ScVal.scvAddress(feeWallet),
+    //             ));
+    //         console.log('result:', res);
+    //     }, 
+    //     [chainId]
+    // );
 
     return (
         <ContractContext.Provider value={{
             reloadCounter,
             refreshPages,
             // executeTransaction,
-            setAdmin,
-            setFee
+            // setAdmin,
+            // setFee
         }}>
             {children}
         </ContractContext.Provider>

@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Scrollbars } from 'react-custom-scrollbars';
 import { Reveal } from 'react-awesome-reveal';
+import { toast } from "react-toastify";
 
 import Sidebar from '../../components/menu/SideBar';
 import { IsSmMobile, numberWithCommas, fadeInUp, fadeIn } from '../../utils';
@@ -29,15 +30,16 @@ const SettingsBody = () => {
   }, []);
   const handleSave = useCallback((event) => {
     if (!isConnected) {
-      console.log('Not connected!');
+      toast.warning(`Wallet not connected yet!`);
       return;
     }
 
     if (!setUser(walletAddress, name, github, discord)) {
-      console.log('Failed to set user information!');
+      toast.error('Failed to save user information!');
       return;
     }
-    console.log('Set user information!');
+
+    toast('Saved user information!');
   }, [isConnected, walletAddress, name, github, discord]);
 
   useEffect(() => {
