@@ -1,31 +1,52 @@
-import React, { useState, useCallback, useRef } from 'react';
+import React, { useState, useCallback, useRef, useEffect } from 'react';
 import { Scrollbars } from 'react-custom-scrollbars';
 import { Reveal } from 'react-awesome-reveal';
 import SideBar from '../../components/menu/SideBar';
 import SubHeader from '../../components/menu/SubHeader';
 import { IsSmMobile, fadeInUp, fadeIn, getUTCNow, getUTCDate, isEmpty } from '../../utils';
 import MainHeader from '../../components/menu/MainHeader';
-import ExBountiesBody from './ExBountiesBody';
+import ExBounty from './ExBounty';
 import HelpButton from '../../components/menu/HelpButton';
 
+import { useCustomWallet } from '../../context/WalletContext';
+import useBackend from '../../hooks/useBackend';
+
+
 const ExploreBounty = () => {
+
+  const { walletAddress, isConnected } = useCustomWallet();
+
+  const { getRecentBounties } = useBackend();
+  const [bounties, setBounties] = useState([]);
 
   const [keyword, setKeyword] = useState('');
 
   const [isSearchShow, setSearchShow] = useState(false);
+
   const [isClosed, setClosed] = useState(false);
   const [isActive, setActive] = useState(false);
+
   const [isCompe, setComp] = useState(false);
   const [isCoop, setCoop] = useState(false);
   const [isHack, setHack] = useState(false);
+
   const [isBegin, setBegin] = useState(false);
   const [isInter, setInter] = useState(false);
   const [isAdvan, setAdvan] = useState(false);
+
   const [isDesig, setDesig] = useState(false);
   const [isDevel, setDevel] = useState(false);
   const [isSmtCt, setSmtCt] = useState(false);
   const [isData, setData] = useState(false);
   const [isAI, setAI] = useState(false);
+
+  const handleSearchShow = useCallback(() => {
+    setSearchShow(isSearchShow => !isSearchShow);
+  }, []);
+  
+  const handleKeyword = useCallback((event) => {
+    setKeyword(event.target.value);
+  }, []);
 
   const handleClosed = useCallback(() => {
     setClosed(isClosed => !isClosed);
@@ -33,6 +54,7 @@ const ExploreBounty = () => {
   const handleActive = useCallback(() => {
     setActive(isActive => !isActive);
   }, []);
+
   const handleComp = useCallback(() => {
     setComp(isCompe => !isCompe);
   }, []);
@@ -42,6 +64,7 @@ const ExploreBounty = () => {
   const handleHack = useCallback(() => {
     setHack(isHack => !isHack);
   }, []);
+
   const handleBegin = useCallback(() => {
     setBegin(isBegin => !isBegin);
   }, []);
@@ -51,6 +74,7 @@ const ExploreBounty = () => {
   const handleAdvan = useCallback(() => {
     setAdvan(isAdvan => !isAdvan);
   }, []);
+
   const handleDesig = useCallback(() => {
     setDesig(isDesig => !isDesig);
   }, []);
@@ -66,14 +90,17 @@ const ExploreBounty = () => {
   const handleAI = useCallback(() => {
     setAI(isAI => !isAI);
   }, []);
-  const handleSearchShow = useCallback(() => {
-    setSearchShow(isSearchShow => !isSearchShow);
-  }, []);
-  const handleKeyword = useCallback((event) => {
-    setKeyword(event.target.value);
-  }, []);
 
   const searchbox = useRef(null);
+
+  useEffect(() => {
+    async function fetchRecentBounties() {
+      const recentBounties = await getRecentBounties();
+      console.log('recentBounties:', recentBounties);
+      setBounties(recentBounties);
+    }
+    fetchRecentBounties();
+  }, []);
 
   return (
     <div className='full-container' >
@@ -86,7 +113,7 @@ const ExploreBounty = () => {
             <Reveal keyframes={fadeInUp} className='onStep' delay={0} duration={800} triggerOnce>
               <div className='app-title'>
                 <p className='text-[40px] lg:text-[32px] md:text-[24px] text-white'>Explore Bounties</p>
-                <p className='text-[16px] app-gray'><span className='app-color'>3</span> Results </p>
+                <p className='text-[16px] app-gray'><span className='app-color'>{bounties?.length}</span> Results </p>
               </div>
             </Reveal>
             {/* SearchBox start */}
@@ -155,13 +182,23 @@ const ExploreBounty = () => {
           </div>
           <div className={`app-content ${isSearchShow ? 'blur-sm' : ''}`}>
             {IsSmMobile() ? (
-              <ExBountiesBody />
+              <div>
+                {bounties?.map((item, idx) => {
+                  return (
+                    <ExBounty bounty={item}/>
+                  );
+                })}
+              </div>
             ) : (
               <Scrollbars id='body-scroll-bar' autoHide style={{ height: "100%" }}
                 renderThumbVertical={({ style, ...props }) =>
                   <div {...props} className={'thumb-horizontal'} />
                 }>
-                <ExBountiesBody />
+                  <div>
+                    {bounties?.map((item, idx) => 
+                      <ExBounty key={idx} bounty={item}/>
+                    )}
+                  </div>
               </Scrollbars>
             )}
           </div>

@@ -242,3 +242,87 @@ export const isEmpty = value =>
   value === null ||
   (typeof value === "object" && Object.keys(value).length === 0) ||
   (typeof value === "string" && value.trim().length === 0);
+
+/* Added on 2023/09/13 */
+export const shortenAddress = (addr) => {
+  return addr?.slice(0, 4) + '...' + addr?.slice(-4);
+}
+
+export function getDuration(duration) {
+  switch (duration) {
+    case 1: // More than 6 months
+      return 365
+    case 2: // 3~6 months
+      return 183
+    case 3: // 1~3 months
+      return 92
+    case 4: // Less than 1 month
+      return 31
+    default:
+      return 0
+  }
+}
+
+export function getType(type) {
+  switch (type) {
+    case 1:
+      return 'Competitive'
+    case 2:
+      return 'Cooperative'
+    case 3:
+      return 'Hakathon'
+    default:
+      return 'Unknown type'
+  }
+}
+
+export function getLevel(difficulty) {
+  switch (difficulty) {
+    case 1:
+      return 'Beginner'
+    case 2:
+      return 'Intermediate'
+    case 3:
+      return 'Advanced'
+    default:
+      return 'Unknown level'
+  }
+}
+
+export function getTopic(topic) {
+  switch (topic) {
+    case 1:
+      return 'Design'
+    case 2:
+      return 'Development'
+    case 3:
+      return 'Smart Contracts'
+    case 4:
+      return 'Data'
+    case 5:
+      return 'AI'
+    default:
+      return 'Unknown topic'
+  }
+}
+
+export function getStatus(status) {
+  switch (status) {
+    case 0:
+      return 'INIT'
+    case 1:
+      return 'ACTIVE'
+    case 2:
+      return 'CANCELLED'
+    case 3:
+      return 'COMPLETE'
+    case 4:
+      return 'CLOSED'
+    default:
+      return 'Unknown status'
+  }
+}
+
+export function getTimeDiff(from) {
+  return '5 hours ago'
+}

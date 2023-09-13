@@ -1,43 +1,9 @@
 import { Reveal } from 'react-awesome-reveal';
-import { fadeInUp } from '../utils';
+import { fadeInUp, shortenAddress, getType, getLevel, getTopic, getStatus } from '../utils';
 
 export const Information = ({
-    title, payAmount, duration, type, difficulty, topic, desc, gitHub
+    wallet, title, payAmount, duration, type, difficulty, topic, desc, gitHub, status, startDate, endDate
 }) => {
-    function getType() {
-        switch(type) {
-            case '1':
-                return 'Competitive'
-            case '2':
-                return 'Cooperative'
-            case '3':
-                return 'Hakathon'
-        }
-    }
-    function getLevel() {
-        switch(difficulty) {
-            case '1':
-                return 'Beginner'
-            case '2':
-                return 'Intermediate'
-            case '3':
-                return 'Advanced'
-        }
-    }
-    function getTopic() {
-        switch(topic) {
-            case '1':
-                return 'Design'
-            case '2':
-                return 'Development'
-            case '3':
-                return 'Smart Contracts'
-            case '4':
-                return 'Data'
-            case '5':
-                return 'AI'
-        }
-    }
     return (
         <div className=''>
             <Reveal keyframes={fadeInUp} className='onStep' delay={0} duration={800} triggerOnce>
@@ -50,9 +16,8 @@ export const Information = ({
                             <span className='text-[16px] font-bold'>Published by:</span>
                             <div className='flex items-center justify-center'>
                                 <img src={'/images/banner/user.png'} className='h-[20px]' alt="" />
-                                <span className='text-[16px] '>GAD...RARW</span>
+                                <span className='text-[16px] '>{shortenAddress(wallet)}</span>
                             </div>
-
                         </div>
                         <div className='flex justify-between items-center gap-3'>
                             <span className='text-[16px] font-bold'>Payment:</span>
@@ -60,15 +25,15 @@ export const Information = ({
                         </div>
                         <div className='flex justify-between items-center gap-3'>
                             <span className='text-[16px] font-bold'>Status</span>
-                            <span className='text-[16px]'>Active</span>
+                            <span className='text-[16px]'>{getStatus(status)}</span>
                         </div>
                         <div className='flex justify-between items-center gap-3'>
                             <span className='text-[16px] font-bold'>Start Date:</span>
-                            <span className='text-[16px]'>January 1, 2024, 5:00 AM</span>
+                            <span className='text-[16px]'>{Date(startDate)}</span>
                         </div>
                         <div className='flex justify-between items-center gap-3'>
                             <span className='text-[16px] font-bold'>End Date:</span>
-                            <span className='text-[16px]'>January 1, 2024, 5:00 AM</span>
+                            <span className='text-[16px]'>{Date(endDate)}</span>
                         </div>
                         <div className='flex justify-between items-center gap-3'>
                             <span className='text-[16px] font-bold'>Block</span>
@@ -76,15 +41,15 @@ export const Information = ({
                         </div>
                         <div className='flex justify-between items-center gap-3'>
                             <span className='text-[16px] font-bold'>Level:</span>
-                            <span className='text-[16px]'>{getLevel()}</span>
+                            <span className='text-[16px]'>{getLevel(difficulty)}</span>
                         </div>
                         <div className='flex justify-between items-center gap-3'>
                             <span className='text-[16px] font-bold'>Topic:</span>
-                            <span className='text-[16px] '>{getTopic()}</span>
+                            <span className='text-[16px] '>{getTopic(topic)}</span>
                         </div>
                         <div className='flex justify-between items-center gap-3'>
                             <span className='text-[16px] font-bold'>Type:</span>
-                            <span className='text-[16px]'>{getType()}</span>
+                            <span className='text-[16px]'>{getType(type)}</span>
                         </div>
                         <div className='flex justify-between sm:text-center items-center gap-3'>
                             <span className='text-[18px]'>Repository:</span>

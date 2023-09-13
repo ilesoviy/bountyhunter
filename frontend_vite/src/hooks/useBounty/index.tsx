@@ -12,6 +12,15 @@ const {
     signTransaction,
 } = freighter;
 
+export enum BountyStatus {
+    INIT = BountyHunter.BountyStatus.INIT,
+    ACTIVE = BountyHunter.BountyStatus.ACTIVE,
+    CANCELLED = BountyHunter.BountyStatus.CANCELLED,
+    COMPLETE = BountyHunter.BountyStatus.COMPLETE,
+    CLOSED = BountyHunter.BountyStatus.CLOSED
+}
+
+
 const useBounty = () => {
     const { chainId } = useGlobal();
     // const { walletAddress } = useCustomWallet();

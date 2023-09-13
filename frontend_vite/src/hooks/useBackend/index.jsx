@@ -1,5 +1,5 @@
 import { useCallback, useEffect } from 'react';
-import * as BountyHunter from 'bountyhunter';
+import {BountyStatus} from '../../hooks/useBounty';
 
 const useBackend = () => {
     const BACKEND_URL = 'http://95.217.63.156/bounty/';
@@ -93,7 +93,7 @@ const useBackend = () => {
                         'description': desc,
                         'gitHub': gitHub,
                         'block': block, 
-                        'status': BountyHunter.BountyStatus.ACTIVE
+                        'status': BountyStatus.ACTIVE
                     })
                 });
     
@@ -114,10 +114,39 @@ const useBackend = () => {
         []
     );
 
+    const getRecentBounties = useCallback(
+        async () => {
+            try {
+                const res = await fetch(BACKEND_URL + 'get_recent_bounties', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }
+                });
+    
+                const resData = await res.json();
+                if (resData.error) {
+                    console.error('error1:', resData.error);
+                    return [];
+                } else {
+                    console.log(resData.details);
+                    return resData.bounties;
+                }
+            } catch (error) {
+                console.error('error2:', error);
+            }
+
+            return [];
+        }, 
+        []
+    );
+
     return {
         getUser, 
-        setUser,
-        addBounty
+        setUser, 
+
+        addBounty, 
+        getRecentBounties
     }
 }
 

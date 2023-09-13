@@ -2,7 +2,6 @@ import React, { useState, useCallback, useEffect } from 'react';
 import { Scrollbars } from 'react-custom-scrollbars';
 import { Reveal } from 'react-awesome-reveal';
 import Subheader from '../../components/menu/SubHeader';
-import { numberWithCommas, IsSmMobile, fadeInUp, fadeIn, getUTCNow, getUTCDate, isEmpty } from '../../utils';
 import MainHeader from '../../components/menu/MainHeader';
 import { Link } from '@reach/router';
 import HelpButton from '../../components/menu/HelpButton';
@@ -11,6 +10,7 @@ import { Information } from '../../components/Information';
 import BackButton from '../../components/menu/BackButton';
 import { useNavigate, useLocation } from "@reach/router";
 import { useCustomWallet } from '../../context/WalletContext';
+import { numberWithCommas, IsSmMobile, fadeInUp, fadeIn, getUTCNow, getUTCDate, isEmpty, getStatus } from '../../utils';
 
 const PreviewBody = () => {
   const nav = useNavigate();
@@ -23,7 +23,7 @@ const PreviewBody = () => {
         <div className='col-lg-7 pr-3 pt-7'>
           <div className='flex justify-between sm:items-center pt-2 pb-3'>
             <div className='flex flex-col'>
-              <button className='text-[18px] border rounded-2xl px-4'>Active</button>
+              <button className='text-[18px] border rounded-2xl px-4'>{getStatus(loc.state.status)}</button>
             </div>
             <div className='flex'>
               <button className='text-[18px] mr-2'><i className="fa-regular fa-arrow-up-from-square mr-2"></i>Share</button>
