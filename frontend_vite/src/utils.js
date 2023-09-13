@@ -2,6 +2,8 @@ import moment from "moment";
 import { keyframes } from "@emotion/react";
 import { useMediaQuery } from 'react-responsive';
 
+export const SECS_PER_DAY = 24 * 60 * 60;
+
 export const fadeInUp = keyframes`
   0% {
     opacity: 0;
@@ -125,13 +127,13 @@ export function scrollTo(scrollableElement, elmID) {
 
 export function getTimeDifference(date) {
   let difference =
-    moment(new Date(), "DD/MM/YYYY HH:mm:ss").diff(
-      moment(date, "DD/MM/YYYY HH:mm:ss")
+    moment(new Date(), "YYYY-MM-DD HH:mm:ss").diff(
+      moment(date, "YYYY-MM-DD HH:mm:ss")
     ) / 1000;
 
   if (difference < 60) return `${Math.floor(difference)} seconds`;
   else if (difference < 3600) return `${Math.floor(difference / 60)} minutes`;
-  else if (difference < 86400) return `${Math.floor(difference / 3660)} hours`;
+  else if (difference < 86400) return `${Math.floor(difference / 3600)} hours`;
   else if (difference < 86400 * 30)
     return `${Math.floor(difference / 86400)} days`;
   else if (difference < 86400 * 30 * 12)
@@ -321,10 +323,6 @@ export function getStatus(status) {
     default:
       return 'Unknown status'
   }
-}
-
-export function getTimeDiff(from) {
-  return '5 hours ago'  // ilesoviy
 }
 
 export function convertUTCDateToLocalDate(date) {
