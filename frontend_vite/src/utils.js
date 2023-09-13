@@ -324,5 +324,5 @@ export function getStatus(status) {
 }
 
 export function getTimeDiff(from) {
-  return '5 hours ago'
+  return '5 hours ago'  // ilesoviy
 }

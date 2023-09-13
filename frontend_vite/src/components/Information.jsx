@@ -16,7 +16,7 @@ export const Information = ({
                             <span className='text-[16px] font-bold'>Published by:</span>
                             <div className='flex items-center justify-center'>
                                 <img src={'/images/banner/user.png'} className='h-[20px]' alt="" />
-                                <span className='text-[16px] '>{shortenAddress(wallet)}</span>
+                                <span className='text-[16px] '>{wallet ? shortenAddress(wallet) : ''}</span>
                             </div>
                         </div>
                         <div className='flex justify-between items-center gap-3'>
