@@ -127,8 +127,8 @@ export function scrollTo(scrollableElement, elmID) {
 
 export function getTimeDifference(date) {
   let difference =
-    moment(new Date(), "YYYY-MM-DD HH:mm:ss").diff(
-      moment(date, "YYYY-MM-DD HH:mm:ss")
+    moment(new Date(), "DD/MM/YYYY HH:mm:ss").diff(
+      moment( new Date(date), "DD/MM/YYYY HH:mm:ss")
     ) / 1000;
 
   if (difference < 60) return `${Math.floor(difference)} seconds`;
@@ -323,6 +323,10 @@ export function getStatus(status) {
     default:
       return 'Unknown status'
   }
+}
+
+export function getTimeDiff(from) {
+  return '5 hours ago'
 }
 
 export function convertUTCDateToLocalDate(date) {

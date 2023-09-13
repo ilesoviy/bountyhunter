@@ -38,7 +38,7 @@ const ExBounty = ({bounty}) => {
               <div className='app-card-footer'>
                 <div className='flex justify-between sm:text-[10px] sm:text-center items-center'>
                   <div className='flex flex-col'>
-                    <span className='app-gray text-[14px]'>{getTimeDifference(bounty?.startDate)}</span>
+                    <span className='app-gray text-[14px]'>{getTimeDifference(bounty?.startDate)} ago</span>
                   </div>
                   <div className='flex flex-col'>
                     <div className='flex flex-row space-x-2'>
