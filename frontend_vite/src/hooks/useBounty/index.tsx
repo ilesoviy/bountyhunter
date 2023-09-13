@@ -20,6 +20,14 @@ export enum BountyStatus {
     CLOSED = BountyHunter.BountyStatus.CLOSED
 }
 
+export enum WorkStatus {
+    IN_PROGRESS = BountyHunter.WorkStatus.INIT,
+    APPLIED = BountyHunter.WorkStatus.APPLIED,
+    SUBMITTED = BountyHunter.WorkStatus.SUBMITTED,
+    APPROVED = BountyHunter.WorkStatus.APPROVED,
+    REJECTED = BountyHunter.WorkStatus.REJECTED
+}
+
 
 const useBounty = () => {
     const { chainId } = useGlobal();
@@ -112,7 +120,7 @@ const useBounty = () => {
             const res = await executeTransaction(
                 tokenContract.call("approve", 
                     new SorobanClient.Address(from).toScVal(), // from
-                    new SorobanClient.Address(spender).toScVal(), // to
+                    new SorobanClient.Address(spender).toScVal(), // spender
                     SorobanClient.nativeToScVal(Number(payAmount * 2), { type: 'i128' }), // double payAmount for fee
                     SorobanClient.xdr.ScVal.scvU32(2000000) // expiration_ledger
                 ),
@@ -295,7 +303,7 @@ const useBounty = () => {
 
     const tokenBalances = useCallback(
         async (account, token) => {
-            return await BountyHunter.countBounties(account, token);
+            return await BountyHunter.tokenBalances(account, token);
         }, 
         []
     );

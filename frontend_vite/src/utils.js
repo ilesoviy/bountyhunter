@@ -1,6 +1,7 @@
 import moment from "moment";
 import { keyframes } from "@emotion/react";
 import { useMediaQuery } from 'react-responsive';
+import { BountyStatus, WorkStatus } from './hooks/useBounty';
 
 export const SECS_PER_DAY = 24 * 60 * 60;
 
@@ -308,18 +309,35 @@ export function getTopic(topic) {
   }
 }
 
-export function getStatus(status) {
+export function getBountyStatus(status) {
   switch (status) {
-    case 0:
+    case BountyStatus.INIT:
       return 'INIT'
-    case 1:
+    case BountyStatus.ACTIVE:
       return 'ACTIVE'
-    case 2:
+    case BountyStatus.CANCELLED:
       return 'CANCELLED'
-    case 3:
+    case BountyStatus.COMPLETE:
       return 'COMPLETE'
-    case 4:
+    case BountyStatus.CLOSED:
       return 'CLOSED'
+    default:
+      return 'Unknown status'
+  }
+}
+
+export function getWorkStatus(status) {
+  switch (status) {
+    case WorkStatus.IN_PROGRESS:
+      return 'IN PROGRESS'
+    case WorkStatus.APPLIED:
+      return 'APPLIED'
+    case WorkStatus.SUBMITTED:
+      return 'SUBMITTED'
+    case WorkStatus.APPROVED:
+      return 'APPROVED'
+    case WorkStatus.REJECTED:
+      return 'REJECTED'
     default:
       return 'Unknown status'
   }

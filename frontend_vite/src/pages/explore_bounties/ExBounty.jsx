@@ -1,6 +1,6 @@
 import { Reveal } from 'react-awesome-reveal';
 import { numberWithCommas, IsSmMobile, fadeInUp, fadeIn, getUTCNow, getUTCDate, isEmpty, 
-  shortenAddress, getStatus, getType, getLevel, getTopic, getTimeDifference } from '../../utils';
+  shortenAddress, getBountyStatus, getType, getLevel, getTopic, getTimeDifference } from '../../utils';
 import { useNavigate } from "@reach/router";
 
 const ExBounty = ({bounty}) => {
@@ -24,7 +24,7 @@ const ExBounty = ({bounty}) => {
                   <div className='flex flex-col'>
                     <div className='flex flex-row space-x-2 '>
                       <div className='flex-col app-gray justify-around xsm:flex-col xsm:text-center border rounded-2xl px-2'> {`${numberWithCommas(bounty?.payAmount, 3)} XLM`}</div>
-                      <div className='flex-col app-gray justify-around xsm:flex-col xsm:text-center border rounded-2xl px-2'>{getStatus(bounty?.status)}</div>
+                      <div className='flex-col app-gray justify-around xsm:flex-col xsm:text-center border rounded-2xl px-2'>{getBountyStatus(bounty?.status)}</div>
                     </div>
                   </div>
                 </div>

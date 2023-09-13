@@ -8,10 +8,40 @@ import { ListingDescription } from '../../components/ListingDescription';
 import { Information } from '../../components/Information';
 import { Participant } from '../../components/Participant';
 import BackButton from '../../components/menu/BackButton';
-import useBackend from '../../hooks/useBackend';
 import { useParams } from '@reach/router';
+import { useCustomWallet } from '../../context/WalletContext';
+import useBounty from '../../hooks/useBounty';
+import useBackend from '../../hooks/useBackend';
+import { toast } from 'react-toastify';
 
 const ExBountyListingBody = ({bounty}) => {
+  const { applyBounty } = useBounty();
+  const { isConnected, walletAddress } = useCustomWallet();
+
+  const onClickApply = useCallback(async (event) => {
+    if (!isConnected) {
+      toast.warning('Wallet not connected yet!');
+      return;
+    }
+
+    const workIdOld = await countWorks();
+    const workIdNew = await applyBounty(walletAddress, bounty?.bountyId);
+    if (workIdOld === workIdNew) {
+      const error = await getLastError();
+      toast.error('Failed to apply to bounty!');
+      console.error('error:', error);
+      return;
+    }
+
+    const res2 = await addWork(walletAddress, bounty?.bountyId, workIdNew);
+    if (res2) {
+      toast.error('Failed to add work!');
+      return;
+    }
+
+    toast('Successfully added work!');
+  }, []);
+
   return (
     <div className='app-content pb-0 pr-4'>
       {!IsSmMobile() ?
@@ -26,14 +56,14 @@ const ExBountyListingBody = ({bounty}) => {
               payAmount = {bounty?.payAmount} 
               type = {bounty?.type} 
               difficulty = {bounty?.difficulty} 
-              topic = {bounty?.topoic} 
+              topic = {bounty?.topic} 
               gitHub = {bounty?.gitHub} 
               startDate = {Date.parse(bounty?.startDate)} 
               endDate = {Date.parse(bounty?.endDate)} 
               status = {bounty?.status}
             />
             <div className='w-full my-2 py-3'>
-              <button className='text-[18px] w-full border rounded-2xl px-2 py-2 btn-hover' >Apply</button>
+              <button className='text-[18px] w-full border rounded-2xl px-2 py-2 btn-hover' onClick={onClickApply}>Apply</button>
             </div>
           </div>
         </div> :
@@ -51,7 +81,7 @@ const ExBountyListingBody = ({bounty}) => {
             />
           <Participant bountyId={bounty.bountyId} />
           <div className='w-full my-2 py-3'>
-            <button className='text-[18px] w-full border rounded-2xl px-2 py-2 btn-hover' >Apply</button>
+            <button className='text-[18px] w-full border rounded-2xl px-2 py-2 btn-hover' onClick={onClickApply}>Apply</button>
           </div>
         </div>}
       <HelpButton />

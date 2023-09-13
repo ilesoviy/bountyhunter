@@ -1,5 +1,5 @@
 import { useCallback, useEffect } from 'react';
-import {BountyStatus} from '../../hooks/useBounty';
+import {BountyStatus, WorkStatus} from '../../hooks/useBounty';
 
 const useBackend = () => {
     const BACKEND_URL = 'http://95.217.63.156/bounty/';
@@ -197,6 +197,39 @@ const useBackend = () => {
         }
     );
 
+    const addWork = useCallback(
+        async (wallet, bountyId, workId) => {
+            try {
+                const res = await fetch(BACKEND_URL + 'add_work', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        'wallet': wallet,
+                        'bountyId': bountyId,
+                        'workId': workId,
+                        'applyDate': Date.now(),
+                        'status': WorkStatus.IN_PROGRESS
+                    })
+                });
+    
+                const resData = await res.json();
+                if (resData.error) {
+                    console.error('error1:', resData.error);
+                    return -1;
+                } else {
+                    console.log(resData.details);
+                    return 0;
+                }
+            } catch (error) {
+                console.error('error2:', error);
+            }
+
+            return -2;
+        }
+    );
+
     return {
         getUser, 
         setUser, 
@@ -205,7 +238,8 @@ const useBackend = () => {
         getRecentBounties,
         getSingleBounty, 
 
-        getWorks
+        getWorks, 
+        addWork
     }
 }
 

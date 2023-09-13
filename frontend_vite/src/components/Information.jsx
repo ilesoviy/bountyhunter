@@ -1,6 +1,6 @@
 import { Reveal } from 'react-awesome-reveal';
 import moment from "moment";
-import { fadeInUp, shortenAddress, getType, getLevel, getTopic, getStatus, getFormatedDate } from '../utils';
+import { fadeInUp, shortenAddress, getType, getLevel, getTopic, getBountyStatus, getFormatedDate } from '../utils';
 
 export const Information = ({
     wallet, payAmount, type, difficulty, topic, gitHub, status, startDate, endDate
@@ -26,7 +26,7 @@ export const Information = ({
                         </div>
                         <div className='flex justify-between items-center gap-3'>
                             <span className='text-[16px] font-bold'>Status</span>
-                            <span className='text-[16px]'>{getStatus(status)}</span>
+                            <span className='text-[16px]'>{getBountyStatus(status)}</span>
                         </div>
                         <div className='flex justify-between items-center gap-3'>
                             <span className='text-[16px] font-bold'>Start Date:</span>

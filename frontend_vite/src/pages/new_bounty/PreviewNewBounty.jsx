@@ -9,7 +9,7 @@ import { Information } from '../../components/Information';
 import BackButton from '../../components/menu/BackButton';
 import { useNavigate, useLocation } from "@reach/router";
 import { useCustomWallet } from '../../context/WalletContext';
-import { SECS_PER_DAY, IsSmMobile, getStatus, getDuration } from '../../utils';
+import { SECS_PER_DAY, IsSmMobile, getBountyStatus, getDuration } from '../../utils';
 import useBounty from '../../hooks/useBounty';
 import useBackend from '../../hooks/useBackend';
 
@@ -97,7 +97,7 @@ const PreviewBody = () => {
         <div className='col-lg-7 pr-3 pt-7'>
           <div className='flex justify-between sm:items-center pt-2 pb-3'>
             <div className='flex flex-col'>
-              <button className='text-[18px] border rounded-2xl px-4'>{getStatus(loc.state.status)}</button>
+              <button className='text-[18px] border rounded-2xl px-4'>{getBountyStatus(loc.state.status)}</button>
             </div>
             <div className='flex'>
               <button className='text-[18px] mr-2'><i className="fa-regular fa-arrow-up-from-square mr-2"></i>Share</button>
