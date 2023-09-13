@@ -245,48 +245,53 @@ const NewBountyBody = () => {
   );
 }
 
-const NewBounty = () => (
-  <div className='full-container'>
-    <div className='container'>
-      <MainHeader />
-      <Sidebar path="NewBounty" />
-      <div className='app-container'>
-        <Subheader path="NewBounty" />
+const NewBounty = () => {
+  const { isConnected } = useCustomWallet();
 
-        <div className='pl-[40px] lg:pl-0'>
-          <WarningMsg msg='You need to connect your wallet in order to create a bounty.' />
-        </div>
-        {/* <Reveal keyframes={fadeInUp} className='onStep' delay={200} duration={400} triggerOnce>
-          <div className='app-header xl:pl-[40px] lg:pl-0 pr-0 '>
-            <div className='app-card w-full bg-[#0092DC] py-4'>
-              <div className='flex gap-3'>
-                <span className="text-xl"><i className='fa fa-exclamation-circle'></i></span>
-                <div className='flex flex-col'>
-                  <p className='text-[17px] sm:text-[15px]'>You need to connect your wallet in order to create a bounty.</p>
-                  <span className='font-bold'>Learn More</span>
+  return (
+    <div className='full-container'>
+      <div className='container'>
+        <MainHeader />
+        <Sidebar path="NewBounty" />
+        <div className='app-container'>
+          <Subheader path="NewBounty" />
+
+          {!isConnected ? (
+          <div className='pl-[40px] lg:pl-0'>
+            <WarningMsg msg='You need to connect your wallet in order to create a bounty.' />
+          </div>) : (<></>)}
+          {/* <Reveal keyframes={fadeInUp} className='onStep' delay={200} duration={400} triggerOnce>
+            <div className='app-header xl:pl-[40px] lg:pl-0 pr-0 '>
+              <div className='app-card w-full bg-[#0092DC] py-4'>
+                <div className='flex gap-3'>
+                  <span className="text-xl"><i className='fa fa-exclamation-circle'></i></span>
+                  <div className='flex flex-col'>
+                    <p className='text-[17px] sm:text-[15px]'>You need to connect your wallet in order to create a bounty.</p>
+                    <span className='font-bold'>Learn More</span>
+                  </div>
                 </div>
               </div>
+              {/* <Subheader path="NewBounty" /> 
             </div>
-            {/* <Subheader path="NewBounty" /> 
-          </div>
-        </Reveal> */}
-        
-        <div className='app-content'>
-          {IsSmMobile() ? (
-            <NewBountyBody />
-          ) : (
-            <Scrollbars id='body-scroll-bar' className='' style={{ height: "100%" }}
-              renderThumbVertical={({ style, ...props }) =>
-                <div {...props} className={'thumb-horizontal'} />
-              }>
+          </Reveal> */}
+          
+          <div className='app-content'>
+            {IsSmMobile() ? (
               <NewBountyBody />
-            </Scrollbars>
-          )}
+            ) : (
+              <Scrollbars id='body-scroll-bar' className='' style={{ height: "100%" }}
+                renderThumbVertical={({ style, ...props }) =>
+                  <div {...props} className={'thumb-horizontal'} />
+                }>
+                <NewBountyBody />
+              </Scrollbars>
+            )}
+          </div>
         </div>
       </div>
+      <HelpButton />
     </div>
-    <HelpButton />
-  </div>
-);
+  );
+}
 
 export default NewBounty;
