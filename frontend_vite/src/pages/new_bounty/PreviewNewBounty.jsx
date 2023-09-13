@@ -51,16 +51,18 @@ const PreviewBody = () => {
 }
 
 const PreviewNewBounty = () => {
+  const loc = useLocation();
+
   return (
     <div className='full-container overflow-auto'>
       <div className='container'>
         <MainHeader />
         <div className='bounty-listing-container'>
           <Subheader />
-          <BackButton to="/NewBounty" />
+          <BackButton to="/NewBounty" state={{...loc.state}}/>
           <div className='app-header px-0 xl:items-center xsm:items-start sm:flex-col'>
             <div className='app-title'>
-              <p className='text-[40px] sm:text-center text-white pt-3'>Bounty Preview</p>
+              <p className='text-[40px] sm:text-center text-white pt-3'>{loc.state.title}</p>
             </div>
           </div>
           {IsSmMobile() ? (

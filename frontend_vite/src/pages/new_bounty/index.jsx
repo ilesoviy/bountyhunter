@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Scrollbars } from 'react-custom-scrollbars';
 import { Reveal } from 'react-awesome-reveal';
-import { Link, useLocation } from '@reach/router';
+import { Link, useLocation, useNavigate } from '@reach/router';
 import { toast } from "react-toastify";
 
 import Sidebar from '../../components/menu/SideBar';
@@ -20,7 +20,9 @@ const NewBountyBody = () => {
   const { walletAddress, isConnected } = useCustomWallet();
   const { CONTRACT_ID, DEF_PAY_TOKEN, approveToken, getLastError, countBounties, createBounty } = useBounty();
   const { addBounty } = useBackend();
+
   const loc = useLocation();
+  const nav = useNavigate();
 
   const DEF_PAY_AMOUNT = 0;
   const SECS_PER_DAY = 24 * 60 * 60;
@@ -35,7 +37,7 @@ const NewBountyBody = () => {
   const [gitHub, setGitHub] = useState('');
 
   useEffect(() => {
-    const {title, payAmount, duration, type, difficulty, topic, desc, gitHub } = loc.state;
+    const { title, payAmount, duration, type, difficulty, topic, desc, gitHub } = loc.state;
     if (title) setTitle(title);
     if (payAmount) setPayAmount(payAmount);
     if (duration) setDuration(duration);
@@ -77,6 +79,25 @@ const NewBountyBody = () => {
   const onChangeGitHub = useCallback((event) => {
     setGitHub(event.target.value);
   }, []);
+
+  const handlePreview = useCallback(async (event) => {
+    if (!isConnected) {
+      toast.warning("Wallet not connected yet!");
+      return;
+    }
+
+    nav('/NewBounty/Preview',
+      {
+        state: {
+          title, payAmount, duration, type, difficulty, topic, desc, gitHub,
+          wallet: walletAddress,
+          status: BountyStatus.INIT,
+          startDate: Date.now(),
+          endDate: Date.now() + getDuration(duration) * SECS_PER_DAY * 1000
+        }
+      });
+
+  }, [walletAddress, title, payAmount, desc, duration, type, topic, difficulty])
 
   const handleSubmit = useCallback(async (event) => {
     if (!isConnected) {
@@ -217,19 +238,18 @@ const NewBountyBody = () => {
               <div className='col-md-4 pb-3'>
                 <div className='input-form-control'>
                   <div className="input-control border-0">
-                    {/* <button className='input-main' onClick={navigateToPreview}>Preview</button> */}
+                    <button className='input-main btn-hover text-white' onClick={handlePreview}>Preview</button>
                     {/* <Link
-                      to={`/NewBounty/Preview?payAmount=${payAmount}`}
-                      className='w-full text-center btn-hover'>Prevew</Link> */}
-                    <Link
                       to="/NewBounty/Preview"
                       state={{
-                        title, payAmount, duration, type, difficulty, topic, desc, gitHub, 
-                        wallet: walletAddress, status: BountyStatus.INIT, 
-                        startDate: Date.now(), endDate: Date.now() + getDuration(duration) * SECS_PER_DAY * 1000
+                        title, payAmount, duration, type, difficulty, topic, desc, gitHub,
+                        wallet: walletAddress,
+                        status: BountyStatus.INIT,
+                        startDate: Date.now(),
+                        endDate: Date.now() + getDuration(duration) * SECS_PER_DAY * 1000
                       }}
                       className='w-full text-center btn-hover'
-                    >Prevew</Link>
+                    >Prevew</Link> */}
                   </div>
                 </div>
               </div>
