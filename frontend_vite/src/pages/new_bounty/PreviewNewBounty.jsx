@@ -103,7 +103,7 @@ const PreviewBody = () => {
               <button className='text-[18px] mr-2'><i className="fa-regular fa-arrow-up-from-square mr-2"></i>Share</button>
             </div>
           </div>
-          <span className='py-2' dangerouslySetInnerHTML={{__html: loc.state.desc.replace(new RegExp('\r?\n','g'), '<br />')}}></span>
+          <span className='py-2' dangerouslySetInnerHTML={{__html: loc.state.desc?.replace(new RegExp('\r?\n','g'), '<br />')}}></span>
           {!isConnected &&
             <WarningMsg msg='You need to connect your wallet in order to create a bounty.' />}
         </div>
