@@ -2,7 +2,7 @@ const BountyModel = require("../models/bounty")
 
 async function addBounty(creatorId, bountyId, 
     title, payAmount, description, 
-    createDate, endDate, 
+    startDate, endDate, 
     type, topic, difficulty, 
     block, status) {
     const oldBounty = await BountyModel.findOne({bountyId: bountyId})
@@ -18,7 +18,7 @@ async function addBounty(creatorId, bountyId,
         title: title,
         payAmount: payAmount,
         description: description,
-        createdDate: createDate,
+        startDate: startDate,
         endDate: endDate,
         type: type,
         topic: topic,

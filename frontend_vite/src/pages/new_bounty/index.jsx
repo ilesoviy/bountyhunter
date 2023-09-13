@@ -9,7 +9,7 @@ import Subheader from '../../components/menu/SubHeader';
 import MainHeader from '../../components/menu/MainHeader';
 import HelpButton from '../../components/menu/HelpButton';
 import WarningMsg from '../../components/WarningMsg';
-import { IsSmMobile, fadeInUp, fadeIn, getDuration } from '../../utils';
+import { SECS_PER_DAY, IsSmMobile, fadeInUp, fadeIn, getDuration } from '../../utils';
 
 import { useCustomWallet } from '../../context/WalletContext';
 import useBounty, { BountyStatus } from '../../hooks/useBounty';
@@ -25,7 +25,6 @@ const NewBountyBody = () => {
   const nav = useNavigate();
 
   const DEF_PAY_AMOUNT = 0;
-  const SECS_PER_DAY = 24 * 60 * 60;
 
   const [title, setTitle] = useState('');
   const [payAmount, setPayAmount] = useState(DEF_PAY_AMOUNT);
@@ -117,35 +116,22 @@ const NewBountyBody = () => {
   }
 
   const handlePreview = useCallback(async (event) => {
+    if (!checkCondition()) return;
 
-    if ( !checkCondition() ) return;
+    nav('/NewBounty/Preview', {
+      state: {
+        title, payAmount, duration, type, difficulty, topic, desc, gitHub,
+        wallet: walletAddress,
+        status: BountyStatus.INIT,
+        startDate: Date.now(),
+        endDate: Date.now() + getDuration(duration) * SECS_PER_DAY * 1000,
+      }
+    });
 
-    nav('/NewBounty/Preview',
-      {
-        state: {
-          title, payAmount, duration, type, difficulty, topic, desc, gitHub,
-          wallet: walletAddress,
-          status: BountyStatus.INIT,
-          startDate: Date.now(),
-          endDate: Date.now() + getDuration(duration) * SECS_PER_DAY * 1000,
-        }
-      });   
-
-    }, [walletAddress, title, payAmount, desc, duration, type, topic, difficulty])
+  }, [walletAddress, title, payAmount, duration, type, difficulty, topic, desc, gitHub]);
 
   const handleSubmit = useCallback(async (event) => {
-    // if (!isConnected) {
-    //   toast.warning("Wallet not connected yet!");
-    //   return;
-    // }
-
-    // const days = getDuration(duration);
-    // if (days === 0) {
-    //   toast.warning('Please select a duration!');
-    //   return;
-    // }
-
-    if ( !checkCondition() ) return;
+    if (!checkCondition()) return;
 
     // approve first
     const res1 = await approveToken(walletAddress, CONTRACT_ID, payAmount * 10000000);
@@ -154,6 +140,7 @@ const NewBountyBody = () => {
       return;
     }
 
+    const days = getDuration(duration);
     const bountyIdOld = await countBounties();
     const bountyIdNew = await createBounty(walletAddress, title, payAmount * 10000000, DEF_PAY_TOKEN, SECS_PER_DAY * days);
     if (bountyIdOld === bountyIdNew) {
@@ -174,7 +161,7 @@ const NewBountyBody = () => {
     }
 
     toast('Successfully added bounty!');
-  }, [walletAddress, title, payAmount, desc, duration, type, topic, difficulty]);
+  }, [walletAddress, title, payAmount, duration, type, difficulty, topic, desc, gitHub]);
 
   return (
     <div className='app-body lg:pl-0 pl-[20px] pr-0 mt-3'>

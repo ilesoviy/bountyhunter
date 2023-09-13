@@ -14,9 +14,8 @@ import useBackend from '../../hooks/useBackend';
 
 const ExploreBounty = () => {
 
-  const { walletAddress, isConnected } = useCustomWallet();
-
   const { getRecentBounties } = useBackend();
+  
   const [bounties, setBounties] = useState([]);
 
   const [keyword, setKeyword] = useState('');

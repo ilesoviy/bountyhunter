@@ -3,7 +3,7 @@ import moment from "moment";
 import { fadeInUp, shortenAddress, getType, getLevel, getTopic, getStatus, getFormatedDate } from '../utils';
 
 export const Information = ({
-    wallet, title, payAmount, duration, type, difficulty, topic, desc, gitHub, status, startDate, endDate
+    wallet, payAmount, type, difficulty, topic, gitHub, status, startDate, endDate
 }) => {
     return (
         <div className=''>

@@ -127,7 +127,6 @@ const useBackend = () => {
                 const resData = await res.json();
                 if (resData.error) {
                     console.error('error1:', resData.error);
-                    return [];
                 } else {
                     console.log(resData.details);
                     return resData.bounties;
@@ -141,12 +140,72 @@ const useBackend = () => {
         []
     );
 
+    const getSingleBounty = useCallback(
+        async (bountyId) => {
+            try {
+                const res = await fetch(BACKEND_URL + 'get_single_bounty', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        'bountyId': bountyId
+                    })
+                });
+    
+                const resData = await res.json();
+                if (resData.error) {
+                    console.error('error1:', resData.error);
+                } else {
+                    console.log(resData.details);
+                    return resData.bounty;
+                }
+            } catch (error) {
+                console.error('error2:', error);
+            }
+
+            return {};
+        }, 
+        []
+    );
+
+    const getWorks = useCallback(
+        async (bountyId) => {
+            try {
+                const res = await fetch(BACKEND_URL + 'get_works', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        'bountyId': bountyId
+                    })
+                });
+    
+                const resData = await res.json();
+                if (resData.error) {
+                    console.error('error1:', resData.error);
+                } else {
+                    console.log(resData.details);
+                    return resData.works;
+                }
+            } catch (error) {
+                console.error('error2:', error);
+            }
+
+            return [];
+        }
+    );
+
     return {
         getUser, 
         setUser, 
 
         addBounty, 
-        getRecentBounties
+        getRecentBounties,
+        getSingleBounty, 
+
+        getWorks
     }
 }
 

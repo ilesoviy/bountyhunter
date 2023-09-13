@@ -7,7 +7,7 @@ const bountySchema = new Schema(
         title: { type: String, required: true },
         payAmount: { type: Number, required: true },
         description: { type: String },
-        createDate: { type: Date, default: Date.now, requried: true },
+        startDate: { type: Date, default: Date.now, requried: true },
         endDate: { type: Date },
         type: { type: String /* Number */ },
         topic: { type: String /* Number */ },

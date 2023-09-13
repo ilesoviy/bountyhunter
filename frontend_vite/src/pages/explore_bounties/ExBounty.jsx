@@ -1,6 +1,6 @@
 import { Reveal } from 'react-awesome-reveal';
 import { numberWithCommas, IsSmMobile, fadeInUp, fadeIn, getUTCNow, getUTCDate, isEmpty, 
-  shortenAddress, getStatus, getType, getLevel, getTopic, getTimeDiff } from '../../utils';
+  shortenAddress, getStatus, getType, getLevel, getTopic, getTimeDifference } from '../../utils';
 import { useNavigate } from "@reach/router";
 
 const ExBounty = ({bounty}) => {
@@ -12,7 +12,7 @@ const ExBounty = ({bounty}) => {
       <Reveal keyframes={fadeInUp} className='onStep' delay={400} duration={1000} triggerOnce>
         <div className='row'>
           <div className='w-full lg:pl-0 mt-[20px] pr-0'>
-            <div className='app-card cursor-pointer' onClick={() => nav('/ExploreBounties/0')}>
+            <div className='app-card cursor-pointer' onClick={() => nav('/ExploreBounties/' + bounty.bountyId)}>
               <div className='app-card-header text-left'>
                 <div className='flex justify-between xsm:text-[10px] sm:text-center items-center'>
                   <div className='flex flex-col'>
@@ -38,7 +38,7 @@ const ExBounty = ({bounty}) => {
               <div className='app-card-footer'>
                 <div className='flex justify-between sm:text-[10px] sm:text-center items-center'>
                   <div className='flex flex-col'>
-                    <span className='app-gray text-[14px]'>{getTimeDiff(bounty?.createDate)}</span>
+                    <span className='app-gray text-[14px]'>{getTimeDifference(bounty?.startDate)}</span>
                   </div>
                   <div className='flex flex-col'>
                     <div className='flex flex-row space-x-2'>

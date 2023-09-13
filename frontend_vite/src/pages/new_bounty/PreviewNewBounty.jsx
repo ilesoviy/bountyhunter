@@ -9,14 +9,16 @@ import { Information } from '../../components/Information';
 import BackButton from '../../components/menu/BackButton';
 import { useNavigate, useLocation } from "@reach/router";
 import { useCustomWallet } from '../../context/WalletContext';
-import { IsSmMobile, getStatus} from '../../utils';
+import { SECS_PER_DAY, IsSmMobile, getStatus, getDuration } from '../../utils';
 import useBounty from '../../hooks/useBounty';
+import useBackend from '../../hooks/useBackend';
 
 const PreviewBody = () => {
   const nav = useNavigate();
   const loc = useLocation();
   const { walletAddress, isConnected } = useCustomWallet();
   const { CONTRACT_ID, DEF_PAY_TOKEN, approveToken, getLastError, countBounties, createBounty } = useBounty();
+  const { addBounty } = useBackend();
   const {title, payAmount, duration, type, difficulty, topic, desc, gitHub } = loc.state;
 
   function checkCondition() {
@@ -66,6 +68,7 @@ const PreviewBody = () => {
       return;
     }
 
+    const days = getDuration(duration);
     const bountyIdOld = await countBounties();
     const bountyIdNew = await createBounty(walletAddress, title, payAmount * 10000000, DEF_PAY_TOKEN, SECS_PER_DAY * days);
     if (bountyIdOld === bountyIdNew) {
