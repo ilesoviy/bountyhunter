@@ -12,7 +12,7 @@ export const ListingDescription = ({bounty}) => {
         </div>
       </div>
       <span className='pt-2 mb-6 description' dangerouslySetInnerHTML={{
-        __html:bounty.description?.replace(new RegExp('\r?\n','g'), '<br />')}}
+        __html:bounty&&bounty.description?bounty.description.replace(new RegExp('\r?\n','g'), '<br />'):''}}
         ></span></>
   )
 }
