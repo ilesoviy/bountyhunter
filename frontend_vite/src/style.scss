@@ -961,3 +961,11 @@ input::-webkit-inner-spin-button {
     transition: all 0.3s ease;
   }
 }
+
+.description {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 3; /* number of lines to show */
+          line-clamp: 3; 
+  -webkit-box-orient: vertical;
+}

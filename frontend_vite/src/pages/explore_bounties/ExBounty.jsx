@@ -32,7 +32,7 @@ const ExBounty = ({bounty}) => {
               <div className='app-card-body'>
                 <div className="row text-left">
                   <div className='text-[32px]' to="/ExploreBounties/0">{bounty?.title}</div>
-                  <p className='text-[17px] sm:text-[15px]'>{bounty?.description}</p>
+                  <p className='text-[17px] sm:text-[15px] description' dangerouslySetInnerHTML={{__html: bounty.description.replace(new RegExp('\r?\n','g'), '<br />')}}></p>
                 </div>
               </div>
               <div className='app-card-footer'>

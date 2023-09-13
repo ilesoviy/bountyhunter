@@ -32,7 +32,7 @@ const InBounty = (pathTo) => {
               <div className='app-card-body'>
                 <div className="row text-left">
                   <div className='text-[32px]' to="/ExploreBounties/0">Bounty Listing</div>
-                  <p className='text-[17px] sm:text-[15px]'>As a bounty hunter for the Soroban Contract Writing in Rust, you will be responsible for thoroughly testing our platform and identifying any potential security vulnerabilities or bugs. You will be tasked with conducting comprehensive penetration testing and code review to ensure that...</p>
+                  <p className='text-[17px] sm:text-[15px] description'>As a bounty hunter for the Soroban Contract Writing in Rust, you will be responsible for thoroughly testing our platform and identifying any potential security vulnerabilities or bugs. You will be tasked with conducting comprehensive penetration testing and code review to ensure that...</p>
                 </div>
               </div>
               <div className='app-card-footer'>
