@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Scrollbars } from 'react-custom-scrollbars';
 import { Reveal } from 'react-awesome-reveal';
-import { Link } from '@reach/router';
+import { Link, useLocation } from '@reach/router';
 import { toast } from "react-toastify";
 
 import Sidebar from '../../components/menu/SideBar';
@@ -20,20 +20,30 @@ const NewBountyBody = () => {
   const { walletAddress, isConnected } = useCustomWallet();
   const { CONTRACT_ID, DEF_PAY_TOKEN, approveToken, getLastError, countBounties, createBounty } = useBounty();
   const { addBounty } = useBackend();
+  const loc = useLocation();
 
   const DEF_PAY_AMOUNT = 0;
   const SECS_PER_DAY = 24 * 60 * 60;
 
   const [title, setTitle] = useState('');
   const [payAmount, setPayAmount] = useState(DEF_PAY_AMOUNT);
-  const [duration, setDuration] = useState(0);
-  const [type, setType] = useState('');
-  const [difficulty, setDifficulty] = useState('');
-  const [topic, setTopic] = useState('');
+  const [duration, setDuration] = useState('0');
+  const [type, setType] = useState('0');
+  const [difficulty, setDifficulty] = useState('0');
+  const [topic, setTopic] = useState('0');
   const [desc, setDesc] = useState('');
   const [gitHub, setGitHub] = useState('');
 
   useEffect(() => {
+    const {title, payAmount, duration, type, difficulty, topic, desc, gitHub } = loc.state;
+    if(title) setTitle(title);
+    if(payAmount) setPayAmount(payAmount);
+    if(duration) setDuration(duration);
+    if(type) setType(type);
+    if(difficulty) setDifficulty(difficulty);
+    if(topic) setTopic(topic);
+    if(desc) setDesc(desc);
+    if(gitHub) setGitHub(gitHub);
   }, []);
 
   const onChangeTitle = useCallback((event) => {
@@ -153,12 +163,12 @@ const NewBountyBody = () => {
                 <div className='input-form-control'>
                   <label className='input-label'>Dead Line</label>
                   <div className="input-control">
-                    <select name="deadline" defaultValue={0} className='input-main' onChange={onChangeDuration}>
-                      <option value={0} disabled hidden>Select a duration</option>
-                      <option value={1}>More than 6 months</option>
-                      <option value={2}>3 to 6 months</option>
-                      <option value={3}>1 to 3 months</option>
-                      <option value={4}>Less than 1 month</option>
+                    <select name="deadline" value={duration} className='input-main' onChange={onChangeDuration}>
+                      <option value={'0'} disabled hidden>Select a duration</option>
+                      <option value={'1'}>More than 6 months</option>
+                      <option value={'2'}>3 to 6 months</option>
+                      <option value={'3'}>1 to 3 months</option>
+                      <option value={'4'}>Less than 1 month</option>
                     </select>
                   </div>
                 </div>
@@ -167,11 +177,11 @@ const NewBountyBody = () => {
                 <div className='input-form-control'>
                   <label className='input-label'>Bounty Type</label>
                   <div className="input-control">
-                    <select name="type" defaultValue={0} className='input-main' onChange={onChangeType}>
-                      <option value={0} disabled hidden>Select a type</option>
-                      <option value={1}>Competitive</option>
-                      <option value={2}>Cooperative</option>
-                      <option value={3}>Hackathon</option>
+                    <select name="type" value={type} className='input-main' onChange={onChangeType}>
+                      <option value={'0'} disabled hidden>Select a type</option>
+                      <option value={'1'}>Competitive</option>
+                      <option value={'2'}>Cooperative</option>
+                      <option value={'3'}>Hackathon</option>
                     </select>
                   </div>
                 </div>
@@ -180,11 +190,11 @@ const NewBountyBody = () => {
                 <div className='input-form-control'>
                   <label className='input-label'>Bounty Difficulty</label>
                   <div className="input-control">
-                    <select name="difficulty" defaultValue={0} className='input-main' onChange={onChangeDifficulty}>
-                      <option value={0} disabled hidden>Select a difficulty</option>
-                      <option value={1}>Beginner</option>
-                      <option value={2}>Intermediate</option>
-                      <option value={3}>Advanced</option>
+                    <select name="difficulty" value={difficulty} className='input-main' onChange={onChangeDifficulty}>
+                      <option value={'0'} disabled hidden>Select a difficulty</option>
+                      <option value={'1'}>Beginner</option>
+                      <option value={'2'}>Intermediate</option>
+                      <option value={'3'}>Advanced</option>
                     </select>
                   </div>
                 </div>
@@ -193,13 +203,13 @@ const NewBountyBody = () => {
                 <div className='input-form-control'>
                   <label className='input-label'>Bounty Topic</label>
                   <div className="input-control">
-                    <select name="topic" defaultValue={0} className='input-main' onChange={onChangeTopic}>
-                      <option value={0} disabled hidden>Select a topic</option>
-                      <option value={1}>Design</option>
-                      <option value={2}>Development</option>
-                      <option value={3}>Smart Contracts</option>
-                      <option value={4}>Data</option>
-                      <option value={5}>AI</option>
+                    <select name="topic" value={topic} className='input-main' onChange={onChangeTopic}>
+                      <option value={'0'} disabled hidden>Select a topic</option>
+                      <option value={'1'}>Design</option>
+                      <option value={'2'}>Development</option>
+                      <option value={'3'}>Smart Contracts</option>
+                      <option value={'4'}>Data</option>
+                      <option value={'5'}>AI</option>
                     </select>
                   </div>
                 </div>
@@ -207,8 +217,8 @@ const NewBountyBody = () => {
               <div className='col-md-12 pb-3'>
                 <div className='input-form-control'>
                   <label className='input-label'>Description</label>
-                  <div className="input-control h-[70px]">
-                    <textarea type="text" name="desc" value={desc} className='input-main' onChange={onChangeDesc}></textarea>
+                  <div className="input-control h-[150px]">
+                    <textarea type="text" name="desc" value={desc} rows={5} className='input-main' onChange={onChangeDesc}></textarea>
                   </div>
                 </div>
               </div>
@@ -230,9 +240,9 @@ const NewBountyBody = () => {
                       className='w-full text-center btn-hover'>Prevew</Link> */}
                     <Link
                       to="/NewBounty/Preview"
-                      state={ {
+                      state={{
                         title, payAmount, duration, type, difficulty, topic, desc, gitHub
-                      } }
+                      }}
                       className='w-full text-center btn-hover'
                     >Prevew</Link>
                   </div>
@@ -254,48 +264,38 @@ const NewBountyBody = () => {
   );
 }
 
-const NewBounty = () => (
-  <div className='full-container'>
-    <div className='container'>
-      <MainHeader />
-      <Sidebar path="NewBounty" />
-      <div className='app-container'>
-        <Subheader path="NewBounty" />
+const NewBounty = () => {
+  const { isConnected } = useCustomWallet();
+  return (
+    <div className='full-container'>
+      <div className='container'>
+        <MainHeader />
+        <Sidebar path="NewBounty" />
+        <div className='app-container'>
+          <Subheader path="NewBounty" />
 
-        <div className='pl-[40px] lg:pl-0'>
-          <WarningMsg msg='You need to connect your wallet in order to create a bounty.' />
-        </div>
-        {/* <Reveal keyframes={fadeInUp} className='onStep' delay={200} duration={400} triggerOnce>
-          <div className='app-header xl:pl-[40px] lg:pl-0 pr-0 '>
-            <div className='app-card w-full bg-[#0092DC] py-4'>
-              <div className='flex gap-3'>
-                <span className="text-xl"><i className='fa fa-exclamation-circle'></i></span>
-                <div className='flex flex-col'>
-                  <p className='text-[17px] sm:text-[15px]'>You need to connect your wallet in order to create a bounty.</p>
-                  <span className='font-bold'>Learn More</span>
-                </div>
-              </div>
-            </div>
-            {/* <Subheader path="NewBounty" /> 
-          </div>
-        </Reveal> */}
+          {!isConnected &&
+            <div className='pl-[40px] lg:pl-0'>
+              <WarningMsg msg='You need to connect your wallet in order to create a bounty.' />
+            </div>}
 
-        <div className='app-content'>
-          {IsSmMobile() ? (
-            <NewBountyBody />
-          ) : (
-            <Scrollbars id='body-scroll-bar' className='' style={{ height: "100%" }}
-              renderThumbVertical={({ style, ...props }) =>
-                <div {...props} className={'thumb-horizontal'} />
-              }>
+          <div className='app-content'>
+            {IsSmMobile() ? (
               <NewBountyBody />
-            </Scrollbars>
-          )}
+            ) : (
+              <Scrollbars id='body-scroll-bar' className='' style={{ height: "100%" }}
+                renderThumbVertical={({ style, ...props }) =>
+                  <div {...props} className={'thumb-horizontal'} />
+                }>
+                <NewBountyBody />
+              </Scrollbars>
+            )}
+          </div>
         </div>
       </div>
+      <HelpButton />
     </div>
-    <HelpButton />
-  </div>
-);
+  )
+};
 
 export default NewBounty;

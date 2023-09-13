@@ -29,18 +29,19 @@ const PreviewBody = () => {
               <button className='text-[18px] mr-2'><i className="fa-regular fa-arrow-up-from-square mr-2"></i>Share</button>
             </div>
           </div>
-          <span className='py-2'>This is a preview from a bounty and contains the information written in the description.</span>
-          {!isConnected&&<WarningMsg msg='You need to connect your wallet in order to create a bounty.' />}
+          <span className='py-2'>{loc.state.desc}</span>
+          {!isConnected &&
+            <WarningMsg msg='You need to connect your wallet in order to create a bounty.' />}
         </div>
         <div className='col-lg-5 py-2 md:pl-0'>
           <Information {...loc.state} />
           <div className='w-full my-2 py-3'>
-            <button 
+            <button
               className='text-[18px] w-full border rounded-2xl px-2 py-2 btn-hover'
               onClick={() => {
-                nav('/NewBounty', { state: {...loc.state} })                
+                nav('/NewBounty', { state: { ...loc.state } })
               }}
-              >Edit</button>
+            >Edit</button>
             <button className='text-[18px] w-full border rounded-2xl px-2 py-2 btn-hover mt-2'>Create Bounty</button>
           </div>
         </div>
