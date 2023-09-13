@@ -1,7 +1,43 @@
 import { Reveal } from 'react-awesome-reveal';
 import { fadeInUp } from '../utils';
 
-export const Information = () => {
+export const Information = ({
+    title, payAmount, duration, type, difficulty, topic, desc, gitHub
+}) => {
+    function getType() {
+        switch(type) {
+            case '1':
+                return 'Competitive'
+            case '2':
+                return 'Cooperative'
+            case '3':
+                return 'Hakathon'
+        }
+    }
+    function getLevel() {
+        switch(difficulty) {
+            case '1':
+                return 'Beginner'
+            case '2':
+                return 'Intermediate'
+            case '3':
+                return 'Advanced'
+        }
+    }
+    function getTopic() {
+        switch(topic) {
+            case '1':
+                return 'Design'
+            case '2':
+                return 'Development'
+            case '3':
+                return 'Smart Contracts'
+            case '4':
+                return 'Data'
+            case '5':
+                return 'AI'
+        }
+    }
     return (
         <div className=''>
             <Reveal keyframes={fadeInUp} className='onStep' delay={0} duration={800} triggerOnce>
@@ -20,7 +56,7 @@ export const Information = () => {
                         </div>
                         <div className='flex justify-between items-center gap-3'>
                             <span className='text-[16px] font-bold'>Payment:</span>
-                            <span className='text-[16px]'>1000 XLM</span>
+                            <span className='text-[16px]'>{payAmount} XLM</span>
                         </div>
                         <div className='flex justify-between items-center gap-3'>
                             <span className='text-[16px] font-bold'>Status</span>
@@ -40,19 +76,19 @@ export const Information = () => {
                         </div>
                         <div className='flex justify-between items-center gap-3'>
                             <span className='text-[16px] font-bold'>Level:</span>
-                            <span className='text-[16px]'>Beginner</span>
+                            <span className='text-[16px]'>{getLevel()}</span>
                         </div>
                         <div className='flex justify-between items-center gap-3'>
                             <span className='text-[16px] font-bold'>Topic:</span>
-                            <span className='text-[16px] '>Vanilla Stellar</span>
+                            <span className='text-[16px] '>{getTopic()}</span>
                         </div>
                         <div className='flex justify-between items-center gap-3'>
                             <span className='text-[16px] font-bold'>Type:</span>
-                            <span className='text-[16px]'>Cooperative</span>
+                            <span className='text-[16px]'>{getType()}</span>
                         </div>
                         <div className='flex justify-between sm:text-center items-center gap-3'>
                             <span className='text-[18px]'>Repository:</span>
-                            <span className='text-[18px]'><i className="fa-regular fa-arrow-up-right-from-square" /></span>
+                            <a className='text-[18px]' href={gitHub}><i className="fa-regular fa-arrow-up-right-from-square" /></a>
                         </div>
                     </div>
                 </div>

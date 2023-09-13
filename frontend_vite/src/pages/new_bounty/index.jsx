@@ -76,16 +76,16 @@ const NewBountyBody = () => {
         return 183;
       } else if (duration === '3') { // 1~3 months
         return 92;
-      } else  if (duration === '4') { // Less than 1 month
+      } else if (duration === '4') { // Less than 1 month
         return 31;
       } else {
         return 0;
       }
-    }, 
+    },
     []
   );
 
-  const handleSubmit = useCallback(async(event) => {
+  const handleSubmit = useCallback(async (event) => {
     if (!isConnected) {
       toast.warning("Wallet not connected yet!");
       return;
@@ -113,10 +113,10 @@ const NewBountyBody = () => {
       return;
     }
 
-    const res2 = await addBounty(walletAddress, bountyIdNew, 
-      title, payAmount, SECS_PER_DAY * days, 
-      type, difficulty, topic, 
-      desc, gitHub, 
+    const res2 = await addBounty(walletAddress, bountyIdNew,
+      title, payAmount, SECS_PER_DAY * days,
+      type, difficulty, topic,
+      desc, gitHub,
       /* block */111);
     if (res2) {
       toast.errpr('Failed to add bounty!');
@@ -225,7 +225,16 @@ const NewBountyBody = () => {
                 <div className='input-form-control'>
                   <div className="input-control border-0">
                     {/* <button className='input-main' onClick={navigateToPreview}>Preview</button> */}
-                    <Link to="/NewBounty/Preview" className='w-full text-center btn-hover'>Prevew</Link>
+                    {/* <Link
+                      to={`/NewBounty/Preview?payAmount=${payAmount}`}
+                      className='w-full text-center btn-hover'>Prevew</Link> */}
+                    <Link
+                      to="/NewBounty/Preview"
+                      state={ {
+                        title, payAmount, duration, type, difficulty, topic, desc, gitHub
+                      } }
+                      className='w-full text-center btn-hover'
+                    >Prevew</Link>
                   </div>
                 </div>
               </div>
@@ -239,59 +248,54 @@ const NewBountyBody = () => {
             </div>
           </div>
         </div>
-      
+
       </Reveal>
     </div>
   );
 }
 
-const NewBounty = () => {
-  const { isConnected } = useCustomWallet();
+const NewBounty = () => (
+  <div className='full-container'>
+    <div className='container'>
+      <MainHeader />
+      <Sidebar path="NewBounty" />
+      <div className='app-container'>
+        <Subheader path="NewBounty" />
 
-  return (
-    <div className='full-container'>
-      <div className='container'>
-        <MainHeader />
-        <Sidebar path="NewBounty" />
-        <div className='app-container'>
-          <Subheader path="NewBounty" />
-
-          {!isConnected ? (
-          <div className='pl-[40px] lg:pl-0'>
-            <WarningMsg msg='You need to connect your wallet in order to create a bounty.' />
-          </div>) : (<></>)}
-          {/* <Reveal keyframes={fadeInUp} className='onStep' delay={200} duration={400} triggerOnce>
-            <div className='app-header xl:pl-[40px] lg:pl-0 pr-0 '>
-              <div className='app-card w-full bg-[#0092DC] py-4'>
-                <div className='flex gap-3'>
-                  <span className="text-xl"><i className='fa fa-exclamation-circle'></i></span>
-                  <div className='flex flex-col'>
-                    <p className='text-[17px] sm:text-[15px]'>You need to connect your wallet in order to create a bounty.</p>
-                    <span className='font-bold'>Learn More</span>
-                  </div>
+        <div className='pl-[40px] lg:pl-0'>
+          <WarningMsg msg='You need to connect your wallet in order to create a bounty.' />
+        </div>
+        {/* <Reveal keyframes={fadeInUp} className='onStep' delay={200} duration={400} triggerOnce>
+          <div className='app-header xl:pl-[40px] lg:pl-0 pr-0 '>
+            <div className='app-card w-full bg-[#0092DC] py-4'>
+              <div className='flex gap-3'>
+                <span className="text-xl"><i className='fa fa-exclamation-circle'></i></span>
+                <div className='flex flex-col'>
+                  <p className='text-[17px] sm:text-[15px]'>You need to connect your wallet in order to create a bounty.</p>
+                  <span className='font-bold'>Learn More</span>
                 </div>
               </div>
-              {/* <Subheader path="NewBounty" /> 
             </div>
-          </Reveal> */}
-          
-          <div className='app-content'>
-            {IsSmMobile() ? (
-              <NewBountyBody />
-            ) : (
-              <Scrollbars id='body-scroll-bar' className='' style={{ height: "100%" }}
-                renderThumbVertical={({ style, ...props }) =>
-                  <div {...props} className={'thumb-horizontal'} />
-                }>
-                <NewBountyBody />
-              </Scrollbars>
-            )}
+            {/* <Subheader path="NewBounty" /> 
           </div>
+        </Reveal> */}
+
+        <div className='app-content'>
+          {IsSmMobile() ? (
+            <NewBountyBody />
+          ) : (
+            <Scrollbars id='body-scroll-bar' className='' style={{ height: "100%" }}
+              renderThumbVertical={({ style, ...props }) =>
+                <div {...props} className={'thumb-horizontal'} />
+              }>
+              <NewBountyBody />
+            </Scrollbars>
+          )}
         </div>
       </div>
-      <HelpButton />
     </div>
-  );
-}
+    <HelpButton />
+  </div>
+);
 
 export default NewBounty;

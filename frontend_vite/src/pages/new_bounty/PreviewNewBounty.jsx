@@ -9,10 +9,14 @@ import HelpButton from '../../components/menu/HelpButton';
 import WarningMsg from '../../components/WarningMsg';
 import { Information } from '../../components/Information';
 import BackButton from '../../components/menu/BackButton';
-import { useNavigate } from "@reach/router";
+import { useNavigate, useLocation } from "@reach/router";
+import { useCustomWallet } from '../../context/WalletContext';
 
 const PreviewBody = () => {
   const nav = useNavigate();
+  const loc = useLocation();
+  const { isConnected } = useCustomWallet();
+
   return (
     <div className='app-content'>
       <div className='row'>
@@ -26,12 +30,17 @@ const PreviewBody = () => {
             </div>
           </div>
           <span className='py-2'>This is a preview from a bounty and contains the information written in the description.</span>
-          <WarningMsg msg='You need to connect your wallet in order to create a bounty.' />
+          {!isConnected&&<WarningMsg msg='You need to connect your wallet in order to create a bounty.' />}
         </div>
         <div className='col-lg-5 py-2 md:pl-0'>
-          <Information />
+          <Information {...loc.state} />
           <div className='w-full my-2 py-3'>
-            <button className='text-[18px] w-full border rounded-2xl px-2 py-2 btn-hover' onClick={() => nav('/NewBounty')}>Edit</button>
+            <button 
+              className='text-[18px] w-full border rounded-2xl px-2 py-2 btn-hover'
+              onClick={() => {
+                nav('/NewBounty', { state: {...loc.state} })                
+              }}
+              >Edit</button>
             <button className='text-[18px] w-full border rounded-2xl px-2 py-2 btn-hover mt-2'>Create Bounty</button>
           </div>
         </div>
