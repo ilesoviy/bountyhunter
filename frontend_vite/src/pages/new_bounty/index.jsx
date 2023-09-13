@@ -146,7 +146,7 @@ const NewBountyBody = () => {
     // }
 
     if ( !checkCondition() ) return;
-    
+
     // approve first
     const res1 = await approveToken(walletAddress, CONTRACT_ID, payAmount * 10000000);
     if (res1) {
@@ -257,7 +257,7 @@ const NewBountyBody = () => {
               <div className='col-md-12 pb-3'>
                 <div className='input-form-control'>
                   <label className='input-label'>Description</label>
-                  <div className="input-control h-[150px]">
+                  <div className="input-control h-auto">
                     <textarea type="text" name="desc" value={desc} rows={5} className='input-main' onChange={onChangeDesc}></textarea>
                   </div>
                 </div>
