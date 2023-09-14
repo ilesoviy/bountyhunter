@@ -79,6 +79,7 @@ const ExBountyListingBody = ({bounty}) => {
               gitHub = {bounty?.gitHub} 
               startDate = {Date.parse(bounty?.startDate)} 
               endDate = {Date.parse(bounty?.endDate)}
+              status = {bounty?.status}
             />
           <Participant bountyId={bounty.bountyId} />
           <div className='w-full my-2 py-3'>
