@@ -78,7 +78,7 @@ const PreviewBody = () => {
       return;
     }
 
-    const res2 = await addBounty(walletAddress, bountyIdNew,
+    const res2 = await addBounty(walletAddress, bountyIdOld,
       title, payAmount, SECS_PER_DAY * days,
       type, difficulty, topic,
       desc, gitHub,

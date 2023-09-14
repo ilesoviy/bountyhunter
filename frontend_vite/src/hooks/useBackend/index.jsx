@@ -305,6 +305,7 @@ const useBackend = () => {
                     body: JSON.stringify({
                         'wallet': wallet,
                         'workId': workId,
+                        'workRepo': workRepo,
                         'submitDate': Date.now(),
                         'status': WorkStatus.SUBMITTED
                     })

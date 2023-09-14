@@ -209,7 +209,10 @@ const useBounty = () => {
             );
 
             console.log('res:', res);
-            return res;
+            if (res)
+                return res;
+
+            return await countWorks();
         }, 
         []
     );
