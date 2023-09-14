@@ -14,10 +14,10 @@ import useBackend from '../../hooks/useBackend';
 
 const SettingsBody = () => {
   const { walletAddress, isConnected } = useCustomWallet();
+  const { getUser, setUser } = useBackend();
   const [name, setName] = useState('');
   const [github, setGitHub] = useState('');
   const [discord, setDiscord] = useState('');
-  const { getUser, setUser } = useBackend();
   
   const handleName = useCallback((event) => {
     setName(event.target.value);

@@ -21,7 +21,7 @@ export enum BountyStatus {
 }
 
 export enum WorkStatus {
-    IN_PROGRESS = BountyHunter.WorkStatus.INIT,
+    INIT = BountyHunter.WorkStatus.INIT,
     APPLIED = BountyHunter.WorkStatus.APPLIED,
     SUBMITTED = BountyHunter.WorkStatus.SUBMITTED,
     APPROVED = BountyHunter.WorkStatus.APPROVED,
@@ -214,7 +214,7 @@ const useBounty = () => {
         []
     );
 
-    const submitWork = useCallback(
+    const submitToBounty = useCallback(
         async (participant, workId, workRepo) => {
             // const res = BountyHunter.invoke({
             //     method: "submit_work",
@@ -229,7 +229,7 @@ const useBounty = () => {
                 contract.call("submit_work", 
                     new SorobanClient.Address(participant).toScVal(), 
                     SorobanClient.xdr.ScVal.scvU32(workId), 
-                    SorobanClient.xdr.ScVal.scvString(workRepo)
+                    SorobanClient.xdr.ScVal.scvString(workRepo) // not necessary
                 )
             );
 
@@ -327,7 +327,7 @@ const useBounty = () => {
 
         createBounty,
         applyBounty,
-        submitWork,
+        submitToBounty,
         approveWork,
         rejectWork,
         cancelBounty,

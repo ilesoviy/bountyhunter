@@ -201,7 +201,7 @@ const useBackend = () => {
 
 
     const getWorks = useCallback(
-        async (bountyId) => {
+        async (bountyId, status) => {
             try {
                 const res = await fetch(BACKEND_URL + 'get_works', {
                     method: 'POST',
@@ -209,7 +209,8 @@ const useBackend = () => {
                         'Content-Type': 'application/json',
                     },
                     body: JSON.stringify({
-                        'bountyId': bountyId
+                        'bountyId': bountyId, 
+                        'status': status
                     })
                 });
     
@@ -242,7 +243,70 @@ const useBackend = () => {
                         'bountyId': bountyId,
                         'workId': workId,
                         'applyDate': Date.now(),
-                        'status': WorkStatus.IN_PROGRESS
+                        'status': WorkStatus.APPLIED
+                    })
+                });
+    
+                const resData = await res.json();
+                if (resData.error) {
+                    console.error('error1:', resData.error);
+                    return -1;
+                } else {
+                    console.log(resData.details);
+                    return 0;
+                }
+            } catch (error) {
+                console.error('error2:', error);
+            }
+
+            return -2;
+        }, 
+        []
+    );
+
+    const getWork = useCallback(
+        async (wallet, bountyId) => {
+            try {
+                const res = await fetch(BACKEND_URL + 'get_work', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        'wallet': wallet, 
+                        'bountyId': bountyId
+                    })
+                });
+    
+                const resData = await res.json();
+                if (resData.error) {
+                    console.error('error1:', resData.error);
+                } else {
+                    console.log(resData.details);
+                    return resData.work;
+                }
+            } catch (error) {
+                console.error('error2:', error);
+            }
+
+            return {};
+        }, 
+        []
+    );
+
+    const submitWork = useCallback(
+        async (wallet, workId, workRepo) => {
+            try {
+                const res = await fetch(BACKEND_URL + 'submit_work', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        'wallet': wallet,
+                        'workId': workId,
+                        'submitDate': Date.now(),
+                        'status': WorkStatus.SUBMITTED
                     })
                 });
     
@@ -273,7 +337,9 @@ const useBackend = () => {
         getAppliedBounties, 
 
         getWorks, 
-        addWork
+        addWork, 
+        getWork, 
+        submitWork
     }
 }
 

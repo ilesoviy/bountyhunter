@@ -6,7 +6,8 @@ import Subheader from '../../components/menu/SubHeader';
 import MainHeader from '../../components/menu/MainHeader';
 import HelpButton from '../../components/menu/HelpButton';
 import WarningMsg from '../../components/WarningMsg';
-import InBountiesBody from './InBountiesBody';
+// import InBountiesBody from './InBountiesBody';
+import InBounty from './InBounty';
 import { IsSmMobile, fadeInUp, fadeIn } from '../../utils';
 import useBackend from '../../hooks/useBackend';
 import { useCustomWallet } from '../../context/WalletContext';
@@ -187,9 +188,9 @@ const InProgress = () => {
           <div className={`app-content ${isSearchShow ? 'blur-sm' : ''}`}>
             {IsSmMobile() ? (
               // <InBountiesBody bounties={bounties} />
-              bounties?.map((item, idx) => {
+              bounties?.map((bounty, idx) => {
                 return (
-                  <InBounty key={idx} bounty={item}/>
+                  <InBounty key={idx} bountyId={bounty.bountyId} />
                 );
               })
             ) : (
@@ -198,11 +199,9 @@ const InProgress = () => {
                   <div {...props} className={'thumb-horizontal'} />
                 }>
                 {/* <InBountiesBody bounties={bounties} /> */
-                bounties?.map((item, idx) => {
-                  return (
-                    <InBounty key={idx} bounty={item}/>
-                  );
-                })
+                bounties?.map((bounty, idx) =>
+                    <InBounty key={idx} bountyId={bounty.bountyId} />
+                )
                 }
               </Scrollbars>
             )}
