@@ -1,9 +1,9 @@
 import { Reveal } from 'react-awesome-reveal';
-import { numberWithCommas, IsSmMobile, fadeInUp, fadeIn, getUTCNow, getUTCDate, isEmpty } from '../../utils';
+import { numberWithCommas, IsSmMobile, fadeInUp, fadeIn, getUTCNow, getUTCDate, isEmpty, shortenAddress } from '../../utils';
 import { Link } from '@reach/router';
 import { useNavigate } from "@reach/router";
 
-const InBounty = (pathTo) => {
+const InBounty = ({key, bounty}) => {
 
   const nav = useNavigate();
 
@@ -18,7 +18,7 @@ const InBounty = (pathTo) => {
                   <div className='flex flex-col'>
                     <div className='flex flex-row items-center'>
                       <img className="h-[30px] logo" src="./images/banner/user.png" alt="" />
-                      <span className='app-gray text-[20px] xsm:text-[10px]'>GAD..RARW</span>
+                      <span className='app-gray text-[20px] xsm:text-[10px]'>{shortenAddress(bounty?.wallet)}</span>
                     </div>
                   </div>
                   <div className='flex flex-col'>

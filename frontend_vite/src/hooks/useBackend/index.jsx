@@ -188,7 +188,7 @@ const useBackend = () => {
                     console.error('error1:', resData.error);
                 } else {
                     console.log(resData.details);
-                    return resData.works;
+                    return resData.bounties;
                 }
             } catch (error) {
                 console.error('error2:', error);
