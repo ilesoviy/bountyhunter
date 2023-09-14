@@ -8,6 +8,9 @@ export const Participant = ({bountyId}) => {
   const [works, setWorks] = useState([]);
 
   useEffect(() => {
+    if (!bountyId)
+      return;
+
     async function fetchWorks(bountyId) {
       const bountyWorks = await getWorks(bountyId);
       setWorks(bountyWorks);
@@ -32,7 +35,7 @@ export const Participant = ({bountyId}) => {
               <div key={idx} className='flex justify-evenly items-center sm:text-center'>
                 <div className='flex my-2 text-[16px] '><span>{shortenAddress(work?.participant.wallet)} ({work?.participant.name})</span></div>
                 <div className='flex my-2 text-[16px] '><span>{getWorkStatus(work?.status)}</span></div>
-                <div className='flex my-2 text-[16px] '><span>{getTimeDifference(work?.applyDate)}</span></div>
+                <div className='flex my-2 text-[16px] '><span>{getTimeDifference(work?.applyDate)} ago</span></div>
               </div>
             ))}
           </div>
