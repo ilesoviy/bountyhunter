@@ -169,6 +169,37 @@ const useBackend = () => {
         []
     );
 
+    const getAppliedBounties = useCallback(
+        async (wallet) => {
+            try {
+                const res = await fetch(BACKEND_URL + 'get_bounties', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        'wallet': wallet, 
+                        'filter': 'applied'
+                    })
+                });
+    
+                const resData = await res.json();
+                if (resData.error) {
+                    console.error('error1:', resData.error);
+                } else {
+                    console.log(resData.details);
+                    return resData.works;
+                }
+            } catch (error) {
+                console.error('error2:', error);
+            }
+
+            return [];
+        }, 
+        []
+    );
+
+
     const getWorks = useCallback(
         async (bountyId) => {
             try {
@@ -194,7 +225,8 @@ const useBackend = () => {
             }
 
             return [];
-        }
+        }, 
+        []
     );
 
     const addWork = useCallback(
@@ -227,7 +259,8 @@ const useBackend = () => {
             }
 
             return -2;
-        }
+        }, 
+        []
     );
 
     return {
@@ -235,8 +268,9 @@ const useBackend = () => {
         setUser, 
 
         addBounty, 
-        getRecentBounties,
+        getRecentBounties, 
         getSingleBounty, 
+        getAppliedBounties, 
 
         getWorks, 
         addWork

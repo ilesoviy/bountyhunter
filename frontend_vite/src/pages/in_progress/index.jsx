@@ -1,26 +1,34 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState, useEffect } from 'react';
 import { Scrollbars } from 'react-custom-scrollbars';
-import Sidebar from '../../components/menu/SideBar';
 import { Reveal } from 'react-awesome-reveal';
-import { IsSmMobile, fadeInUp, fadeIn } from '../../utils';
+import Sidebar from '../../components/menu/SideBar';
 import Subheader from '../../components/menu/SubHeader';
 import MainHeader from '../../components/menu/MainHeader';
-import InBountiesBody from './InBountiesBody';
 import HelpButton from '../../components/menu/HelpButton';
+import InBountiesBody from './InBountiesBody';
+import { IsSmMobile, fadeInUp, fadeIn } from '../../utils';
+import useBackend from '../../hooks/useBackend';
 
 const InProgress = () => {
+  const { getAppliedBounties } = useBackend();
+  
+  const [bounties, setBounties] = useState([]);
 
   const [keyword, setKeyword] = useState('');
 
   const [isSearchShow, setSearchShow] = useState(false);
+
   const [isClosed, setClosed] = useState(false);
   const [isActive, setActive] = useState(false);
+
   const [isCompe, setComp] = useState(false);
   const [isCoop, setCoop] = useState(false);
   const [isHack, setHack] = useState(false);
+
   const [isBegin, setBegin] = useState(false);
   const [isInter, setInter] = useState(false);
   const [isAdvan, setAdvan] = useState(false);
+
   const [isDesig, setDesig] = useState(false);
   const [isDevel, setDevel] = useState(false);
   const [isSmtCt, setSmtCt] = useState(false);
@@ -33,6 +41,7 @@ const InProgress = () => {
   const handleActive = useCallback(() => {
     setActive(isActive => !isActive);
   }, []);
+
   const handleComp = useCallback(() => {
     setComp(isCompe => !isCompe);
   }, []);
@@ -42,6 +51,7 @@ const InProgress = () => {
   const handleHack = useCallback(() => {
     setHack(isHack => !isHack);
   }, []);
+
   const handleBegin = useCallback(() => {
     setBegin(isBegin => !isBegin);
   }, []);
@@ -51,6 +61,7 @@ const InProgress = () => {
   const handleAdvan = useCallback(() => {
     setAdvan(isAdvan => !isAdvan);
   }, []);
+
   const handleDesig = useCallback(() => {
     setDesig(isDesig => !isDesig);
   }, []);
@@ -73,6 +84,15 @@ const InProgress = () => {
 
   const handleKeyword = useCallback((event) => {
     setKeyword(event.target.value);
+  }, []);
+
+  useEffect(() => {
+    async function fetchBounties() {
+      const appliedBounties = await getAppliedBounties();
+      console.log('appliedBounties:', appliedBounties);
+      setBounties(appliedBounties);
+    }
+    fetchBounties();
   }, []);
 
 
@@ -154,13 +174,13 @@ const InProgress = () => {
           </div>
           <div className={`app-content ${isSearchShow ? 'blur-sm' : ''}`}>
             {IsSmMobile() ? (
-              <InBountiesBody />
+              <InBountiesBody bounties={bounties} />
             ) : (
               <Scrollbars id='body-scroll-bar' autoHide style={{ height: "100%" }}
                 renderThumbVertical={({ style, ...props }) =>
                   <div {...props} className={'thumb-horizontal'} />
                 }>
-                <InBountiesBody />
+                <InBountiesBody bounties={bounties} />
               </Scrollbars>
             )}
           </div>
