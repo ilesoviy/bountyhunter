@@ -1,24 +1,12 @@
-const BountyModel = require('../models/bounty')
 const WorkModel = require('../models/work')
 
-const STATUS_APPLIED = 1
-const STATUS_SUBMITTED = 2
-const STATUS_APPROVED = 3
-const STATUS_REJECTED = 4
-
-
-async function addWork(user, bountyId, workId) {
-    const bounty = await BountyModel.findById(bountyId)
-    if (bounty === null) {
-        throw new Error('Invalid Bounty')
-    }
-
-    await bounty.populate('bountyId')
-    if (bounty.bountyId.creator === user._id) {
+async function addWork(user, bounty, workId, applyDate, status) {
+    await bounty.populate('creator')
+    if (bounty.creator._id === user._id) {
         throw new Error(`Can't apply to self-created bounty`)
     }
 
-    const fWork = await WorkModel.findOne({}, {participant: user._id, bountyId: bountyId})
+    const fWork = await WorkModel.findOne({participant: user._id, bounty: bounty._id})
     if (fWork !== null) {
         throw new Error(`Already created work`)
     }
@@ -26,9 +14,9 @@ async function addWork(user, bountyId, workId) {
     const newWork = new WorkModel({
         workId: workId,
         participant: user._id,
-        bountyId: bountyId,
-        applyDate: Date.now(),
-        status: STATUS_APPLIED
+        bounty: bounty._id,
+        applyDate: applyDate,
+        status: status
     })
 
     await newWork.save()
@@ -36,42 +24,42 @@ async function addWork(user, bountyId, workId) {
 }
 
 async function getWorks(bountyId) {
-    const works = await WorkModel.find({bountyId: bountyId}).populate('participant')
+    const works = await WorkModel.find({bounty: bountyId}).populate('participant')
     return works
 }
 
-async function submitWork(workId, workRepo) {
+async function submitWork(workId, workRepo, newStatus) {
     const work = await WorkModel.findOne({workId: workId})
     if (work === null) {
         throw new Error('Invalid Work')
     }
 
-    work.status = STATUS_SUBMITTED;
+    work.status = newStatus;
     work.workRepo = workRepo;
     work.save()
 }
 
-async function countSubmissions(user, bountyId) {
-    return await WorkModel.countDocuments({user: user._id, bountyId: bountyId, status: STATUS_SUBMITTED})
+async function countSubmissions(user, bountyId, findStatus) {
+    return await WorkModel.countDocuments({user: user._id, bountyId: bountyId, status: findStatus})
 }
 
-async function approveWork(workId) {
+async function approveWork(workId, newStatus) {
     const work = await WorkModel.findOne({workId: workId})
     if (work === null) {
         throw new Error('Invalid Work')
     }
 
-    work.status = STATUS_APPROVED;
+    work.status = newStatus;
     work.save()
 }
 
-async function rejectWork(workId) {
+async function rejectWork(workId, newStatus) {
     const work = await WorkModel.findOne({workId: workId})
     if (work === null) {
         throw new Error('Invalid Work')
     }
 
-    work.status = STATUS_REJECTED;
+    work.status = newStatus;
     work.save()
 }
 

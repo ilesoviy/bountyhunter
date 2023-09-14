@@ -1,7 +1,7 @@
 const BOUNTY: Symbol = symbol_short!("BOUNTY");
 
 use soroban_sdk::{
-    /* log,  */token, symbol_short, 
+    log, token, symbol_short, 
     Env, Address, Symbol, String
 };
 use crate::storage_types::{ INSTANCE_BUMP_AMOUNT, FeeInfo, WorkStatus, WorkInfo, BountyStatus, BountyInfo, DataKey, ErrorCode };
@@ -9,7 +9,7 @@ use crate::fee::{ fee_check, fee_get, fee_calculate };
 use crate::work::{ work_create, work_write, work_get };
 
 
-pub fn error(
+pub fn get_error(
     e: &Env
 ) -> u32 {
     if !e.storage().instance().has(&DataKey::ErrorCode) {
@@ -20,10 +20,22 @@ pub fn error(
     err_code
 }
 
+pub fn reset_error(
+    e: &Env
+) {
+    e.storage().instance().set(&DataKey::ErrorCode, &0);
+}
+
 pub fn bounty_count(e: &Env
 ) -> u32 {
     let bounty_count: u32 = e.storage().instance().get(&DataKey::BountyCount).unwrap_or(0);
     bounty_count
+}
+
+pub fn work_count(e: &Env
+) -> u32 {
+    let work_count: u32 = e.storage().instance().get(&DataKey::WorkCount).unwrap_or(0);
+    work_count
 }
 
 pub fn bounty_create(
@@ -57,12 +69,11 @@ pub fn bounty_create(
     creator.require_auth();
 
 	let fee_info: FeeInfo = fee_get(e);
-    let reward_amount: u64 = reward_amount;
-    let fee_amount: u64 = fee_calculate(e, &fee_info, reward_amount);
+    let fee_amount: u64 = fee_calculate(e, &fee_info.clone(), reward_amount);
     let transfer_amount: i128 = (reward_amount + fee_amount) as i128;
     
     let contract = e.current_contract_address();
-    let pay_token_client = token::Client::new(e, &pay_token);
+    let pay_token_client = token::Client::new(e, &pay_token.clone());
 
     if pay_token_client.balance(&creator) < transfer_amount {
         // panic!("insufficient creator's balance");
@@ -75,7 +86,7 @@ pub fn bounty_create(
 
     pay_token_client.transfer(&creator, &contract, &(reward_amount as i128));
     pay_token_client.transfer(&creator, &fee_info.fee_wallet, &(fee_amount as i128));
-
+    
     // write bounty info
     let bounty_count: u32 = e.storage().instance().get(&DataKey::BountyCount).unwrap_or(0);
     let bounty_id: u32 = bounty_count;

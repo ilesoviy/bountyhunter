@@ -9,9 +9,9 @@ const bountySchema = new Schema(
         description: { type: String },
         startDate: { type: Date, default: Date.now, requried: true },
         endDate: { type: Date },
-        type: { type: String /* Number */ },
-        topic: { type: String /* Number */ },
-        level: { type: String /* Number */ },
+        type: { type: Number },
+        topic: { type: Number },
+        difficulty: { type: Number },
         block: { type: Number },
         gitRepo: { type: String },
         status: { type: Number }

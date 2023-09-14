@@ -13,12 +13,12 @@ use soroban_sdk::{
 };
 use crate::storage_types::{ INSTANCE_BUMP_AMOUNT, FeeInfo, DataKey, ErrorCode };
 use crate::admin::{ has_administrator, read_administrator, write_administrator };
-use crate::fee::{ fee_set };
+use crate::fee::{ fee_check, fee_set, fee_get };
 use crate::bounty::{
-    bounty_count,
+    bounty_count, work_count,
     bounty_create, bounty_approve, bounty_reject, bounty_cancel, bounty_close,
     bounty_apply, bounty_submit,
-    error
+    get_error, reset_error
 };
 
 
@@ -65,12 +65,31 @@ impl BountyHunter {
         return ErrorCode::Success
     }
 
+    pub fn get_fee(e: Env) -> (u32, Address) {
+        if !fee_check(&e) {
+            let cur_admin = read_administrator(&e);
+
+            return (0, cur_admin)
+        }
+
+        let fee_info: FeeInfo = fee_get(&e);
+        return (fee_info.fee_rate, fee_info.fee_wallet)
+    }
+
     pub fn get_last_error(e: Env) -> u32 {
-        error(&e)
+        get_error(&e)
+    }
+
+    pub fn reset_last_error(e: Env) {
+        reset_error(&e)
     }
 
     pub fn count_bounties(e: Env) -> u32 {
         bounty_count(&e)
+    }
+
+    pub fn count_works(e: Env) -> u32 {
+        work_count(&e)
     }
 
     // return new bounty id on success, errorcode on failure

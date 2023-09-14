@@ -11,6 +11,8 @@ use soroban_sdk::{
 };
 
 
+const DEF_FEE_RATE: u32 = 30;    // default fee is 0.3%
+const TOKEN_DECIMALS: u32 = 7;
 const MUL_VAL: u64 = u64::pow(10, TOKEN_DECIMALS);
 const ONE_DAY: u64 = 60 * 60 * 24; // 60sec * 60min * 24hr
 
