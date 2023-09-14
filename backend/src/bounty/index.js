@@ -1,9 +1,9 @@
 const BountyModel = require("../models/bounty")
 
 async function addBounty(creatorId, bountyId, 
-    title, payAmount, description, 
-    createDate, endDate, 
-    type, topic, difficulty, 
+    title, payAmount, startDate, endDate, 
+    type, difficulty, topic, 
+    description, gitHub, 
     block, status) {
     const oldBounty = await BountyModel.findOne({bountyId: bountyId})
 
@@ -13,18 +13,19 @@ async function addBounty(creatorId, bountyId,
     }
     
     const newBounty = new BountyModel({
-        creator: creatorId,
-        bountyId: bountyId,
-        title: title,
-        payAmount: payAmount,
-        description: description,
-        createdDate: createDate,
-        endDate: endDate,
-        type: type,
-        topic: topic,
-        difficulty: difficulty,
-        block: block,
-        status: status,
+        creator: creatorId, 
+        bountyId: bountyId, 
+        title: title, 
+        payAmount: payAmount, 
+        startDate: startDate, 
+        endDate: endDate, 
+        type: type, 
+        topic: topic, 
+        difficulty: difficulty, 
+        description: description, 
+        gitHub: gitHub, 
+        block: block, 
+        status: status
     })
 
     await newBounty.save()
@@ -51,22 +52,28 @@ async function searchBounties(param) {
     })
 }
 
+async function getAppliedBounties(user) {
+    const works = await WorkModel.find({participant: user._id}).populate('participant').populate('bounty')
+    const bounties = works.map(b => b.bounty)
+    return bounties
+}
+
 async function getBounties(filter, param, user) {
     /* if (filter === 'all') {
         return await BountyModel.find({}, {}, {sort: {createdAt: -1}, skip: 0}).populate('creator')
     } else  */if (filter === 'search') {
         return await searchBounties(param)
     } else if (filter === 'applied') {
-        return await WorkModel.find({}, {participant: user._id}, {sort: {createdAt: -1}, skip: 0}).populate('bountyId')
+        return await getAppliedBounties(user)
     } else if (filter === 'created') {
-        return await BountyModel.find({}, {creator: user._id}, {sort: {createdAt: -1}, skip: 0}).populate('creator')
+        return await BountyModel.find({creator: user._id}, {sort: {createdAt: -1}, skip: 0}).populate('creator')
     } else {
         throw new Error('Unknown filter')
     }
 }
 
-async function getSingleBounty(id) {
-    return await BountyModel.findById(id).populate('user')
+async function getSingleBounty(bountyId) {
+    return await BountyModel.findOne({bountyId: bountyId}).populate('creator')
 }
 
 module.exports = { addBounty, getRecentBounties, getBounties, getSingleBounty }
