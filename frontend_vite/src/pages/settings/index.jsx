@@ -18,7 +18,7 @@ const SettingsBody = () => {
   const [github, setGitHub] = useState('');
   const [discord, setDiscord] = useState('');
   const { getUser, setUser } = useBackend();
-  
+
   const handleName = useCallback((event) => {
     setName(event.target.value);
   }, []);
@@ -60,42 +60,46 @@ const SettingsBody = () => {
 
   return (
     <Reveal keyframes={fadeInUp} className='onStep' delay={400} duration={1000} triggerOnce>
-      <div className='app-card h-auto'>
-        <div className='w-3/3 md:w-full xl:h-fit'>
-          <div className='row'>
-            <div className='w-full pb-3'>
-              <div className='input-form-control'>
-                <label className='input-label'>Name</label>
-                <div className="input-control">
-                  <input type="text" name="name" value={name} className='input-main' onChange={handleName}></input>
+      {
+        isConnected ?
+          <div className='app-card h-auto'>
+            <div className='w-3/3 md:w-full xl:h-fit'>
+              <div className='row'>
+                <div className='w-full pb-3'>
+                  <div className='input-form-control'>
+                    <label className='input-label'>Name</label>
+                    <div className="input-control">
+                      <input type="text" name="name" value={name} className='input-main' onChange={handleName}></input>
+                    </div>
+                  </div>
+                </div>
+                <div className='w-full pb-3'>
+                  <div className='input-form-control'>
+                    <label className='input-label'>GitHub Profile</label>
+                    <div className="input-control">
+                      <input type="text" name="bGitHub" value={github} className='input-main' onChange={handleGitHub}></input>
+                    </div>
+                  </div>
+                </div>
+                <div className='w-full pb-3'>
+                  <div className='input-form-control'>
+                    <label className='input-label'>Discord#</label>
+                    <div className="input-control">
+                      <input type="text" name="discord" value={discord} className='input-main' onChange={handleDiscord}></input>
+                    </div>
+                  </div>
+                </div>
+                <div className='md:w-2/3 pb-3 w-1/3'>
+                  <div className='input-form-control'>
+                    <div className="input-control border-0 ">
+                      <button className='input-main btn-hover text-white text-[]' onClick={handleSave}>Save Changes</button></div>
+                  </div>
                 </div>
               </div>
             </div>
-            <div className='w-full pb-3'>
-              <div className='input-form-control'>
-                <label className='input-label'>GitHub Profile</label>
-                <div className="input-control">
-                  <input type="text" name="bGitHub" value={github} className='input-main' onChange={handleGitHub}></input>
-                </div>
-              </div>
-            </div>
-            <div className='w-full pb-3'>
-              <div className='input-form-control'>
-                <label className='input-label'>Discord#</label>
-                <div className="input-control">
-                  <input type="text" name="discord" value={discord} className='input-main' onChange={handleDiscord}></input>
-                </div>
-              </div>
-            </div>
-            <div className='md:w-2/3 pb-3 w-1/3'>
-              <div className='input-form-control'>
-                <div className="input-control border-0 ">
-                  <button className='input-main btn-hover text-white text-[]' onClick={handleSave}>Save Changes</button></div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+          </div> :
+          <WarningMsg msg='You need to connect your wallet in order to create a bounty.' />
+      }
     </Reveal>
   );
 }
