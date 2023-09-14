@@ -1,4 +1,5 @@
 const BountyModel = require("../models/bounty")
+const WorkModel = require("../models/work")
 
 async function addBounty(creatorId, bountyId, 
     title, payAmount, startDate, endDate, 
@@ -53,7 +54,7 @@ async function searchBounties(param) {
 }
 
 async function getAppliedBounties(user) {
-    const works = await WorkModel.find({participant: user._id}).populate('participant').populate('bounty')
+    const works = await WorkModel.find({participant: user._id}).populate('bounty')
     const bounties = works.map(b => b.bounty)
     return bounties
 }

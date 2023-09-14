@@ -1,7 +1,7 @@
 const { Router } = require('express');
 const { getUser, setUser } = require('../user');
 const { addBounty, getRecentBounties, getBounties, getSingleBounty } = require('../bounty');
-const { addWork, getWorks, submitWork, countSubmissions, approveWork, rejectWork } = require('../work');
+const { addWork, getWorks, getWork, submitWork, countSubmissions, approveWork, rejectWork } = require('../work');
 
 const router = Router();
 
@@ -123,14 +123,39 @@ router.post('/get_works', async (request, response) => {
     }
 
     try {
-        const works = await getWorks(bounty._id)
+        const works = await getWorks(bounty._id, request.body.status)
         response.send({ status: 'success', details: `${works?.length} works`, works: works })
     } catch (err) {
         response.send({ status: 'failed', error: err.message })
     }
 });
 
+router.post('/get_work', async (request, response) => {
+    const query = request.body
+
+    const user = await getUser(query.wallet)
+    if (user === null) {
+        response.send({ status: 'failed', error: `You did not login or invalid user` })
+        return
+    }
+
+    const bounty = await getSingleBounty(query.bountyId);
+    if (bounty === null) {
+        response.send({ status: 'failed', error: `Invalid bounty id` })
+        return
+    }
+
+    try {
+        const work = await getWork(user, bounty)
+        if (work === null) throw new Error('Not found')
+        response.send({ status: 'success', details: `Found`, work: work })
+    } catch (err) {
+        response.send({ status: 'failed', error: err.message })
+    }
+});
+
 router.post('/submit_work', async (request, response) => {
+    console.log('request.body:', request.body);
     const query = request.body
 
     const user = await getUser(query.wallet)
@@ -140,7 +165,7 @@ router.post('/submit_work', async (request, response) => {
     }
 
     try {
-        const submitted = await submitWork(query.workId, query.workRepo)
+        const submitted = await submitWork(query.workId, query.workRepo, query.submitDate, query.status)
         response.send({ status: 'success', details: `${user.name ? user.name: user.wallet} ${submitted === true? 'submitted': 'not submitted'} ${query.workId}` })
     } catch (err) {
         response.send({ status: 'failed', error: err.message })

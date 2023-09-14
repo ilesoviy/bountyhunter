@@ -23,20 +23,29 @@ async function addWork(user, bounty, workId, applyDate, status) {
     return true
 }
 
-async function getWorks(bountyId) {
-    const works = await WorkModel.find({bounty: bountyId}).populate('participant')
+async function getWorks(bountyId, status) {
+    const works = await WorkModel.find({bounty: bountyId, status: status}).populate('participant')
     return works
 }
 
-async function submitWork(workId, workRepo, newStatus) {
+async function getWork(user, bounty) {
+    const works = await WorkModel.findOne({participant: user._id, bounty: bounty._id})
+    return works
+}
+
+async function submitWork(workId, workRepo, submitDate, newStatus) {
+    console.log('submitWork> workId:' + workId + ' workRepo:' + workRepo + ' submitDate:' + submitDate + ' newStatus:' + newStatus)
     const work = await WorkModel.findOne({workId: workId})
     if (work === null) {
         throw new Error('Invalid Work')
     }
+    console.log('work:', work);
 
-    work.status = newStatus;
     work.workRepo = workRepo;
+    work.submitDate = submitDate;
+    work.status = newStatus;
     work.save()
+    return true
 }
 
 async function countSubmissions(user, bountyId, findStatus) {
@@ -64,4 +73,4 @@ async function rejectWork(workId, newStatus) {
 }
 
 
-module.exports = { addWork, getWorks, submitWork, countSubmissions, approveWork, rejectWork }
+module.exports = { addWork, getWorks, getWork, submitWork, countSubmissions, approveWork, rejectWork }
