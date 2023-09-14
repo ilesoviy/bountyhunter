@@ -22,7 +22,7 @@ const ExBounty = ({bounty}) => {
                     </div>
                   </div>
                   <div className='flex flex-col'>
-                    <div className='flex flex-row space-x-2 '>
+                    <div className='flex flex-row space-x-2 items-center'>
                       <div className='flex-col app-gray justify-around xsm:flex-col xsm:text-center border rounded-2xl px-2'> {`${numberWithCommas(bounty?.payAmount, 3)} XLM`}</div>
                       <div className='flex-col app-gray justify-around xsm:flex-col xsm:text-center border rounded-2xl px-2'>{getBountyStatus(bounty?.status)}</div>
                     </div>
@@ -41,7 +41,7 @@ const ExBounty = ({bounty}) => {
                     <span className='app-gray text-[14px]'>{getTimeDifference(bounty?.startDate)} ago</span>
                   </div>
                   <div className='flex flex-col'>
-                    <div className='flex flex-row space-x-2'>
+                    <div className='flex flex-row space-x-2 items-center'>
                       <div className='flex-col app-gray justify-around space-x-2 sm:flex-col sm:text-center border rounded-2xl px-2'>{getType(bounty?.type)}</div>
                       <div className='flex-col app-gray justify-around space-x-2 sm:flex-col sm:text-center border rounded-2xl px-2'>{getTopic(bounty?.topic)}</div>
                       <div className='flex-col app-gray justify-around space-x-2 sm:flex-col sm:text-center border rounded-2xl px-2'>{getLevel(bounty?.difficulty)}</div>

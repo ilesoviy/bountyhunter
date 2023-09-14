@@ -30,11 +30,11 @@ export const Information = ({
                         </div>
                         <div className='flex justify-between items-center gap-3'>
                             <span className='text-[16px] font-bold'>Start Date:</span>
-                            <span className='text-[16px]'>{getFormatedDate(startDate)}</span>
+                            <span className='text-[16px] text-right	'>{getFormatedDate(startDate)}</span>
                         </div>
                         <div className='flex justify-between items-center gap-3'>
                             <span className='text-[16px] font-bold'>End Date:</span>
-                            <span className='text-[16px]'>{getFormatedDate(endDate)}</span>
+                            <span className='text-[16px] text-right	'>{getFormatedDate(endDate)}</span>
                         </div>
                         <div className='flex justify-between items-center gap-3'>
                             <span className='text-[16px] font-bold'>Block</span>
