@@ -74,7 +74,7 @@ const useBackend = () => {
     );
 
     const addBounty = useCallback(
-        async (wallet, bountyId, title, payAmount, duration, type, difficulty, topic, desc, gitHub, block) => {
+        async (wallet, bountyId, title, payAmount, duration, type, difficulty, topic, description, gitHub, block) => {
             try {
                 const res = await fetch(BACKEND_URL + 'add_bounty', {
                     method: 'POST',
@@ -90,7 +90,7 @@ const useBackend = () => {
                         'type': type,
                         'difficulty': difficulty,
                         'topic': topic,
-                        'description': desc,
+                        'description': description,
                         'gitHub': gitHub,
                         'block': block, 
                         'status': BountyStatus.ACTIVE
@@ -199,6 +199,131 @@ const useBackend = () => {
         []
     );
 
+    const getCreatedBounties = useCallback(
+        async (wallet) => {
+            try {
+                const res = await fetch(BACKEND_URL + 'get_bounties', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        'wallet': wallet, 
+                        'filter': 'created'
+                    })
+                });
+    
+                const resData = await res.json();
+                if (resData.error) {
+                    console.error('error1:', resData.error);
+                } else {
+                    console.log(resData.details);
+                    return resData.bounties;
+                }
+            } catch (error) {
+                console.error('error2:', error);
+            }
+
+            return [];
+        }, 
+        []
+    );
+
+    const countSubmissions = useCallback(
+        async (wallet, bountyId) => {
+            try {
+                const res = await fetch(BACKEND_URL + 'count_submissions', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        'wallet': wallet,
+                        'bountyId': bountyId,
+                        'status': WorkStatus.SUBMITTED
+                    })
+                });
+    
+                const resData = await res.json();
+                if (resData.error) {
+                    console.error('error1:', resData.error);
+                    return -1;
+                } else {
+                    return resData.count;
+                }
+            } catch (error) {
+                console.error('error2:', error);
+            }
+
+            return -2;
+        }, 
+        []
+    );
+
+    const cancelBountyB = useCallback(
+        async (wallet, bountyId) => {
+            try {
+                const res = await fetch(BACKEND_URL + 'cancel_bounty', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        'wallet': wallet,
+                        'bountyId': bountyId,
+                        'status': BountyStatus.CANCELLED
+                    })
+                });
+    
+                const resData = await res.json();
+                if (resData.error) {
+                    console.error('error1:', resData.error);
+                    return -1;
+                } else {
+                    console.log(resData.details);
+                    return 0;
+                }
+            } catch (error) {
+                console.error('error2:', error);
+            }
+
+            return -2;
+        }, 
+        []
+    );
+
+    const closeBountyB = useCallback(
+        async (wallet, bountyId) => {
+            try {
+                const res = await fetch(BACKEND_URL + 'close_bounty', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        'wallet': wallet,
+                        'bountyId': bountyId,
+                        'status': BountyStatus.CLOSED
+                    })
+                });
+    
+                const resData = await res.json();
+                if (resData.error) {
+                    console.error('error1:', resData.error);
+                    return -1;
+                } else {
+                    console.log(resData.details);
+                    return 0;
+                }
+            } catch (error) {
+                console.error('error2:', error);
+            }
+
+            return -2;
+        }, 
+        []
+    );
+
 
     const getWorks = useCallback(
         async (bountyId, status) => {
@@ -295,7 +420,7 @@ const useBackend = () => {
     );
 
     const submitWork = useCallback(
-        async (wallet, workId, workRepo) => {
+        async (wallet, workId, workTitle, workDesc, workRepo) => {
             try {
                 const res = await fetch(BACKEND_URL + 'submit_work', {
                     method: 'POST',
@@ -305,9 +430,75 @@ const useBackend = () => {
                     body: JSON.stringify({
                         'wallet': wallet,
                         'workId': workId,
+                        'title': workTitle,
+                        'description': workDesc,
                         'workRepo': workRepo,
                         'submitDate': Date.now(),
                         'status': WorkStatus.SUBMITTED
+                    })
+                });
+    
+                const resData = await res.json();
+                if (resData.error) {
+                    console.error('error1:', resData.error);
+                    return -1;
+                } else {
+                    console.log(resData.details);
+                    return 0;
+                }
+            } catch (error) {
+                console.error('error2:', error);
+            }
+
+            return -2;
+        }, 
+        []
+    );
+
+    const approveWorkB = useCallback(
+        async (wallet, workId) => {
+            try {
+                const res = await fetch(BACKEND_URL + 'approve_work', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        'wallet': wallet,
+                        'workId': workId,
+                        'status': WorkStatus.SUBMITTED
+                    })
+                });
+    
+                const resData = await res.json();
+                if (resData.error) {
+                    console.error('error1:', resData.error);
+                    return -1;
+                } else {
+                    console.log(resData.details);
+                    return 0;
+                }
+            } catch (error) {
+                console.error('error2:', error);
+            }
+
+            return -2;
+        }, 
+        []
+    );
+
+    const rejectWorkB = useCallback(
+        async (wallet, workId) => {
+            try {
+                const res = await fetch(BACKEND_URL + 'reject_work', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        'wallet': wallet,
+                        'workId': workId,
+                        'status': WorkStatus.REJECTED
                     })
                 });
     
@@ -336,11 +527,17 @@ const useBackend = () => {
         getRecentBounties, 
         getSingleBounty, 
         getAppliedBounties, 
+        getCreatedBounties, 
+        countSubmissions, 
+        cancelBountyB, 
+        closeBountyB, 
 
         getWorks, 
         addWork, 
         getWork, 
-        submitWork
+        submitWork, 
+        approveWorkB, 
+        rejectWorkB
     }
 }
 

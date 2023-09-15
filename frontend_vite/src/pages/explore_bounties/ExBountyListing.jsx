@@ -15,10 +15,10 @@ import useBackend from '../../hooks/useBackend';
 import { toast } from 'react-toastify';
 
 const ExBountyListingBody = ({bounty}) => {
+  const { isConnected, walletAddress } = useCustomWallet();
   const { countWorks, applyBounty, getLastError } = useBounty();
   const { addWork } = useBackend();
-  const { isConnected, walletAddress } = useCustomWallet();
-
+  
   const onClickApply = useCallback(async (event) => {
     if (!isConnected) {
       toast.warning('Wallet not connected yet!');
@@ -42,7 +42,7 @@ const ExBountyListingBody = ({bounty}) => {
 
     toast('Successfully added work!');
   }, [isConnected, walletAddress, bounty]);
-
+  
   return (
     <div className='app-content pb-0 pr-4'>
       {!IsSmMobile() ?
@@ -95,7 +95,7 @@ const ExBountyListing = () => {
   const { getSingleBounty } = useBackend();
   const { id: bountyId } = useParams();
   const [bounty, setBounty] = useState({});
-
+  
   useEffect(() => {
     async function fetchBounty(bountyId) {
       const singleBounty = await getSingleBounty(bountyId);
