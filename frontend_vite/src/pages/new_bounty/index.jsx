@@ -27,7 +27,7 @@ const NewBountyBody = () => {
   const DEF_PAY_AMOUNT = 0;
 
   const [title, setTitle] = useState('');
-  const [payAmount, setPayAmount] = useState(DEF_PAY_AMOUNT);
+  const [payAmount, setPayAmount] = useState();
   const [duration, setDuration] = useState(0);
   const [type, setType] = useState(0);
   const [difficulty, setDifficulty] = useState(0);
@@ -52,7 +52,7 @@ const NewBountyBody = () => {
   }, []);
 
   const onChangePayAmount = useCallback((event) => {
-    setPayAmount(Number(event.target.value));
+    setPayAmount(event.target.value);
   }, []);
 
   const onChangeDuration = useCallback((event) => {
@@ -88,7 +88,7 @@ const NewBountyBody = () => {
       toast.warning("Please input title!");
       return false;
     }
-    if (!payAmount) {
+    if (payAmount === '' || Number(payAmount) === 0) {
       toast.warning("Please input amount!");
       return false;
     }
@@ -134,7 +134,7 @@ const NewBountyBody = () => {
     if (!checkCondition()) return;
 
     // approve first
-    const res1 = await approveToken(walletAddress, CONTRACT_ID, payAmount * 10000000);
+    const res1 = await approveToken(walletAddress, CONTRACT_ID, Number(payAmount) * 10000000);
     if (res1) {
       toast.error('Failed to approve token!');
       return;
@@ -142,7 +142,7 @@ const NewBountyBody = () => {
 
     const days = getDuration(duration);
     const bountyIdOld = await countBounties();
-    const bountyIdNew = await createBounty(walletAddress, title, payAmount * 10000000, DEF_PAY_TOKEN, SECS_PER_DAY * days);
+    const bountyIdNew = await createBounty(walletAddress, title, Number(payAmount) * 10000000, DEF_PAY_TOKEN, SECS_PER_DAY * days);
     if (bountyIdOld === bountyIdNew) {
       const error = await getLastError();
       toast.error('Failed to create new bounty!');
@@ -151,7 +151,7 @@ const NewBountyBody = () => {
     }
 
     const res2 = await addBounty(walletAddress, bountyIdOld,
-      title, payAmount, SECS_PER_DAY * days,
+      title, Number(payAmount), SECS_PER_DAY * days,
       type, difficulty, topic,
       description, gitHub,
       /* block */111);

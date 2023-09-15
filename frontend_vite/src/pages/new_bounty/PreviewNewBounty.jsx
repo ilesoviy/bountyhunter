@@ -30,7 +30,7 @@ const PreviewBody = () => {
       toast.warning("Please input title!");
       return false;
     }
-    if (!payAmount) {
+    if (payAmount === '' || Number(payAmount) === 0) {
       toast.warning("Please input amount!");
       return false;
     }
@@ -62,7 +62,7 @@ const PreviewBody = () => {
     if ( !checkCondition() ) return;
     
     // approve first
-    const res1 = await approveToken(walletAddress, CONTRACT_ID, payAmount * 10000000);
+    const res1 = await approveToken(walletAddress, CONTRACT_ID, Number(payAmount) * 10000000);
     if (res1) {
       toast.error('Failed to approve token!');
       return;
@@ -70,7 +70,7 @@ const PreviewBody = () => {
 
     const days = getDuration(duration);
     const bountyIdOld = await countBounties();
-    const bountyIdNew = await createBounty(walletAddress, title, payAmount * 10000000, DEF_PAY_TOKEN, SECS_PER_DAY * days);
+    const bountyIdNew = await createBounty(walletAddress, title, Number(payAmount) * 10000000, DEF_PAY_TOKEN, SECS_PER_DAY * days);
     if (bountyIdOld === bountyIdNew) {
       const error = await getLastError();
       toast.error('Failed to create new bounty!');
@@ -79,7 +79,7 @@ const PreviewBody = () => {
     }
 
     const res2 = await addBounty(walletAddress, bountyIdOld,
-      title, payAmount, SECS_PER_DAY * days,
+      title, Number(payAmount), SECS_PER_DAY * days,
       type, difficulty, topic,
       description, gitHub,
       /* block */111);
