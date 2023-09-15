@@ -1,12 +1,11 @@
 const { Router } = require('express');
 const { getUser, setUser } = require('../user');
-const { addBounty, getRecentBounties, getBounties, getSingleBounty } = require('../bounty');
+const { addBounty, getRecentBounties, getBounties, getSingleBounty, cancelBounty, closeBounty } = require('../bounty');
 const { addWork, getWorks, getWork, submitWork, countSubmissions, approveWork, rejectWork } = require('../work');
 
 const router = Router();
 
 router.post('/get_user', async (request, response) => {
-    console.log('request.body:', request.body);
     const query = request.body;
     
     const creator = await getUser(query.wallet); // wallet is the main identifier
@@ -19,7 +18,6 @@ router.post('/get_user', async (request, response) => {
 });
 
 router.post('/set_user', async (request, response) => {
-    console.log('request.body:', request.body);
     const query = request.body;
 
     try {
@@ -30,8 +28,8 @@ router.post('/set_user', async (request, response) => {
     }
 });
 
+
 router.post('/add_bounty', async (request, response) => {
-    console.log('request.body:', request.body);
     const query = request.body;
     
     const creator = await getUser(query.wallet);
@@ -80,8 +78,6 @@ router.post('/get_bounties', async (request, response) => {
 })
 
 router.post('/get_single_bounty', async (request, response) => {
-    console.log('request.body:', request.body);
-
     try {
         const bounty = await getSingleBounty(request.body.bountyId)
         if (bounty === null) throw new Error('Not found')
@@ -90,6 +86,36 @@ router.post('/get_single_bounty', async (request, response) => {
         response.send({ status: 'failed', error: err.message })
     }
 })
+
+router.post('/cancel_bounty', async (request, response) => {
+    const creator = await getUser(query.wallet);
+    if (creator === null) {
+        response.send({ status: 'failed', error: `You did not login or invalid user` });
+        return;
+    }
+
+    try {
+        const cancelled = await cancelBounty(request.body.bountyId)
+        response.send({ status: 'success', details: `${creator.name ? creator.name : creator.wallet} successfully cancelled ${query.bountyId}` })
+    } catch (err) {
+        response.send({ status: 'failed', error: err.message })
+    }
+});
+
+router.post('/close_bounty', async (request, response) => {
+    const creator = await getUser(query.wallet);
+    if (creator === null) {
+        response.send({ status: 'failed', error: `You did not login or invalid user` });
+        return;
+    }
+
+    try {
+        const closed = await closeBounty(request.body.bountyId)
+        response.send({ status: 'success', details: `${creator.name ? creator.name : creator.wallet} successfully closed ${query.bountyId}` })
+    } catch (err) {
+        response.send({ status: 'failed', error: err.message })
+    }
+});
 
 
 router.post('/add_work', async (request, response) => {
@@ -155,7 +181,6 @@ router.post('/get_work', async (request, response) => {
 });
 
 router.post('/submit_work', async (request, response) => {
-    console.log('request.body:', request.body);
     const query = request.body
 
     const user = await getUser(query.wallet)
@@ -165,23 +190,30 @@ router.post('/submit_work', async (request, response) => {
     }
 
     try {
-        const submitted = await submitWork(query.workId, query.workRepo, query.submitDate, query.status)
+        const submitted = await submitWork(query.workId, query.title, query.description, query.workRepo, query.submitDate, query.status)
         response.send({ status: 'success', details: `${user.name ? user.name: user.wallet} ${submitted === true? 'submitted': 'not submitted'} ${query.workId}` })
     } catch (err) {
         response.send({ status: 'failed', error: err.message })
     }
 })
 
-router.get('/count_submissions', async (request, response) => {
-    const query = request.query
-    const user = await getUser(query.token)
+router.post('/count_submissions', async (request, response) => {
+    const query = request.body
+
+    const user = await getUser(query.wallet)
     if (user === null) {
         response.send({ status: 'failed', error: `You did not login or invalid user` })
         return
     }
 
+    const bounty = await getSingleBounty(query.bountyId)
+    if (bounty === null) {
+        response.send({ status: 'failed', error: `Failed to get bounty` })
+        return
+    }
+
     try {
-        const count = await countSubmissions(user, query.id)
+        const count = await countSubmissions(bounty._id, query.status)
         response.send({ status: 'success', count: count })
     } catch (err) {
         response.send({ status: 'failed', error: err.message })
@@ -199,7 +231,7 @@ router.post('/approve_work', async (request, response) => {
 
     try {
         const submitted = await approveWork(query.workId)
-        response.send({ status: 'success', details: `${user.name ? user.name: user.wallet} ${submitted === true? 'approved': 'not approved'} ${query.workId}` })
+        response.send({ status: 'success', details: `${user.name ? user.name : user.wallet} ${submitted === true? 'approved': 'not approved'} ${query.workId}` })
     } catch (err) {
         response.send({ status: 'failed', error: err.message })
     }

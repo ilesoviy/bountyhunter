@@ -33,14 +33,14 @@ async function getWork(user, bounty) {
     return works
 }
 
-async function submitWork(workId, workRepo, submitDate, newStatus) {
-    console.log('submitWork> workId:' + workId + ' workRepo:' + workRepo + ' submitDate:' + submitDate + ' newStatus:' + newStatus)
+async function submitWork(workId, title, description, workRepo, submitDate, newStatus) {
     const work = await WorkModel.findOne({workId: workId})
     if (work === null) {
         throw new Error('Invalid Work')
     }
-    console.log('work:', work);
-
+    
+    work.title = title;
+    work.description = description;
     work.workRepo = workRepo;
     work.submitDate = submitDate;
     work.status = newStatus;
@@ -48,8 +48,8 @@ async function submitWork(workId, workRepo, submitDate, newStatus) {
     return true
 }
 
-async function countSubmissions(user, bountyId, findStatus) {
-    return await WorkModel.countDocuments({user: user._id, bountyId: bountyId, status: findStatus})
+async function countSubmissions(bounty, countStatus) {
+    return await WorkModel.countDocuments({bounty: bounty, status: countStatus})
 }
 
 async function approveWork(workId, newStatus) {

@@ -67,7 +67,7 @@ async function getBounties(filter, param, user) {
     } else if (filter === 'applied') {
         return await getAppliedBounties(user)
     } else if (filter === 'created') {
-        return await BountyModel.find({creator: user._id}, {sort: {createdAt: -1}, skip: 0}).populate('creator')
+        return await BountyModel.find({creator: user._id})
     } else {
         throw new Error('Unknown filter')
     }
@@ -77,4 +77,24 @@ async function getSingleBounty(bountyId) {
     return await BountyModel.findOne({bountyId: bountyId}).populate('creator')
 }
 
-module.exports = { addBounty, getRecentBounties, getBounties, getSingleBounty }
+async function cancelBounty(bountyId, newStatus) {
+    const bounty = await BountyModel.findOne({bountyId: bountyId})
+    if (bounty === null) {
+        throw new Error('Invalid Bounty')
+    }
+
+    bounty.status = newStatus;
+    bounty.save()
+}
+
+async function closeBounty(bountyId, newStatus) {
+    const bounty = await BountyModel.findOne({bountyId: bountyId})
+    if (bounty === null) {
+        throw new Error('Invalid Bounty')
+    }
+
+    bounty.status = newStatus;
+    bounty.save()
+}
+
+module.exports = { addBounty, getRecentBounties, getBounties, getSingleBounty, cancelBounty, closeBounty }
