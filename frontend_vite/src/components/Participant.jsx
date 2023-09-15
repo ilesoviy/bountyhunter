@@ -33,6 +33,7 @@ export const Participant = ({ bountyId, submit }) => {
           </div>
           <div className='info-body'>
             <table className='w-full '>
+              <tbody>
               {
                 works.length ? works.map((work, idx) => (
                   <tr className='text-[16px]'>
@@ -42,6 +43,7 @@ export const Participant = ({ bountyId, submit }) => {
                   </tr>
                 )) : <tr><td className='text-center'>No Participants</td></tr>
               }
+              </tbody>
             </table>
           </div>
         </div>
