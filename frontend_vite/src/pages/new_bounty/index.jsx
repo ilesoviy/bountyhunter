@@ -156,7 +156,7 @@ const NewBountyBody = () => {
       description, gitHub,
       /* block */111);
     if (res2) {
-      toast.errpr('Failed to add bounty!');
+      toast.error('Failed to add bounty!');
       return;
     }
 
