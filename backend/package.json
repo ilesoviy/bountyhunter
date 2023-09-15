@@ -1,7 +1,7 @@
 {
-  "name": "blockhub-backend",
+  "name": "bountyhunter-backend",
   "version": "1.0.0",
-  "description": "BlockHub Backend Application",
+  "description": "BountyHunter Backend Application",
   "main": "index.js",
   "type": "commonjs",
   "scripts": {
@@ -11,12 +11,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/crypto-wolf-1203/blockhub.git"
+    "url": "git+https://github.com/ilesoviy/bountyhunter.git"
   },
   "keywords": [],
   "author": "",
   "license": "MIT",
-  "homepage": "https://github.com/crypto-wolf-1203/blockhub#readme",
+  "homepage": "https://github.com/ilesoviy/bountyhunter#readme",
   "devDependencies": {},
   "dependencies": {
     "@apollo/client": "^3.7.12",
