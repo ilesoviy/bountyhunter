@@ -311,6 +311,29 @@ const useBounty = () => {
         []
     );
 
+    const closeBounty = useCallback(
+        async (creator, bountyId) => {
+            // const res = BountyHunter.invoke({
+            //     method: "close_bounty",
+            //     args: [
+            //         creator,
+            //         bountyId
+            //     ]
+            // });
+
+            const res = await executeTransaction(
+                contract.call("close_bounty", 
+                    new SorobanClient.Address(creator).toScVal(), 
+                    SorobanClient.xdr.ScVal.scvU32(bountyId)
+                )
+            );
+
+            console.log('res:', res);
+            return res;
+        },
+        []
+    );
+
     const tokenBalances = useCallback(
         async (account, token) => {
             return await BountyHunter.tokenBalances(account, token);
@@ -334,6 +357,7 @@ const useBounty = () => {
         approveWork,
         rejectWork,
         cancelBounty,
+        closeBounty,
 
         tokenBalances
     }

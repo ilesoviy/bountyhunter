@@ -81,7 +81,9 @@ const InBountyListing = () => {
   const handleDrawerOpen = useCallback(() => setDrawerOpen(true), []);
   const handleDrawerClose = useCallback(() => setDrawerOpen(false), []);
 
-  const [gitHub, setGescHub] = useState('');
+  const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
+  const [gitHub, setGitHub] = useState('');
   
   useEffect(() => {
     async function fetchBountyAndWork(bountyId) {
@@ -96,8 +98,14 @@ const InBountyListing = () => {
     fetchBountyAndWork(bountyId);
   }, [walletAddress, bountyId]);
 
-  const handleGitHub = useCallback((event) => {
-    setGescHub(event.target.value);
+  const onChangeTitle = useCallback((event) => {
+    setGitHub(event.target.value);
+  }, []);
+  const onChangeDescription = useCallback((event) => {
+    setGitHub(event.target.value);
+  }, []);
+  const onChangeGitHub = useCallback((event) => {
+    setGitHub(event.target.value);
   }, []);
 
   const onApplyClicked = useCallback(async (event) => {
@@ -114,7 +122,7 @@ const InBountyListing = () => {
       return;
     }
 
-    const res2 = await submitWork(walletAddress, work?.workId, gitHub);
+    const res2 = await submitWork(walletAddress, work?.workId, title, description, gitHub);
     if (res2) {
       toast.error('Failed to add work!');
       return;
@@ -162,19 +170,19 @@ const InBountyListing = () => {
         <div className='input-form-control mt-3'>
           <label className='input-label'>Title</label>
           <div className="input-control">
-            <input type="text" name="title" value={bounty?.title} className='input-main' />
+            <input type="text" name="title" value={title} className='input-main' onChange={onChangeTitle} />
           </div>
         </div>
         <div className='input-form-control mt-3'>
           <label className='input-label'>Description</label>
           <div className="input-control h-auto">
-            <textarea type="text" name="desc" value={bounty?.description} className='input-main' />
+            <textarea type="text" name="description" value={description} className='input-main' onChange={onChangeDescription} />
           </div>
         </div>
         <div className='input-form-control mt-3'>
           <label className='input-label'>Github Link</label>
           <div className="input-control">
-            <input type="text" name="gitHub" value={bounty?.gitHub} className='input-main' onChange={handleGitHub} />
+            <input type="text" name="gitHub" value={gitHub} className='input-main' onChange={onChangeGitHub} />
           </div>
         </div>
         <div className='input-form-control mt-3'>

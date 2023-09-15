@@ -19,7 +19,7 @@ const PreviewBody = () => {
   const { walletAddress, isConnected } = useCustomWallet();
   const { CONTRACT_ID, DEF_PAY_TOKEN, approveToken, getLastError, countBounties, createBounty } = useBounty();
   const { addBounty } = useBackend();
-  const {title, payAmount, duration, type, difficulty, topic, desc, gitHub } = loc.state;
+  const {title, payAmount, duration, type, difficulty, topic, description, gitHub } = loc.state;
 
   function checkCondition() {
     if (!isConnected) {
@@ -50,7 +50,7 @@ const PreviewBody = () => {
       toast.warning("Please select topic!");
       return false;
     }
-    if ( !desc ) {
+    if ( !description ) {
       toast.warning("Please input description!");
       return false;
     }
@@ -81,7 +81,7 @@ const PreviewBody = () => {
     const res2 = await addBounty(walletAddress, bountyIdOld,
       title, payAmount, SECS_PER_DAY * days,
       type, difficulty, topic,
-      desc, gitHub,
+      description, gitHub,
       /* block */111);
     if (res2) {
       toast.errpr('Failed to add bounty!');
@@ -89,7 +89,7 @@ const PreviewBody = () => {
     }
 
     toast('Successfully added bounty!');
-  }, [walletAddress, title, payAmount, desc, duration, type, topic, difficulty]);
+  }, [walletAddress, title, payAmount, description, duration, type, topic, difficulty]);
 
   return (
     <div className='app-content'>
@@ -103,7 +103,7 @@ const PreviewBody = () => {
               <button className='text-[18px] mr-2'><i className="fa-regular fa-arrow-up-from-square mr-2"></i>Share</button>
             </div>
           </div>
-          <span className='py-2' dangerouslySetInnerHTML={{__html: loc.state.desc?.replace(new RegExp('\r?\n','g'), '<br />')}}></span>
+          <span className='py-2' dangerouslySetInnerHTML={{__html: loc.state.description?.replace(new RegExp('\r?\n','g'), '<br />')}}></span>
           {!isConnected &&
             <WarningMsg msg='You need to connect your wallet in order to create a bounty.' />}
         </div>

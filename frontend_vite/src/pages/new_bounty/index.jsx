@@ -32,18 +32,18 @@ const NewBountyBody = () => {
   const [type, setType] = useState(0);
   const [difficulty, setDifficulty] = useState(0);
   const [topic, setTopic] = useState(0);
-  const [desc, setDesc] = useState('');
+  const [description, setDescription] = useState('');
   const [gitHub, setGitHub] = useState('');
 
   useEffect(() => {
-    const { title, payAmount, duration, type, difficulty, topic, desc, gitHub } = loc.state;
+    const { title, payAmount, duration, type, difficulty, topic, description, gitHub } = loc.state;
     if (title) setTitle(title);
     if (payAmount) setPayAmount(payAmount);
     if (duration) setDuration(duration);
     if (type) setType(type);
     if (difficulty) setDifficulty(difficulty);
     if (topic) setTopic(topic);
-    if (desc) setDesc(desc);
+    if (description) setDescription(description);
     if (gitHub) setGitHub(gitHub);
   }, []);
 
@@ -108,7 +108,7 @@ const NewBountyBody = () => {
       toast.warning("Please select topic!");
       return false;
     }
-    if ( !desc ) {
+    if ( !description ) {
       toast.warning("Please input description!");
       return false;
     }
@@ -120,7 +120,7 @@ const NewBountyBody = () => {
 
     nav('/NewBounty/Preview', {
       state: {
-        title, payAmount, duration, type, difficulty, topic, desc, gitHub,
+        title, payAmount, duration, type, difficulty, topic, description, gitHub,
         wallet: walletAddress,
         status: BountyStatus.INIT,
         startDate: Date.now(),
@@ -128,7 +128,7 @@ const NewBountyBody = () => {
       }
     });
 
-  }, [walletAddress, title, payAmount, duration, type, difficulty, topic, desc, gitHub]);
+  }, [walletAddress, title, payAmount, duration, type, difficulty, topic, description, gitHub]);
 
   const handleSubmit = useCallback(async (event) => {
     if (!checkCondition()) return;
@@ -153,7 +153,7 @@ const NewBountyBody = () => {
     const res2 = await addBounty(walletAddress, bountyIdOld,
       title, payAmount, SECS_PER_DAY * days,
       type, difficulty, topic,
-      desc, gitHub,
+      description, gitHub,
       /* block */111);
     if (res2) {
       toast.errpr('Failed to add bounty!');
@@ -161,7 +161,7 @@ const NewBountyBody = () => {
     }
 
     toast('Successfully added bounty!');
-  }, [walletAddress, title, payAmount, duration, type, difficulty, topic, desc, gitHub]);
+  }, [walletAddress, title, payAmount, duration, type, difficulty, topic, description, gitHub]);
 
   return (
     <div className='app-body lg:pl-0 pl-[20px] pr-0 mt-3'>
@@ -245,7 +245,7 @@ const NewBountyBody = () => {
                 <div className='input-form-control'>
                   <label className='input-label'>Description</label>
                   <div className="input-control h-auto">
-                    <textarea type="text" name="desc" value={desc} rows={5} className='input-main' onChange={onChangeDesc}></textarea>
+                    <textarea type="text" name="description" value={description} rows={5} className='input-main' onChange={onChangeDesc}></textarea>
                   </div>
                 </div>
               </div>
@@ -265,7 +265,7 @@ const NewBountyBody = () => {
                     {/* <Link
                       to="/NewBounty/Preview"
                       state={{
-                        title, payAmount, duration, type, difficulty, topic, desc, gitHub,
+                        title, payAmount, duration, type, difficulty, topic, description, gitHub,
                         wallet: walletAddress,
                         status: BountyStatus.INIT,
                         startDate: Date.now(),
