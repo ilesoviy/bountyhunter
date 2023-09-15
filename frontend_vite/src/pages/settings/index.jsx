@@ -10,14 +10,14 @@ import MainHeader from '../../components/menu/MainHeader';
 import HelpButton from '../../components/menu/HelpButton';
 import { useCustomWallet } from '../../context/WalletContext';
 import useBackend from '../../hooks/useBackend';
-
+import WarningMsg from '../../components/WarningMsg';
 
 const SettingsBody = () => {
   const { walletAddress, isConnected } = useCustomWallet();
+  const { getUser, setUser } = useBackend();
   const [name, setName] = useState('');
   const [github, setGitHub] = useState('');
   const [discord, setDiscord] = useState('');
-  const { getUser, setUser } = useBackend();
 
   const handleName = useCallback((event) => {
     setName(event.target.value);

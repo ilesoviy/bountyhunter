@@ -19,8 +19,8 @@ pub fn work_create(
         work_id,
         &WorkInfo {
             participant: participant.clone(), 
-            bounty_id, 
-            status: WorkStatus::APPLIED,
+            bounty_id: bounty_id, 
+            status: WorkStatus::APPLIED, 
             work_repo: String::from_slice(&e, "")
         },
     );

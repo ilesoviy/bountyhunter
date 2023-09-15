@@ -15,7 +15,7 @@ import useBackend from '../../hooks/useBackend';
 import { toast } from 'react-toastify';
 
 const ExBountyListingBody = ({bounty}) => {
-  const { countWorks, applyBounty } = useBounty();
+  const { countWorks, applyBounty, getLastError } = useBounty();
   const { addWork } = useBackend();
   const { isConnected, walletAddress } = useCustomWallet();
 
@@ -34,21 +34,21 @@ const ExBountyListingBody = ({bounty}) => {
       return;
     }
 
-    const res = await addWork(walletAddress, bounty?.bountyId, workIdNew);
+    const res = await addWork(walletAddress, bounty?.bountyId, workIdOld);
     if (res) {
       toast.error('Failed to add work!');
       return;
     }
 
     toast('Successfully added work!');
-  }, [isConnected, walletAddress]);
+  }, [isConnected, walletAddress, bounty]);
 
   return (
     <div className='app-content pb-0 pr-4'>
       {!IsSmMobile() ?
         <div className='flex gap-3'>
           <div className='col-lg-7 pt-7'>
-            <ListingDescription bounty={bounty}/>
+            <ListingDescription bounty={bounty} />
             <Participant bountyId={bounty.bountyId} />
           </div>
           <div className='col-lg-5'>
@@ -69,7 +69,7 @@ const ExBountyListingBody = ({bounty}) => {
           </div>
         </div> :
         <div className='flex flex-col'>
-          <ListingDescription bounty={bounty}/>
+          <ListingDescription bounty={bounty} />
           <Information 
               wallet = {bounty?.creator?.wallet} 
               payAmount = {bounty?.payAmount} 
@@ -80,7 +80,7 @@ const ExBountyListingBody = ({bounty}) => {
               startDate = {Date.parse(bounty?.startDate)} 
               endDate = {Date.parse(bounty?.endDate)}
               status = {bounty?.status}
-            />
+          />
           <Participant bountyId={bounty.bountyId} />
           <div className='w-full my-2 py-3'>
             <button className='text-[18px] w-full border rounded-2xl px-2 py-2 btn-hover' onClick={onClickApply}>Apply</button>

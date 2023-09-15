@@ -5,12 +5,16 @@ import Sidebar from '../../components/menu/SideBar';
 import Subheader from '../../components/menu/SubHeader';
 import MainHeader from '../../components/menu/MainHeader';
 import HelpButton from '../../components/menu/HelpButton';
-import InBountiesBody from './InBountiesBody';
-import { IsSmMobile, fadeInUp } from '../../utils';
-import useBackend from '../../hooks/useBackend';
 import SearchBox from '../../components/menu/SearchBox';
+import WarningMsg from '../../components/WarningMsg';
+// import InBountiesBody from './InBountiesBody';
+import InBounty from './InBounty';
+import { IsSmMobile, fadeInUp } from '../../utils';
+import { useCustomWallet } from '../../context/WalletContext';
+import useBackend from '../../hooks/useBackend';
 
 const InProgress = () => {
+  const { isConnected, walletAddress } = useCustomWallet();
   const { getAppliedBounties } = useBackend();
   
   const [bounties, setBounties] = useState([]);
@@ -21,12 +25,16 @@ const InProgress = () => {
 
   useEffect(() => {
     async function fetchBounties() {
-      const appliedBounties = await getAppliedBounties();
+      if (!walletAddress)
+        return;
+
+      const appliedBounties = await getAppliedBounties(walletAddress);
       console.log('appliedBounties:', appliedBounties);
       setBounties(appliedBounties);
     }
+
     fetchBounties();
-  }, []);
+  }, [walletAddress]);
 
 
   return (
@@ -44,15 +52,29 @@ const InProgress = () => {
             </Reveal>
             <SearchBox ref={searchbox} callback={() =>{ setShow( isSearchShow => !isSearchShow ) }}/>
           </div>
+          
+	      {!isConnected &&
+            <WarningMsg msg='You need to connect your wallet in order to submit a work.' />
+          }
+          
           <div className={`app-content ${isSearchShow ? 'blur-sm' : ''}`}>
             {IsSmMobile() ? (
-              <InBountiesBody bounties={bounties} />
+              // <InBountiesBody bounties={bounties} />
+              bounties?.map((bounty, idx) => {
+                return (
+                  <InBounty key={idx} bountyId={bounty.bountyId} />
+                );
+              })
             ) : (
               <Scrollbars id='body-scroll-bar' autoHide style={{ height: "100%" }}
                 renderThumbVertical={({ style, ...props }) =>
                   <div {...props} className={'thumb-horizontal'} />
                 }>
-                <InBountiesBody bounties={bounties} />
+                {/* <InBountiesBody bounties={bounties} /> */
+                bounties?.map((bounty, idx) =>
+                    <InBounty key={idx} bountyId={bounty.bountyId} />
+                )
+                }
               </Scrollbars>
             )}
           </div>

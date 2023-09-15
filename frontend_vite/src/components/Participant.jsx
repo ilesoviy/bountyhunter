@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react';
 import { Reveal } from 'react-awesome-reveal';
 import { fadeInUp, shortenAddress, getWorkStatus, getTimeDifference } from '../utils';
+import useBounty, { WorkStatus } from '../hooks/useBounty';
 import useBackend from '../hooks/useBackend';
 
-export const Participant = ({bountyId}) => {
+export const Participant = ({bountyId, submit}) => {
   const { getWorks } = useBackend();
   const [works, setWorks] = useState([]);
 
@@ -12,7 +13,7 @@ export const Participant = ({bountyId}) => {
       return;
 
     async function fetchWorks(bountyId) {
-      const bountyWorks = await getWorks(bountyId);
+      const bountyWorks = await getWorks(bountyId, submit ? WorkStatus.SUBMITTED : WorkStatus.APPLIED);
       setWorks(bountyWorks);
     }
 
@@ -35,7 +36,7 @@ export const Participant = ({bountyId}) => {
               <div key={idx} className='flex justify-evenly items-center sm:text-center'>
                 <div className='flex my-2 text-[16px] '><span>{shortenAddress(work?.participant.wallet)} ({work?.participant.name})</span></div>
                 <div className='flex my-2 text-[16px] '><span>{getWorkStatus(work?.status)}</span></div>
-                <div className='flex my-2 text-[16px] '><span>{getTimeDifference(work?.applyDate)} ago</span></div>
+                <div className='flex my-2 text-[16px] '><span>{submit ? getTimeDifference(work?.submitDate) : getTimeDifference(work?.applyDate)} ago</span></div>
               </div>
             ))}
           </div>

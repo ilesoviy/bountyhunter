@@ -328,8 +328,8 @@ export function getBountyStatus(status) {
 
 export function getWorkStatus(status) {
   switch (status) {
-    case WorkStatus.IN_PROGRESS:
-      return 'IN PROGRESS'
+    case WorkStatus.INIT:
+      return 'INIT'
     case WorkStatus.APPLIED:
       return 'APPLIED'
     case WorkStatus.SUBMITTED:
