@@ -99,10 +99,10 @@ const InBountyListing = () => {
   }, [walletAddress, bountyId]);
 
   const onChangeTitle = useCallback((event) => {
-    setGitHub(event.target.value);
+    setTitle(event.target.value);
   }, []);
   const onChangeDescription = useCallback((event) => {
-    setGitHub(event.target.value);
+    setDescription(event.target.value);
   }, []);
   const onChangeGitHub = useCallback((event) => {
     setGitHub(event.target.value);

@@ -72,7 +72,7 @@ const NewBountyBody = () => {
   }, []);
 
   const onChangeDesc = useCallback((event) => {
-    setDesc(event.target.value);
+    setDescription(event.target.value);
   }, []);
 
   const onChangeGitHub = useCallback((event) => {

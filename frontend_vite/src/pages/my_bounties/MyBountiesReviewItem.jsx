@@ -1,5 +1,6 @@
 import { useCallback, useState, useEffect } from "react";
 import { Reveal } from 'react-awesome-reveal';
+import { toast } from 'react-toastify';
 import { fadeInUp, shortenAddress } from '../../utils';
 import { useCustomWallet } from "../../context/WalletContext";
 import useBounty from "../../hooks/useBounty";
