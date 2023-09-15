@@ -60,6 +60,7 @@ async function approveWork(workId, newStatus) {
 
     work.status = newStatus;
     work.save()
+    return true
 }
 
 async function rejectWork(workId, newStatus) {
@@ -70,6 +71,7 @@ async function rejectWork(workId, newStatus) {
 
     work.status = newStatus;
     work.save()
+    return true
 }
 
 

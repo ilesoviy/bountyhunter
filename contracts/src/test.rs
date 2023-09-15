@@ -2,7 +2,7 @@
 extern crate std;
 
 use soroban_sdk::{ log, token };
-use crate::storage_types::{ DEF_FEE_RATE, FEE_DECIMALS, TOKEN_DECIMALS, INSTANCE_BUMP_AMOUNT, ErrorCode };
+use crate::storage_types::{ FEE_DECIMALS, INSTANCE_BUMP_AMOUNT, ErrorCode };
 use crate::{ BountyHunter, BountyHunterClient };
 use soroban_sdk::{
     symbol_short, Symbol,

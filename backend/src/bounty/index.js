@@ -43,7 +43,7 @@ async function searchBounties(param) {
     param = (param || '').toLowerCase()
     if (param === '') return allBounties
     else return allBounties.filter((p) => {
-        return p.name.toLowerCase().includes(param)
+        return p.title.toLowerCase().includes(param)
                 || (p.description || '').toLowerCase().includes(param)
                 // ilesoviy - find incomplete
                 // || param.includes((p.type || '').toLowerCase())

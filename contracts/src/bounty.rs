@@ -128,6 +128,10 @@ pub fn bounty_apply(
     }
 
     let bounty = bounty_load(e, bounty_id);
+    if bounty.creator == participant.clone() {
+        // panic!("can't apply to self-created bounty!");
+        return ErrorCode::NoApplyToSelfBounty as u32;
+    }
     if bounty.status != BountyStatus::ACTIVE {
         // panic!("invalid bounty status");
         return ErrorCode::InvalidBountyStatus as u32

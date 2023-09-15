@@ -26,17 +26,18 @@ pub enum ErrorCode {
     
     // Bounty
     BountyNotFound = 130,
-    InvalidBountyStatus = 131,
-    EmptyName = 132,
-    ZeroReward = 133,
-    ZeroDeadline = 134,
-    InsuffCreatorBalance = 135,
-    InsuffCreatorAllowance = 136,
-    InvalidCreator = 137,
-    InvalidParticipant = 138,
-    InvalidBountyID = 139,
-    InvalidWorkRepo = 140,
-    NoTimeout = 141
+    NoApplyToSelfBounty = 131,
+    InvalidBountyStatus = 132,
+    EmptyName = 133,
+    ZeroReward = 134,
+    ZeroDeadline = 135,
+    InsuffCreatorBalance = 136,
+    InsuffCreatorAllowance = 137,
+    InvalidCreator = 138,
+    InvalidParticipant = 139,
+    InvalidBountyID = 140,
+    InvalidWorkRepo = 141,
+    NoTimeout = 142
 }
 
 #[derive(Clone)]
