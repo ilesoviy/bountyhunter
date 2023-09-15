@@ -4,7 +4,7 @@ import { fadeInUp, shortenAddress, getWorkStatus, getTimeDifference } from '../u
 import useBounty, { WorkStatus } from '../hooks/useBounty';
 import useBackend from '../hooks/useBackend';
 
-export const Participant = ({bountyId, submit}) => {
+export const Participant = ({ bountyId, submit }) => {
   const { getWorks } = useBackend();
   const [works, setWorks] = useState([]);
 
@@ -32,15 +32,17 @@ export const Participant = ({bountyId, submit}) => {
             </div>
           </div>
           <div className='info-body'>
-            {works.length?works.map((work, idx) => (
-              <div key={idx} className='flex justify-evenly items-center sm:text-center'>
-                <div className='flex my-2 text-[16px] '><span>{shortenAddress(work?.participant.wallet)} ({work?.participant.name})</span></div>
-                <div className='flex my-2 text-[16px] '><span>{getWorkStatus(work?.status)}</span></div>
-                <div className='flex my-2 text-[16px] '><span>{submit ? getTimeDifference(work?.submitDate) : getTimeDifference(work?.applyDate)} ago</span></div>
-              </div>
-            )) : <div className='flex justify-evenly items-center sm:text-center'>
-              No Participants
-              </div>}
+            <table className='w-full '>
+              {
+                works.length ? works.map((work, idx) => (
+                  <tr className='text-[16px]'>
+                    <td width="45%" className='text-center p-2'>{shortenAddress(work?.participant.wallet)} ({work?.participant.name})</td>
+                    <td width="25%" className='text-center'>{getWorkStatus(work?.status)}</td>
+                    <td width="" className='text-center'>{submit ? getTimeDifference(work?.submitDate) : getTimeDifference(work?.applyDate)} ago</td>
+                  </tr>
+                )) : <tr><td className='text-center'>No Participants</td></tr>
+              }
+            </table>
           </div>
         </div>
       </Reveal>
