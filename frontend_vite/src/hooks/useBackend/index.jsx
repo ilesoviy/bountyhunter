@@ -2,7 +2,7 @@ import { useCallback, useEffect } from 'react';
 import {BountyStatus, WorkStatus} from '../../hooks/useBounty';
 
 const useBackend = () => {
-    const BACKEND_URL = 'http://95.217.63.156/bounty/';
+    const BACKEND_URL = 'https://bounty.cryptosnowprince.com/api/bounty/';
 
     const getUser = useCallback(
         async (wallet) => {
