@@ -27,7 +27,7 @@ const ExBountyListingBody = ({bounty}) => {
 
     const workIdOld = await countWorks();
     const workIdNew = await applyBounty(walletAddress, bounty?.bountyId);
-    if (workIdOld === workIdNew) {
+    if (workIdNew < 0 || workIdOld === workIdNew) {
       const error = await getLastError();
       toast.error('Failed to apply to bounty!');
       console.error('error:', error);

@@ -31,7 +31,7 @@ export const WalletProvider = (props) => {
                         await kit.startWalletConnect({
                             name: 'BountyHunter',
                             description: 'BountyHunter WebApp',
-                            url: "https://bountyhunter-c9d7d.web.app/",
+                            url: "https://bounty.cryptosnowprince.com/",
                             icons: ["URL_OF_ICON"],
                             projectId: 'bountyhunter-c9d7d',
                         });
@@ -79,7 +79,7 @@ export const WalletProvider = (props) => {
     //                 await kit.startWalletConnect({
     //                     name: "BountyHunter",
     //                     description: "BountyHunter WebApp",
-    //                     url: "https://bountyhunter-c9d7d.web.app/",
+    //                     url: "https://bounty.cryptosnowprince.com/",
     //                     icons: ["URL_OF_ICON"],
     //                     projectId: 'bountyhunter-c9d7d',
     //                 });

@@ -29,7 +29,7 @@ pub fn fee_set(e: &Env, admin: &Address, fee_info: &FeeInfo) {
     admin.require_auth();
 
     e.storage().instance().set(&key, fee_info);
-    e.storage().instance().bump(INSTANCE_BUMP_AMOUNT);
+    e.storage().instance().bump(INSTANCE_BUMP_AMOUNT, INSTANCE_BUMP_AMOUNT);
 }
 
 pub fn fee_calculate(_e: &Env, fee_info: &FeeInfo, amount: u64) -> u64 {

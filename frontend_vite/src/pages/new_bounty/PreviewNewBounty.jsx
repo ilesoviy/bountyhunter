@@ -71,7 +71,7 @@ const PreviewBody = () => {
     const days = getDuration(duration);
     const bountyIdOld = await countBounties();
     const bountyIdNew = await createBounty(walletAddress, title, Number(payAmount) * 10000000, DEF_PAY_TOKEN, SECS_PER_DAY * days);
-    if (bountyIdOld === bountyIdNew) {
+    if (bountyIdNew < 0 || bountyIdOld === bountyIdNew) {
       const error = await getLastError();
       toast.error('Failed to create new bounty!');
       console.error('error:', error);

@@ -109,7 +109,7 @@ impl BountyHunter {
         );
 
         e.storage().instance().set(&DataKey::ErrorCode, &ret);
-        e.storage().instance().bump(INSTANCE_BUMP_AMOUNT);
+        e.storage().instance().bump(INSTANCE_BUMP_AMOUNT, INSTANCE_BUMP_AMOUNT);
 
         ret
     }
@@ -122,7 +122,7 @@ impl BountyHunter {
         let ret: u32 = bounty_apply(&e, &participant, bounty_id);
 
         e.storage().instance().set(&DataKey::ErrorCode, &ret);
-        e.storage().instance().bump(INSTANCE_BUMP_AMOUNT);
+        e.storage().instance().bump(INSTANCE_BUMP_AMOUNT, INSTANCE_BUMP_AMOUNT);
 
         ret
     }
@@ -135,7 +135,7 @@ impl BountyHunter {
         let ret: ErrorCode = bounty_submit(&e, &participant, work_id, &work_repo);
 
         e.storage().instance().set(&DataKey::ErrorCode, &ret);
-        e.storage().instance().bump(INSTANCE_BUMP_AMOUNT);
+        e.storage().instance().bump(INSTANCE_BUMP_AMOUNT, INSTANCE_BUMP_AMOUNT);
 
         ret
     }
@@ -147,7 +147,7 @@ impl BountyHunter {
         let ret: ErrorCode = bounty_approve(&e, &creator, work_id);
 
         e.storage().instance().set(&DataKey::ErrorCode, &ret);
-        e.storage().instance().bump(INSTANCE_BUMP_AMOUNT);
+        e.storage().instance().bump(INSTANCE_BUMP_AMOUNT, INSTANCE_BUMP_AMOUNT);
 
         ret
     }
@@ -159,7 +159,7 @@ impl BountyHunter {
         let ret: ErrorCode = bounty_reject(&e, &creator, work_id);
 
         e.storage().instance().set(&DataKey::ErrorCode, &ret);
-        e.storage().instance().bump(INSTANCE_BUMP_AMOUNT);
+        e.storage().instance().bump(INSTANCE_BUMP_AMOUNT, INSTANCE_BUMP_AMOUNT);
 
         ret
     }
@@ -171,7 +171,7 @@ impl BountyHunter {
         let ret: ErrorCode = bounty_cancel(&e, &creator, bounty_id);
 
         e.storage().instance().set(&DataKey::ErrorCode, &ret);
-        e.storage().instance().bump(INSTANCE_BUMP_AMOUNT);
+        e.storage().instance().bump(INSTANCE_BUMP_AMOUNT, INSTANCE_BUMP_AMOUNT);
 
         ret
     }
@@ -183,7 +183,7 @@ impl BountyHunter {
         let ret: ErrorCode = bounty_close(&e, &admin, bounty_id);
 
         e.storage().instance().set(&DataKey::ErrorCode, &ret);
-        e.storage().instance().bump(INSTANCE_BUMP_AMOUNT);
+        e.storage().instance().bump(INSTANCE_BUMP_AMOUNT, INSTANCE_BUMP_AMOUNT);
 
         ret
     }

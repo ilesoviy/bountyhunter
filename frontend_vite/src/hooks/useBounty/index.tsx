@@ -12,6 +12,8 @@ const {
     signTransaction,
 } = freighter;
 
+export const CONTRACT_ID = BountyHunter.networks.futurenet.contractId;
+
 export enum BountyStatus {
     INIT = BountyHunter.BountyStatus.INIT,
     ACTIVE = BountyHunter.BountyStatus.ACTIVE,
@@ -41,7 +43,12 @@ const useBounty = () => {
         // setFee("GDPOOKZIQTXKCFOG6UBQHNVAZOQ7AIMRCFGTGEUTI7IPWPWEL2MOR6PL", 30, "GBNJ6W2OWIYY4IVQGH4KWZUG5UQGWK2GZGPV43HQNSB6BBSJDLKD76AV");
     }, []);
 
-    const contract = new SorobanClient.Contract(BountyHunter.CONTRACT_ID);
+    const contract = new SorobanClient.Contract(BountyHunter.networks.futurenet.contractId);
+    const contract2 = new BountyHunter.Contract({contractId: BountyHunter.networks.futurenet.contractId, 
+        networkPassphrase: BountyHunter.networks.futurenet.networkPassphrase, 
+        rpcUrl: chainId === 169 ? "https://rpc-mainnet.stellar.org" : "https://rpc-futurenet.stellar.org", 
+        wallet: freighter
+    });
 
     const server = new SorobanClient.Server(
         chainId === 169 ? "https://rpc-mainnet.stellar.org" : "https://rpc-futurenet.stellar.org"
@@ -122,7 +129,7 @@ const useBounty = () => {
                     new SorobanClient.Address(from).toScVal(), // from
                     new SorobanClient.Address(spender).toScVal(), // spender
                     SorobanClient.nativeToScVal(Number(payAmount * 2), { type: 'i128' }), // double payAmount for fee
-                    SorobanClient.xdr.ScVal.scvU32(2000000) // expiration_ledger
+                    SorobanClient.xdr.ScVal.scvU32(535680 /* 34560 */) // expiration_ledger
                 ),
             );
 
@@ -134,21 +141,21 @@ const useBounty = () => {
 
     const getLastError = useCallback(
         async () => {
-            return await BountyHunter.getLastError();
+            return await contract2.getLastError();
         }, 
         []
     );
 
     const countBounties = useCallback(
         async () => {
-            return await BountyHunter.countBounties();
+            return await contract2.countBounties();
         }, 
         []
     );
 
     const countWorks = useCallback(
         async () => {
-            return await BountyHunter.countWorks();
+            return await contract2.countWorks();
         }, 
         []
     );
@@ -159,6 +166,17 @@ const useBounty = () => {
 
     const createBounty = useCallback(
         async (creator, name, reward, payToken, deadline) => {
+            const res = await executeTransaction(
+                contract.call("create_bounty", 
+                    new SorobanClient.Address(creator).toScVal(), 
+                    SorobanClient.xdr.ScVal.scvString(name), 
+                    SorobanClient.xdr.ScVal.scvU64(new SorobanClient.xdr.Uint64(reward)), 
+                    new SorobanClient.Address(payToken).toScVal(), 
+                    SorobanClient.xdr.ScVal.scvU64(new SorobanClient.xdr.Uint64(deadline))
+                ),
+                "1000000"
+            );
+
             // const res = await BountyHunter.invoke({
             //     method: "create_bounty", 
             //     args: [
@@ -171,16 +189,13 @@ const useBounty = () => {
             //     parseResultXdr
             // });
 
-            const res = await executeTransaction(
-                contract.call("create_bounty", 
-                    new SorobanClient.Address(creator).toScVal(), 
-                    SorobanClient.xdr.ScVal.scvString(name), 
-                    SorobanClient.xdr.ScVal.scvU64(new SorobanClient.xdr.Uint64(reward)), 
-                    new SorobanClient.Address(payToken).toScVal(), 
-                    SorobanClient.xdr.ScVal.scvU64(new SorobanClient.xdr.Uint64(deadline))
-                ),
-                "1000000"
-            );
+            // const res = await contract2.createBounty({
+            //     new BountyHunter.Address(creator), 
+            //     name, 
+            //     reward, 
+            //     new BountyHunter.Address(payToken), 
+            //     deadline
+            // });
 
             console.log('res:', res);
             if (res)
@@ -336,13 +351,13 @@ const useBounty = () => {
 
     const tokenBalances = useCallback(
         async (account, token) => {
-            return await BountyHunter.tokenBalances(account, token);
+            return await contract2.tokenBalances(account, token);
         }, 
         []
     );
 
     return {
-        CONTRACT_ID: BountyHunter.CONTRACT_ID,
+        CONTRACT_ID,
         DEF_PAY_TOKEN,
 
         approveToken,

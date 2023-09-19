@@ -106,7 +106,7 @@ pub fn bounty_create(
     
     // increase bounty count
     e.storage().instance().set(&DataKey::BountyCount, &(bounty_count + 1));
-    e.storage().instance().bump(INSTANCE_BUMP_AMOUNT);
+    e.storage().instance().bump(INSTANCE_BUMP_AMOUNT, INSTANCE_BUMP_AMOUNT);
 
     // emit BountyActive event
     e.events().publish((BOUNTY, symbol_short!("BActive")), 
@@ -143,7 +143,7 @@ pub fn bounty_apply(
     let ret: u32 = work_create(&e, &participant, bounty_id);
 
     e.storage().instance().set(&DataKey::ErrorCode, &ret);
-    e.storage().instance().bump(INSTANCE_BUMP_AMOUNT);
+    e.storage().instance().bump(INSTANCE_BUMP_AMOUNT, INSTANCE_BUMP_AMOUNT);
     
     // emit BountyApplied event
     e.events().publish((BOUNTY, symbol_short!("BApply")), 
@@ -368,5 +368,5 @@ fn bounty_load(e: &Env, key: u32) -> BountyInfo {
 
 fn bounty_write(e: &Env, key: u32, bounty: &BountyInfo) {
     e.storage().instance().set(&DataKey::RegBounties(key), bounty);
-    e.storage().instance().bump(INSTANCE_BUMP_AMOUNT);
+    e.storage().instance().bump(INSTANCE_BUMP_AMOUNT, INSTANCE_BUMP_AMOUNT);
 }

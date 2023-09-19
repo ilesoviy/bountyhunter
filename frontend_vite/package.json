@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "restart": "vite --force",
     "build": "vite build",
     "lint": "eslint src --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
@@ -27,7 +28,7 @@
     "react-toastify": "^9.1.3",
     "react-tooltip": "4.2.21",
     "sass": "^1.66.1",
-    "soroban-client": "0.10.1",
+    "soroban-client": "1.0.0-beta.2",
     "stellar-wallets-kit": "github:Creit-Tech/Stellar-Wallets-Kit",
     "styled-components": "^6.0.7"
   },
