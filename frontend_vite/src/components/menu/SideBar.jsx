@@ -38,7 +38,7 @@ const Sidebar = ({ path }) => {
         <div className="navbar-content z-50">
           <div className='logo-img flex flex-col space-y-2 items-center pt-3 pb-4'>
             {/* <Link className='cursor-pointer' to='/'> */}
-            <UploadAndDisplayImage />
+            <UploadAndDisplayImage editable={false} />
             {/* </Link> */}
             <ConnectWallet />
           </div>

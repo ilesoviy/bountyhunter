@@ -171,9 +171,9 @@ const MyBounties = () => {
   const { getCreatedBounties } = useBackend();
 
   const [bounties, setBounties] = useState([]);
-  
+
   const [isSearchShow, setShow] = useState(false);
-  
+
   const searchbox = useRef(null);
 
   useEffect(() => {
@@ -202,10 +202,12 @@ const MyBounties = () => {
                 <p className='text-[40px] lg:text-[32px] md:text-[24px] text-white'>My Bounties</p>
               </div>
             </Reveal>
-            <SearchBox ref={searchbox} callback={() =>{ setShow( isSearchShow => !isSearchShow ) }}/>
+            <SearchBox ref={searchbox} callback={() => { setShow(isSearchShow => !isSearchShow) }} />
           </div>
           {!isConnected &&
-            <WarningMsg msg='You need to connect your wallet in order to submit a work.' />
+            <div className='pl-[30px] lg:pl-0'>
+              <WarningMsg msg='You need to connect your wallet in order to submit a work.' />
+            </div>
           }
           <div className={`app-content ${isSearchShow ? 'blur-sm' : ''}`}>
             {IsSmMobile() ? (
@@ -218,8 +220,8 @@ const MyBounties = () => {
                   <div {...props} className={'thumb-horizontal'} />
                 }>
                 {bounties?.map((bounty, idx) => (
-                    <MyBountyBodyListItem key={idx} bountyId={bounty.bountyId} />
-                  ))
+                  <MyBountyBodyListItem key={idx} bountyId={bounty.bountyId} />
+                ))
                 }
               </Scrollbars>
             )}

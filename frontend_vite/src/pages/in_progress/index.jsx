@@ -16,11 +16,11 @@ import useBackend from '../../hooks/useBackend';
 const InProgress = () => {
   const { isConnected, walletAddress } = useCustomWallet();
   const { getAppliedBounties } = useBackend();
-  
+
   const [bounties, setBounties] = useState([]);
 
   const [isSearchShow, setShow] = useState(false);
-  
+
   const searchbox = useRef(null);
 
   useEffect(() => {
@@ -50,13 +50,15 @@ const InProgress = () => {
                 <p className='text-[40px] lg:text-[32px] md:text-[24px] sm:text-center text-white'>In Progress</p>
               </div>
             </Reveal>
-            <SearchBox ref={searchbox} callback={() =>{ setShow( isSearchShow => !isSearchShow ) }}/>
+            <SearchBox ref={searchbox} callback={() => { setShow(isSearchShow => !isSearchShow) }} />
           </div>
-          
-	      {!isConnected &&
-            <WarningMsg msg='You need to connect your wallet in order to submit a work.' />
+
+          {!isConnected &&
+            <div className='pl-[30px] lg:pl-0'>
+              <WarningMsg msg='You need to connect your wallet in order to submit a work.' />
+            </div>
           }
-          
+
           <div className={`app-content ${isSearchShow ? 'blur-sm' : ''}`}>
             {IsSmMobile() ? (
               // <InBountiesBody bounties={bounties} />
@@ -71,9 +73,9 @@ const InProgress = () => {
                   <div {...props} className={'thumb-horizontal'} />
                 }>
                 {/* <InBountiesBody bounties={bounties} /> */
-                bounties?.map((bounty, idx) =>
+                  bounties?.map((bounty, idx) =>
                     <InBounty key={idx} bountyId={bounty.bountyId} />
-                )
+                  )
                 }
               </Scrollbars>
             )}

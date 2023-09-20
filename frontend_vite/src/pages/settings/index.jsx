@@ -11,6 +11,7 @@ import HelpButton from '../../components/menu/HelpButton';
 import { useCustomWallet } from '../../context/WalletContext';
 import useBackend from '../../hooks/useBackend';
 import WarningMsg from '../../components/WarningMsg';
+import UploadAndDisplayImage from '../../components/UploadAndDisplayImage';
 
 const SettingsBody = () => {
   const { walletAddress, isConnected } = useCustomWallet();
@@ -64,7 +65,10 @@ const SettingsBody = () => {
         isConnected ?
           <div className='app-card h-auto'>
             <div className='w-3/3 md:w-full xl:h-fit'>
-              <div className='row'>
+              <div className='row pl-[20px]'>
+                <div className='flex'>
+                  <UploadAndDisplayImage editable={true}/>
+                </div>                
                 <div className='w-full pb-3'>
                   <div className='input-form-control'>
                     <label className='input-label'>Name</label>

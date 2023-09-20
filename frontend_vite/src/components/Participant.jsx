@@ -36,7 +36,7 @@ export const Participant = ({ bountyId, submit }) => {
               <tbody>
               {
                 works.length ? works.map((work, idx) => (
-                  <tr className='text-[16px]'>
+                  <tr className='text-[16px]' key={idx}>
                     <td width="45%" className='text-center p-2'>{shortenAddress(work?.participant.wallet)} ({work?.participant.name})</td>
                     <td width="25%" className='text-center'>{getWorkStatus(work?.status)}</td>
                     <td width="" className='text-center'>{submit ? getTimeDifference(work?.submitDate) : getTimeDifference(work?.applyDate)} ago</td>
