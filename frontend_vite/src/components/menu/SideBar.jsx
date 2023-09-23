@@ -3,7 +3,7 @@ import { Link } from '@reach/router';
 import { useMediaQuery } from 'react-responsive';
 import { createGlobalStyle } from 'styled-components';
 import ConnectWallet from './ConnectWallet';
-import UploadAndDisplayImage from '../UploadAndDisplayImage';
+import Avatar from '../Avatar';
 
 const GlobalStyles = createGlobalStyle`
   .social-icons span {
@@ -38,7 +38,7 @@ const Sidebar = ({ path }) => {
         <div className="navbar-content z-50">
           <div className='logo-img flex flex-col space-y-2 items-center pt-3 pb-4'>
             {/* <Link className='cursor-pointer' to='/'> */}
-            <UploadAndDisplayImage editable={false} />
+            <Avatar hide={path === 'Settings'} />
             {/* </Link> */}
             <ConnectWallet />
           </div>

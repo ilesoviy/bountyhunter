@@ -3,7 +3,7 @@ import { Link } from '@reach/router';
 import Breakpoint, { BreakpointProvider } from "react-socks";
 import Popover from '@mui/material/Popover';
 import ConnectWallet from './ConnectWallet';
-import UploadAndDisplayImage from '../UploadAndDisplayImage';
+import Avatar from '../Avatar';
 
 const SubHeader = ({ path }) => {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -42,7 +42,7 @@ const SubHeader = ({ path }) => {
               horizontal: 'right',
             }}>
             <div className='flex flex-col items-center gap-3' onClick={handleClose}>
-              <UploadAndDisplayImage editable={false} />
+              <Avatar hide={path === 'Settings'} />
               <ConnectWallet />
             </div>
 
