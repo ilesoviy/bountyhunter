@@ -1,5 +1,6 @@
 const dotenv = require('dotenv');
 const express = require('express');
+const app = express();
 const { connect } = require('./db');
 const cors = require('cors');
 
@@ -11,8 +12,6 @@ if (process.env.NODE_ENV == ('development' || 'development ')) {
 } else if (process.env.NODE_ENV == ('staging' || 'staging ')) {
     dotenv.config({ path: path.join(__dirname, '..', '.env.staging') });
 }
-
-const app = express();
 
 app.use(express.json());
 app.use(cors({origin: '*'}));

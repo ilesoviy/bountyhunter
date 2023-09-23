@@ -4,6 +4,21 @@ const { addBounty, getRecentBounties, getBounties, getSingleBounty, cancelBounty
 const { addWork, getWorks, getWork, submitWork, countSubmissions, approveWork, rejectWork } = require('../work');
 
 const router = Router();
+var fs = require('fs');
+var path = require('path');
+
+var multer = require('multer');
+
+var storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, 'uploads')
+    },
+    filename: (req, file, cb) => {
+        cb(null, req.body.wallet + '.bin')
+    }
+});
+
+var upload = multer({ storage: storage });
 
 router.post('/get_user', async (request, response) => {
     const query = request.body;
@@ -14,14 +29,25 @@ router.post('/get_user', async (request, response) => {
         return;
     }
 
-    response.send({ status: 'success', details: `${creator.name ? creator.name: creator.wallet}: successfully got info`, user: creator });
+    response.send({ status: 'success', 
+        details: `${creator.name ? creator.name: creator.wallet}: successfully got info`, 
+        user: creator });
 });
 
-router.post('/set_user', async (request, response) => {
+router.post('/set_user', upload.single('image'), async (request, response) => {
     const query = request.body;
 
     try {
-        const res = await setUser(query.wallet, query.name, query.github, query.discord);
+        const img = {
+            data: fs.readFileSync(path.join(__dirname + '/../../uploads/' + (request.body.wallet + '.bin'))), 
+            contentType: 'image/png'
+        };
+        
+        const res = await setUser(query.wallet, 
+            query.name, 
+            query.github, 
+            query.discord, 
+            img);
         response.send({ status: 'success', details: `${query.name ? query.name: query.wallet}: successfully set info` });
     } catch (err) {
         response.send({ status: 'failed', error: err.message });

@@ -6,6 +6,10 @@ const userSchema = new Schema(
         name: { type: String },
         github: { type: String },
         discord: { type: String },
+        img: {
+            data: Buffer,
+            contentType: String
+        }
     },
 );
 

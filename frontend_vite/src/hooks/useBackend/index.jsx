@@ -1,14 +1,17 @@
 import { useCallback, useEffect } from 'react';
 import {BountyStatus, WorkStatus} from '../../hooks/useBounty';
+import axios from 'axios';
 
 const useBackend = () => {
     const BACKEND_URL = 'https://bounty.cryptosnowprince.com/api/bounty/';
+    // const BACKEND_URL = 'http://localhost:8888/api/bounty/';
 
     const getUser = useCallback(
         async (wallet) => {
             let name = '';
             let github = '';
             let discord = '';
+            let image = {};
 
             try {
                 const res = await fetch(BACKEND_URL + 'get_user', {
@@ -22,15 +25,13 @@ const useBackend = () => {
                 });
 
                 const resData = await res.json();
-                console.log('resData:', resData);
+                // console.log('resData:', resData);
                 if (resData.error) {
                     console.error('error1:', resData.error);
                 } else {
                     if (resData.user !== undefined) {
-                        console.log('user:', resData.user);
-                        name = resData.user['name'] ? resData.user['name'] : '';
-                        github = resData.user['github'] ? resData.user['github'] : '';
-                        discord = resData.user['discord'] ? resData.user['discord'] : '';
+                        // console.log('user:', resData.user);
+                        return resData.user;
                     } else {
                         console.log(`can't extract data!`);
                     }
@@ -39,36 +40,32 @@ const useBackend = () => {
                 console.error('error2:', error);
             }
 
-            return {name, github, discord};
+            return {name, github, discord, image};
         }, 
         []
     );
 
     const setUser = useCallback(
-        async (wallet, name, github, discord) => {
-            try {
-                const res = await fetch(BACKEND_URL + 'set_user', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        'wallet': wallet,
-                        'name': name,
-                        'github': github,
-                        'discord': discord
-                    })
+        async (wallet, name, github, discord, image) => {
+            const formData = new FormData();
+
+            formData.append('wallet', wallet);
+            formData.append('name', name);
+            formData.append('github', github);
+            formData.append('discord', discord);
+            formData.append('image', image);
+
+            console.log('formData:', formData);
+
+            axios.post(BACKEND_URL + 'set_user', formData)
+                .then((response) => {
+                    console.log(response.data.details);
+                    return 0;
+                })
+                .catch ((error) => {
+                    console.error('Error uploading avatar:', error);
+                    return -1;
                 });
-    
-                const resData = await res.json();
-                if (resData.error) {
-                    console.error('error1:', resData.error);
-                } else {
-                    console.log(resData.details);
-                }
-            } catch (error) {
-                console.error('error2:', error);
-            }
         }, 
         []
     );
