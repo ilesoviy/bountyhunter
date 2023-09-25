@@ -99,6 +99,7 @@ impl BountyHunter {
         reward: u64, 
         pay_token: Address, 
         deadline: u64, 
+        expiration_ledger: u32
     ) -> u32 {
         let ret: u32 = bounty_create(&e, 
             &creator, 
@@ -106,6 +107,7 @@ impl BountyHunter {
             reward, 
             &pay_token, 
             deadline, 
+            expiration_ledger
         );
 
         e.storage().instance().set(&DataKey::ErrorCode, &ret);

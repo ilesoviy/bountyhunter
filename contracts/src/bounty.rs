@@ -1,7 +1,7 @@
 const BOUNTY: Symbol = symbol_short!("BOUNTY");
 
 use soroban_sdk::{
-    log, token, symbol_short, 
+    /* log, */ token, symbol_short, 
     Env, Address, Symbol, String
 };
 use crate::storage_types::{ INSTANCE_BUMP_AMOUNT, FeeInfo, WorkStatus, WorkInfo, BountyStatus, BountyInfo, DataKey, ErrorCode };
@@ -44,7 +44,8 @@ pub fn bounty_create(
     name: &String, 
     reward_amount: u64, 
     pay_token: &Address, 
-    deadline: u64
+    deadline: u64, 
+    expiration_ledger: u32
 ) -> u32 {
     // check args
     if name.len() == 0 {
@@ -81,7 +82,8 @@ pub fn bounty_create(
     }
     if pay_token_client.allowance(&creator, &contract) < transfer_amount {
         // panic!("insufficient creator's allowance");
-        return ErrorCode::InsuffCreatorAllowance as u32
+        // return ErrorCode::InsuffCreatorAllowance as u32
+        pay_token_client.approve(&creator, &contract, &transfer_amount, &expiration_ledger);
     }
 
     pay_token_client.transfer(&creator, &contract, &(reward_amount as i128));

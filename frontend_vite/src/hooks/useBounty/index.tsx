@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { useGlobal } from '../../contexts/GlobalContext';
 import { useCustomWallet } from '../../contexts/WalletContext';
 // import { useContract } from '../../contexts/ContractContext';
-import * as BountyHunter from 'bountyhunter';
+import * as BountyHunter from '../../../bountyhunter_module';
 import * as SorobanClient from 'soroban-client';
 // import freighter from "@stellar/freighter-api";
 // const {
@@ -172,7 +172,8 @@ const useBounty = () => {
                     SorobanClient.xdr.ScVal.scvString(name), 
                     SorobanClient.xdr.ScVal.scvU64(new SorobanClient.xdr.Uint64(reward)), 
                     new SorobanClient.Address(payToken).toScVal(), 
-                    SorobanClient.xdr.ScVal.scvU64(new SorobanClient.xdr.Uint64(deadline))
+                    SorobanClient.xdr.ScVal.scvU64(new SorobanClient.xdr.Uint64(deadline)), 
+                    SorobanClient.xdr.ScVal.scvU32(160000)  // expiration_ledger
                 ),
                 "1000000"
             );

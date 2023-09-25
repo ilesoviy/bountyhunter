@@ -131,11 +131,11 @@ const NewBountyBody = () => {
     if (!checkCondition()) return;
 
     // approve first
-    const res1 = await approveToken(walletAddress, CONTRACT_ID, Number(payAmount) * 10000000);
-    if (res1) {
-      toast.error('Failed to approve token!');
-      return;
-    }
+    // const res1 = await approveToken(walletAddress, CONTRACT_ID, Number(payAmount) * 10000000);
+    // if (res1) {
+    //   toast.error('Failed to approve token!');
+    //   return;
+    // }
 
     const days = getDuration(duration);
     const bountyIdOld = await countBounties();

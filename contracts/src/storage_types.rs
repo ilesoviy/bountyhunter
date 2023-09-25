@@ -3,7 +3,7 @@ use soroban_sdk::{ contracttype, Address, String };
 
 pub(crate) const FEE_DECIMALS: u32 = 4;     // fee is described with the unit of 0.01%
 
-pub(crate) const INSTANCE_BUMP_AMOUNT: u32 = /* 34560 */ 535680; // 2 days
+pub(crate) const INSTANCE_BUMP_AMOUNT: u32 = 34560 /* 535680 */; // 2 days
 
 
 #[derive(Clone, Copy, PartialEq, Debug)]
