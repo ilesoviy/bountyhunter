@@ -133,7 +133,7 @@ const SearchBox = forwardRef(function SearchBox(props, ref) {
         return keyword;
       },
       filter(bounty) {
-        console.log('-------SearchBox-------', bounty);
+        // console.log('-------SearchBox-------', bounty);
         if (!bounty.title.toLowerCase().includes(keyword))
           return false;
         if (!statusFilter(bounty.status) ||

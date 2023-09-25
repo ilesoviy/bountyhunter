@@ -4,7 +4,8 @@ import {BountyStatus, WorkStatus} from '../../hooks/useBounty';
 
 const useBackend = () => {
     // const BACKEND_URL = 'https://bounty.cryptosnowprince.com/api/bounty/';
-    const BACKEND_URL = 'http://95.217.63.156:8888/api/bounty/';
+    // const BACKEND_URL = 'http://95.217.63.156:8888/api/bounty/';
+    const BACKEND_URL = 'http://localhost:8888/api/bounty/';
 
     const getUser = useCallback(
         async (wallet) => {
