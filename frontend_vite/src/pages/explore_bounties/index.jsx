@@ -1,18 +1,19 @@
 import React, { useState, useCallback, useRef, useEffect } from 'react';
 import { Scrollbars } from 'react-custom-scrollbars';
 import { Reveal } from 'react-awesome-reveal';
+import { useCustomWallet } from '../../context/WalletContext';
 import SideBar from '../../components/menu/SideBar';
 import SubHeader from '../../components/menu/SubHeader';
-import { IsSmMobile, fadeInUp, fadeIn, getUTCNow, getUTCDate, isEmpty } from '../../utils';
 import MainHeader from '../../components/menu/MainHeader';
-import ExBounty from './ExBounty';
 import HelpButton from '../../components/menu/HelpButton';
-
-import { useCustomWallet } from '../../context/WalletContext';
-import useBackend from '../../hooks/useBackend';
 import SearchBox from '../../components/menu/SearchBox';
+import WarningMsg from '../../components/WarningMsg';
+import useBackend from '../../hooks/useBackend';
+import { IsSmMobile, fadeInUp, fadeIn, getUTCNow, getUTCDate, isEmpty } from '../../utils';
+import ExBounty from './ExBounty';
 
 const ExploreBounty = () => {
+  const { isConnected } = useCustomWallet();
 
   const { getRecentBounties } = useBackend();
 
@@ -48,6 +49,13 @@ const ExploreBounty = () => {
             <SearchBox ref={searchbox} callback={() =>{ setShow( isSearchShow => !isSearchShow ) }}/>
             {/* <button onClick={() => { console.log(searchbox.current.getKeyword()) }}>View</button> */}
           </div>
+
+          {!isConnected &&
+            <div className='pl-[30px] lg:pl-0'>
+              <WarningMsg msg='You need to connect your wallet in order to apply to a work.' />
+            </div>
+          }
+
           <div className={`app-content ${isSearchShow ? 'blur-sm' : ''}`}>
             {IsSmMobile() ? (
               <div>

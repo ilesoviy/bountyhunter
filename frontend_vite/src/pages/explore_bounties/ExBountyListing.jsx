@@ -1,6 +1,7 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { Scrollbars } from 'react-custom-scrollbars';
-import { IsSmMobile, fadeInUp } from '../../utils';
+import { toast } from 'react-toastify';
+import { useParams, useNavigate } from '@reach/router';
 import MainHeader from '../../components/menu/MainHeader';
 import HelpButton from '../../components/menu/HelpButton';
 import Subheader from '../../components/menu/SubHeader';
@@ -8,13 +9,13 @@ import { ListingDescription } from '../../components/ListingDescription';
 import { Information } from '../../components/Information';
 import { Participant } from '../../components/Participant';
 import BackButton from '../../components/menu/BackButton';
-import { useParams } from '@reach/router';
 import { useCustomWallet } from '../../context/WalletContext';
 import useBounty from '../../hooks/useBounty';
 import useBackend from '../../hooks/useBackend';
-import { toast } from 'react-toastify';
+import { IsSmMobile, fadeInUp } from '../../utils';
 
 const ExBountyListingBody = ({bounty}) => {
+  const nav = useNavigate();
   const { isConnected, walletAddress } = useCustomWallet();
   const { countWorks, applyBounty, getLastError } = useBounty();
   const { addWork } = useBackend();
@@ -41,6 +42,8 @@ const ExBountyListingBody = ({bounty}) => {
     }
 
     toast('Successfully added work!');
+
+    nav('/ExploreBounties/');
   }, [isConnected, walletAddress, bounty]);
   
   return (

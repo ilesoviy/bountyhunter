@@ -27,7 +27,7 @@ const NewBountyBody = () => {
   const DEF_PAY_AMOUNT = 0;
 
   const [title, setTitle] = useState('');
-  const [payAmount, setPayAmount] = useState();
+  const [payAmount, setPayAmount] = useState('');
   const [duration, setDuration] = useState(0);
   const [type, setType] = useState(0);
   const [difficulty, setDifficulty] = useState(0);
@@ -161,6 +161,8 @@ const NewBountyBody = () => {
     }
 
     toast('Successfully added bounty!');
+
+    nav('/NewBounty/');
   }, [walletAddress, title, payAmount, duration, type, difficulty, topic, description, gitHub]);
 
   return (

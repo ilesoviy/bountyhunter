@@ -3,7 +3,7 @@ import { Scrollbars } from 'react-custom-scrollbars';
 import { Reveal } from 'react-awesome-reveal';
 import { IsSmMobile, fadeInUp } from '../../utils';
 import MainHeader from '../../components/menu/MainHeader';
-import { Link, useParams } from '@reach/router';
+import { Link, useParams, useNavigate } from '@reach/router';
 import HelpButton from '../../components/menu/HelpButton';
 import Subheader from '../../components/menu/SubHeader';
 import { ListingDescription } from '../../components/ListingDescription';
@@ -19,6 +19,7 @@ const MyBountiesListingBody = ({bounty, works}) => {
   const { isConnected, walletAddress } = useCustomWallet();
   const { cancelBounty, getLastError } = useBounty();
   const { cancelBountyB } = useBackend();
+  const nav = useNavigate();
   
   const onClickCancel = useCallback(async (event) => {
     if (!isConnected) {
@@ -41,6 +42,8 @@ const MyBountiesListingBody = ({bounty, works}) => {
     }
 
     toast('Successfully cancelled bounty!');
+
+    nav('/MyBounties/');
   }, [isConnected, walletAddress, bounty]);
   
   return (

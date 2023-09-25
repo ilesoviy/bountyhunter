@@ -9,7 +9,7 @@ import SearchBox from '../../components/menu/SearchBox';
 import WarningMsg from '../../components/WarningMsg';
 // import InBountiesBody from './InBountiesBody';
 import InBounty from './InBounty';
-import { IsSmMobile, fadeInUp } from '../../utils';
+import { IsSmMobile, fadeInUp, isEmpty } from '../../utils';
 import { useCustomWallet } from '../../context/WalletContext';
 import useBackend from '../../hooks/useBackend';
 
@@ -25,7 +25,8 @@ const InProgress = () => {
 
   useEffect(() => {
     async function fetchBounties() {
-      if (!walletAddress)
+      setBounties([]);
+      if (!isConnected)
         return;
 
       const appliedBounties = await getAppliedBounties(walletAddress);
@@ -34,7 +35,7 @@ const InProgress = () => {
     }
 
     fetchBounties();
-  }, [walletAddress]);
+  }, [isConnected, walletAddress]);
 
 
   return (

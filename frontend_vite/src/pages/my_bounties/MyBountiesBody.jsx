@@ -17,6 +17,25 @@ export const MyBountyBodyListItem = ({ bountyId }) => {
   
   const isExpired = useMemo(() => bounty?.endDate <= Date.now(), [bounty]);
 
+  const nav = useNavigate();
+
+  useEffect(() => {
+    async function fetchBounties() {
+      if (!isConnected || !walletAddress || !bountyId)
+        return;
+
+      const singleBounty = await getSingleBounty(bountyId);
+      // console.log('singleBounty:', singleBounty);
+      setBounty(singleBounty);
+
+      const submitCount = await countSubmissions(walletAddress, bountyId);
+      // console.log('submitCount:', submitCount);
+      setSubmissions(submitCount);
+    }
+
+    fetchBounties();
+  }, [isConnected, walletAddress, bountyId]);
+
   const onClickClaim = useCallback(async(event) => {
     if (!isConnected) {
       toast.warning('Wallet not connected yet!');
@@ -39,25 +58,6 @@ export const MyBountyBodyListItem = ({ bountyId }) => {
 
     toast('Successfully closed bounty!');
   }, [isConnected, walletAddress, bountyId]);
-
-  useEffect(() => {
-    async function fetchBounties() {
-      if (!isConnected || !walletAddress || !bountyId)
-        return;
-
-      const singleBounty = await getSingleBounty(bountyId);
-      // console.log('singleBounty:', singleBounty);
-      setBounty(singleBounty);
-
-      const submitCount = await countSubmissions(walletAddress, bountyId);
-      // console.log('submitCount:', submitCount);
-      setSubmissions(submitCount);
-    }
-
-    fetchBounties();
-  }, [isConnected, walletAddress, bountyId]);
-
-  const nav = useNavigate();
 
   return (
     <div className='app-body'>

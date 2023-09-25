@@ -89,6 +89,8 @@ const PreviewBody = () => {
     }
 
     toast('Successfully added bounty!');
+
+    nav('/NewBounty/');
   }, [walletAddress, title, payAmount, description, duration, type, topic, difficulty]);
 
   return (
