@@ -136,9 +136,11 @@ const SearchBox = forwardRef(function SearchBox(props, ref) {
         // console.log('-------SearchBox-------', bounty);
         if (!bounty.title.toLowerCase().includes(keyword))
           return false;
+        if (!bounty.description.toLowerCase().includes(keyword))
+          return false;
         if (!statusFilter(bounty.status) ||
-          !typeFilter(bounty.status) ||
-          !diffFilter(bounty.status) ||
+          !typeFilter(bounty.type) ||
+          !diffFilter(bounty.difficulty) ||
           !topicFilter(bounty.topic)) return false;
         return true;
       }
