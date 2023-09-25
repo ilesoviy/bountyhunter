@@ -9,7 +9,7 @@ lerna-debug.log*
 
 node_modules
 build
-bountyhunter
+bountyhunter_module
 dist-ssr
 *.local
 

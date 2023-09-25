@@ -1,7 +1,7 @@
 import { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import { useGlobal } from '../GlobalContext';
 import { useCustomWallet } from '../WalletContext';
-// import * as BountyHunter from 'bountyhunter';
+// import * as BountyHunter from 'bountyhunter_module';
 import * as SorobanClient from 'soroban-client';
 
 

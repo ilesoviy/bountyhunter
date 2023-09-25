@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { useGlobal } from '../../context/GlobalContext';
 import { useCustomWallet } from '../../context/WalletContext';
 // import { useContract } from '../../context/ContractContext';
-import * as BountyHunter from 'bountyhunter';
+import * as BountyHunter from 'bountyhunter_module';
 import * as SorobanClient from 'soroban-client';
 // import freighter from "@stellar/freighter-api";
 // const {
