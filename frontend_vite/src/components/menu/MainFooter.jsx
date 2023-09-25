@@ -6,7 +6,7 @@ const footer = () => (
           <div className="col-md-12">
             <div className="flex flex-col justify-center items-center">
               <span className="mt-2 mb-4" onClick={() => window.open("", "_self")}>
-                <img alt="" className="f-logo d-1" src="./images/logo/logo.gif" width="400" />
+                <img alt="" className="f-logo d-1" src="/images/logo/logo.gif" width="400" />
               </span>
               <span className="text-[20px] font-semibold gray">STAY CONNECTED</span>
             </div>
