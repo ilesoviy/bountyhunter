@@ -1,25 +1,59 @@
-import { createContext, useContext, useState, useEffect, useCallback, useMemo } from "react";
+import { createContext, useContext, useState, useEffect } from "react";
 import { StellarWalletsKit, WalletNetwork, WalletType } from "stellar-wallets-kit";
 // import { Server, Networks } from "stellar-sdk";
+// import { useAppDispatch, useAppSelector } from "../../hooks/useRedux";
+// import { changeConnect } from "../ReduxContext/reducers/network";
 
 import { useGlobal } from '../GlobalContext';
 
 export const WalletContext = createContext();
 
 export const WalletProvider = (props) => {
+    // const network = useAppSelector((state) => state.network);
+    // const { connect: selectedWallet } = useAppSelector(
+    //     (state) => state.info
+    // );
     const { chainId } = useGlobal();
+    const [selectedWallet, setSelectedWallet] = useState(0);
 
     // const [server, setServer] = useState(
-    //     new Server(chainId === 169 ? "https://horizon.stellar.org" : "https://horizon-futurenet.stellar.org")
+    //     new Server(network.chainId === 169 
+    //         ? "https://horizon.stellar.org" 
+    //         : "https://horizon-futurenet.stellar.org"
+    //     )
     // );
 
     const [isConnected, setIsConnected] = useState(false);
     const [walletAddress, setWalletAddress] = useState("");
+    
+    // const dispatch = useAppDispatch();
 
     const kit = new StellarWalletsKit({
         network: WalletNetwork.FUTURENET,
         selectedWallet: WalletType.FREIGHTER,
     });
+
+    const walletObj = {
+        isConnected: async() => {
+            return isConnected;
+        },
+
+        isAllowed: async() => {
+            return true;
+        },
+
+        getUserInfo: async() => {
+            return kit.getPublicKey();
+        },
+
+        signTransaction: async(tx, opts) => {
+            return kit.sign({
+                xdr: tx,
+                network: WalletNetwork.FUTURENET,
+                publicKey: opts?.accountToSign ? opts?.accountToSign : await kit.getPublicKey()
+            });
+        }
+    };
 
     const connectWallet = async () => {
         await kit.openModal({
@@ -54,20 +88,26 @@ export const WalletProvider = (props) => {
 
                 setWalletAddress(_publicKey);
                 setIsConnected(true);
+
+                // dispatch(changeConnect(option.type));
+                setSelectedWallet(option.type);
             },
         });
     }
 
     const disconnectWallet = async () => {
-        // const sessions = await kit.getSessions();
+        if (selectedWallet === WalletType.WALLET_CONNECT) {
+            const sessions = await kit.getSessions();
+            console.log('session:', sessions)
 
-        // console.log('session:', sessions)
-
-        // if (sessions.length) {
-        //     await kit.closeSession(sessions[0]?.id);
-        // } else {
-        //     console.log('Not connected!');
-        // }
+            if (sessions.length) {
+                await kit.closeSession(sessions[0]?.id);
+            } else {
+                console.log('Not connected!');
+            }
+        } else {
+            setIsConnected(false);
+        }
     }
 
     // useEffect(() => {
@@ -112,7 +152,7 @@ export const WalletProvider = (props) => {
     // }, [network?.chainId]);
 
     return (
-        <WalletContext.Provider value={{ connectWallet, disconnectWallet, isConnected, walletAddress }}>
+        <WalletContext.Provider value={{ connectWallet, disconnectWallet, isConnected, walletAddress, walletObj }}>
             {props.children}
         </WalletContext.Provider>
     );
