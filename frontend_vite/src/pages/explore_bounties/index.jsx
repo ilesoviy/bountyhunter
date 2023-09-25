@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useRef, useEffect } from 'react';
 import { Scrollbars } from 'react-custom-scrollbars';
 import { Reveal } from 'react-awesome-reveal';
-import { useCustomWallet } from '../../context/WalletContext';
+import { useCustomWallet } from '../../contexts/WalletContext';
 import SideBar from '../../components/menu/SideBar';
 import SubHeader from '../../components/menu/SubHeader';
 import MainHeader from '../../components/menu/MainHeader';

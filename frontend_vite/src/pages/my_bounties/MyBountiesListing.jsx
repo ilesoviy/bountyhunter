@@ -3,7 +3,7 @@ import { Scrollbars } from 'react-custom-scrollbars';
 import { Reveal } from 'react-awesome-reveal';
 import { Link, useParams, useNavigate } from '@reach/router';
 import { toast } from 'react-toastify';
-import { useCustomWallet } from '../../context/WalletContext';
+import { useCustomWallet } from '../../contexts/WalletContext';
 import MainHeader from '../../components/menu/MainHeader';
 import HelpButton from '../../components/menu/HelpButton';
 import Subheader from '../../components/menu/SubHeader';

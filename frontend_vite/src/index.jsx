@@ -1,9 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { LocationProvider } from '@reach/router';
-import { GlobalProvider } from './context/GlobalContext';
-import { WalletProvider } from './context/WalletContext';
-import { ContractProvider } from './context/ContractContext';
+import { GlobalProvider } from './contexts/GlobalContext';
+import { WalletProvider } from './contexts/WalletContext';
+import { ContractProvider } from './contexts/ContractContext';
 import App from './App.jsx';
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import '../node_modules/bootstrap/dist/js/bootstrap.js';

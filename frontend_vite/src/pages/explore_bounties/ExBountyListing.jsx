@@ -9,7 +9,7 @@ import { ListingDescription } from '../../components/ListingDescription';
 import { Information } from '../../components/Information';
 import { Participant } from '../../components/Participant';
 import BackButton from '../../components/menu/BackButton';
-import { useCustomWallet } from '../../context/WalletContext';
+import { useCustomWallet } from '../../contexts/WalletContext';
 import useBounty from '../../hooks/useBounty';
 import useBackend from '../../hooks/useBackend';
 import { IsSmMobile, fadeInUp } from '../../utils';

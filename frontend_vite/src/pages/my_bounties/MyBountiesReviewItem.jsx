@@ -2,7 +2,7 @@ import { useCallback, useState, useEffect } from "react";
 import { Reveal } from 'react-awesome-reveal';
 import { toast } from 'react-toastify';
 import { useNavigate } from '@reach/router';
-import { useCustomWallet } from "../../context/WalletContext";
+import { useCustomWallet } from "../../contexts/WalletContext";
 import useBounty from "../../hooks/useBounty";
 import useBackend from '../../hooks/useBackend';
 import { fadeInUp, shortenAddress } from '../../utils';

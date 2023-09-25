@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
-import { useGlobal } from '../../context/GlobalContext';
-import { useCustomWallet } from '../../context/WalletContext';
-// import { useContract } from '../../context/ContractContext';
+import { useGlobal } from '../../contexts/GlobalContext';
+import { useCustomWallet } from '../../contexts/WalletContext';
+// import { useContract } from '../../contexts/ContractContext';
 import * as BountyHunter from 'bountyhunter';
 import * as SorobanClient from 'soroban-client';
 // import freighter from "@stellar/freighter-api";

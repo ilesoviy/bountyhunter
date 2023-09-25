@@ -1,4 +1,4 @@
-import { useCustomWallet } from '../../context/WalletContext'
+import { useCustomWallet } from '../../contexts/WalletContext'
 import { shortenAddress } from '../../utils';
 
 const ConnectWallet = () => {

@@ -3,7 +3,7 @@ import { Reveal } from 'react-awesome-reveal';
 import { Link, useParams, useNavigate } from '@reach/router';
 import Scrollbars from 'react-custom-scrollbars';
 import { toast } from 'react-toastify';
-import { useCustomWallet } from '../../context/WalletContext';
+import { useCustomWallet } from '../../contexts/WalletContext';
 import MainHeader from '../../components/menu/MainHeader';
 import HelpButton from '../../components/menu/HelpButton';
 import Subheader from '../../components/menu/SubHeader';
@@ -165,7 +165,7 @@ const InBountyListing = () => {
             <span className='text-xl'>Back</span>
           </div>
         </button>
-        {!isConnected && (<WarningMsg msg='You need to connect your wallet in order to create a bounty.'/>)}
+        {!isConnected && (<WarningMsg msg='You need to connect your wallet in order to submit a work.'/>)}
         <div className="mt-3 text-[20px] font-bold">
           <span>Bounty Listing / Submit Work</span>
         </div>

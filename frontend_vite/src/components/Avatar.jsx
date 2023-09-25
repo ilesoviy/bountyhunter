@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useCustomWallet } from '../context/WalletContext';
+import { useCustomWallet } from '../contexts/WalletContext';
 import useBackend from '../hooks/useBackend';
 
 const Avatar = ({ hide }) => {

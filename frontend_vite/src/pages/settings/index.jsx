@@ -3,7 +3,7 @@ import { Scrollbars } from 'react-custom-scrollbars';
 import { Reveal } from 'react-awesome-reveal';
 import { toast } from "react-toastify";
 
-import { useCustomWallet } from '../../context/WalletContext';
+import { useCustomWallet } from '../../contexts/WalletContext';
 import Sidebar from '../../components/menu/SideBar';
 import Subheader from '../../components/menu/SubHeader';
 import MainHeader from '../../components/menu/MainHeader';
@@ -128,7 +128,7 @@ const SettingsBody = () => {
             </div>
           </div>)
            :
-          (<WarningMsg msg='You need to connect your wallet in order to create a bounty.' />)
+          (<WarningMsg msg='You need to connect your wallet in order to save settings.' />)
       }
     </Reveal>
   );

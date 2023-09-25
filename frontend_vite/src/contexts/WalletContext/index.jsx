@@ -2,7 +2,7 @@ import { createContext, useContext, useState, useEffect } from "react";
 import { StellarWalletsKit, WalletNetwork, WalletType } from "stellar-wallets-kit";
 // import { Server, Networks } from "stellar-sdk";
 // import { useAppDispatch, useAppSelector } from "../../hooks/useRedux";
-// import { changeConnect } from "../ReduxContext/reducers/network";
+// import { changeConnect } from "../ReduxContexts/reducers/network";
 
 import { useGlobal } from '../GlobalContext';
 

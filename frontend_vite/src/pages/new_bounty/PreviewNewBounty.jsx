@@ -2,7 +2,7 @@ import React, { useState, useCallback, useEffect } from 'react';
 import { Scrollbars } from 'react-custom-scrollbars';
 import { toast } from "react-toastify";
 import { useNavigate, useLocation } from "@reach/router";
-import { useCustomWallet } from '../../context/WalletContext';
+import { useCustomWallet } from '../../contexts/WalletContext';
 import Subheader from '../../components/menu/SubHeader';
 import MainHeader from '../../components/menu/MainHeader';
 import HelpButton from '../../components/menu/HelpButton';
