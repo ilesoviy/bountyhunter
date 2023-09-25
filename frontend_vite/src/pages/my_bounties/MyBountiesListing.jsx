@@ -1,19 +1,19 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { Scrollbars } from 'react-custom-scrollbars';
 import { Reveal } from 'react-awesome-reveal';
-import { IsSmMobile, fadeInUp } from '../../utils';
-import MainHeader from '../../components/menu/MainHeader';
 import { Link, useParams, useNavigate } from '@reach/router';
+import { toast } from 'react-toastify';
+import { useCustomWallet } from '../../context/WalletContext';
+import MainHeader from '../../components/menu/MainHeader';
 import HelpButton from '../../components/menu/HelpButton';
 import Subheader from '../../components/menu/SubHeader';
 import { ListingDescription } from '../../components/ListingDescription';
 import { Information } from '../../components/Information';
-import MyBountiesReviewItem from './MyBountiesReviewItem';
 import BackButton from '../../components/menu/BackButton';
-import { useCustomWallet } from '../../context/WalletContext';
 import useBounty,  { WorkStatus } from '../../hooks/useBounty';
 import useBackend from '../../hooks/useBackend';
-import { toast } from 'react-toastify';
+import { IsSmMobile, fadeInUp } from '../../utils';
+import MyBountiesReviewItem from './MyBountiesReviewItem';
 
 const MyBountiesListingBody = ({bounty, works}) => {
   const { isConnected, walletAddress } = useCustomWallet();

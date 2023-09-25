@@ -3,14 +3,14 @@ import { Scrollbars } from 'react-custom-scrollbars';
 import { Reveal } from 'react-awesome-reveal';
 import { toast } from "react-toastify";
 
+import { useCustomWallet } from '../../context/WalletContext';
 import Sidebar from '../../components/menu/SideBar';
-import { IsSmMobile, numberWithCommas, fadeInUp, fadeIn } from '../../utils';
 import Subheader from '../../components/menu/SubHeader';
 import MainHeader from '../../components/menu/MainHeader';
 import HelpButton from '../../components/menu/HelpButton';
-import { useCustomWallet } from '../../context/WalletContext';
-import useBackend from '../../hooks/useBackend';
 import WarningMsg from '../../components/WarningMsg';
+import useBackend from '../../hooks/useBackend';
+import { IsSmMobile, numberWithCommas, fadeInUp, fadeIn } from '../../utils';
 
 const SettingsBody = () => {
   const { walletAddress, isConnected } = useCustomWallet();

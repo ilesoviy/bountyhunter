@@ -3,13 +3,13 @@ import { useMemo, useState, useEffect, useCallback, useReducer, useRef } from 'r
 import { Reveal } from 'react-awesome-reveal';
 import { createGlobalStyle } from 'styled-components';
 import { Scrollbars } from 'react-custom-scrollbars';
+import { useCustomWallet } from '../../context/WalletContext';
 import Sidebar from '../../components/menu/SideBar';
 import Subheader from '../../components/menu/SubHeader';
 import MainHeader from '../../components/menu/MainHeader';
 import HelpButton from '../../components/menu/HelpButton';
 import SearchBox from '../../components/menu/SearchBox';
 import WarningMsg from '../../components/WarningMsg';
-import { useCustomWallet } from '../../context/WalletContext';
 import useBackend from '../../hooks/useBackend';
 import { fadeInUp, fadeIn, IsSmMobile, numberWithCommas } from '../../utils';
 import { MyBountyBodyListItem } from './MyBountiesBody';

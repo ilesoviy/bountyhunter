@@ -2,14 +2,14 @@ import { useCallback, useState, useEffect } from "react";
 import { Reveal } from 'react-awesome-reveal';
 import { toast } from 'react-toastify';
 import { useNavigate } from '@reach/router';
-import { fadeInUp, shortenAddress } from '../../utils';
 import { useCustomWallet } from "../../context/WalletContext";
 import useBounty from "../../hooks/useBounty";
 import useBackend from '../../hooks/useBackend';
+import { fadeInUp, shortenAddress } from '../../utils';
 
 const MyBountiesReviewItem = ({work}) => {
   const { isConnected, walletAddress } = useCustomWallet();
-  const { approveWork, rejectWork } = useBounty();
+  const { approveWork, rejectWork, getLastError } = useBounty();
   const { approveWorkB, rejectWorkB } = useBackend();
   const nav = useNavigate();
   const [isExpanded, setExpanded] = useState(false);

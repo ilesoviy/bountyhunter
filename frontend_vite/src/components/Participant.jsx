@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { Reveal } from 'react-awesome-reveal';
-import { fadeInUp, shortenAddress, getWorkStatus, getTimeDifference } from '../utils';
 import useBounty, { WorkStatus } from '../hooks/useBounty';
 import useBackend from '../hooks/useBackend';
+import { fadeInUp, shortenAddress, getWorkStatus, getTimeDifference } from '../utils';
 
 export const Participant = ({ bountyId, submit }) => {
   const { getWorks } = useBackend();

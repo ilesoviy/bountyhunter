@@ -2,16 +2,16 @@ import { useState, useEffect, useCallback, useMemo } from 'react';
 import { Reveal } from 'react-awesome-reveal';
 import { useNavigate } from '@reach/router';
 import { toast} from 'react-toastify';
-import { fadeInUp } from '../../utils';
 import { useCustomWallet } from '../../context/WalletContext';
 import useBounty from '../../hooks/useBounty';
 import useBackend from '../../hooks/useBackend';
+import { fadeInUp } from '../../utils';
 
 export const MyBountyBodyListItem = ({ bountyId }) => {
   const { isConnected, walletAddress } = useCustomWallet();
+  const { getSingleBounty, countSubmissions, closeBountyB, getLastError } = useBackend();
   const { closeBounty } = useBounty();
-  const { getSingleBounty, countSubmissions, closeBountyB } = useBackend();
-
+  
   const [bounty, setBounty] = useState([]);
   const [submissions, setSubmissions] = useState(0);
   

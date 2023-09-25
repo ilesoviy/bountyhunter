@@ -1,6 +1,6 @@
 import { useCallback, useEffect } from 'react';
-import {BountyStatus, WorkStatus} from '../../hooks/useBounty';
 import axios from 'axios';
+import {BountyStatus, WorkStatus} from '../../hooks/useBounty';
 
 const useBackend = () => {
     const BACKEND_URL = 'https://bounty.cryptosnowprince.com/api/bounty/';

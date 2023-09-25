@@ -1,6 +1,5 @@
 import { Section } from 'react-scroll-section';
 import MainHeader from '../../components/menu/MainHeader';
-// import MainFooter from '../../components/menu/MainFooter';
 import Banner from '../../components/home/Banner';
 import './home.scss';
 

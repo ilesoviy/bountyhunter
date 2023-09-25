@@ -1,17 +1,16 @@
 import React, { useCallback, useState, useEffect, useRef } from 'react';
 import { Scrollbars } from 'react-custom-scrollbars';
 import { Reveal } from 'react-awesome-reveal';
+import { useCustomWallet } from '../../context/WalletContext';
 import Sidebar from '../../components/menu/SideBar';
 import Subheader from '../../components/menu/SubHeader';
 import MainHeader from '../../components/menu/MainHeader';
 import HelpButton from '../../components/menu/HelpButton';
 import SearchBox from '../../components/menu/SearchBox';
 import WarningMsg from '../../components/WarningMsg';
-// import InBountiesBody from './InBountiesBody';
-import InBounty from './InBounty';
-import { IsSmMobile, fadeInUp, isEmpty } from '../../utils';
-import { useCustomWallet } from '../../context/WalletContext';
 import useBackend from '../../hooks/useBackend';
+import { IsSmMobile, fadeInUp, isEmpty } from '../../utils';
+import InBounty from './InBounty';
 
 const InProgress = () => {
   const { isConnected, walletAddress } = useCustomWallet();

@@ -3,6 +3,7 @@ import { Reveal } from 'react-awesome-reveal';
 import { Link, useParams, useNavigate } from '@reach/router';
 import Scrollbars from 'react-custom-scrollbars';
 import { toast } from 'react-toastify';
+import { useCustomWallet } from '../../context/WalletContext';
 import MainHeader from '../../components/menu/MainHeader';
 import HelpButton from '../../components/menu/HelpButton';
 import Subheader from '../../components/menu/SubHeader';
@@ -11,12 +12,10 @@ import { ListingDescription } from '../../components/ListingDescription';
 import { Participant } from '../../components/Participant';
 import WarningMsg from '../../components/WarningMsg';
 import BackButton from '../../components/menu/BackButton'
-import { Drawer } from './Drawer';
-import { IsSmMobile, fadeInUp } from '../../utils';
-
-import { useCustomWallet } from '../../context/WalletContext';
 import useBounty from '../../hooks/useBounty';
 import useBackend from '../../hooks/useBackend';
+import { IsSmMobile, fadeInUp } from '../../utils';
+import { Drawer } from './Drawer';
 
 const InBountyListingBody = ({ bounty, callback }) => {
   return (

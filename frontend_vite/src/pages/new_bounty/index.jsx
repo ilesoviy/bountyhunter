@@ -3,18 +3,15 @@ import { Scrollbars } from 'react-custom-scrollbars';
 import { Reveal } from 'react-awesome-reveal';
 import { Link, useLocation, useNavigate } from '@reach/router';
 import { toast } from "react-toastify";
-
+import { useCustomWallet } from '../../context/WalletContext';
 import Sidebar from '../../components/menu/SideBar';
 import Subheader from '../../components/menu/SubHeader';
 import MainHeader from '../../components/menu/MainHeader';
 import HelpButton from '../../components/menu/HelpButton';
 import WarningMsg from '../../components/WarningMsg';
-import { SECS_PER_DAY, IsSmMobile, fadeInUp, fadeIn, getDuration } from '../../utils';
-
-import { useCustomWallet } from '../../context/WalletContext';
 import useBounty, { BountyStatus } from '../../hooks/useBounty';
 import useBackend from '../../hooks/useBackend';
-
+import { SECS_PER_DAY, IsSmMobile, fadeInUp, fadeIn, getDuration } from '../../utils';
 
 const NewBountyBody = () => {
   const { walletAddress, isConnected } = useCustomWallet();

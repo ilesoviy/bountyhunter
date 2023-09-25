@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
 import { Reveal } from 'react-awesome-reveal';
 import { Link, useNavigate } from '@reach/router';
+import useBackend from '../../hooks/useBackend';
 import { numberWithCommas, IsSmMobile, fadeInUp, fadeIn, getUTCNow, getUTCDate, isEmpty, 
   shortenAddress, getBountyStatus, getType, getLevel, getTopic, getTimeDifference } from '../../utils';
-import useBackend from '../../hooks/useBackend';
 
 const InBounty = ({bountyId}) => {
   const { getSingleBounty } = useBackend();

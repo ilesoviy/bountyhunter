@@ -1,17 +1,17 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { Scrollbars } from 'react-custom-scrollbars';
+import { toast } from "react-toastify";
+import { useNavigate, useLocation } from "@reach/router";
+import { useCustomWallet } from '../../context/WalletContext';
 import Subheader from '../../components/menu/SubHeader';
 import MainHeader from '../../components/menu/MainHeader';
-import { toast } from "react-toastify";
 import HelpButton from '../../components/menu/HelpButton';
 import WarningMsg from '../../components/WarningMsg';
 import { Information } from '../../components/Information';
 import BackButton from '../../components/menu/BackButton';
-import { useNavigate, useLocation } from "@reach/router";
-import { useCustomWallet } from '../../context/WalletContext';
-import { SECS_PER_DAY, IsSmMobile, getBountyStatus, getDuration } from '../../utils';
 import useBounty from '../../hooks/useBounty';
 import useBackend from '../../hooks/useBackend';
+import { SECS_PER_DAY, IsSmMobile, getBountyStatus, getDuration } from '../../utils';
 
 const PreviewBody = () => {
   const nav = useNavigate();

@@ -4,6 +4,7 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './App.scss';
 
+import ScrollToTopBtn from './components/menu/ScrollToTop';
 import HomePage from './pages/home';
 import NewBounty from './pages/new_bounty/';
 import PreviewNewBounty from './pages/new_bounty/PreviewNewBounty';
@@ -14,7 +15,6 @@ import InBountyListing from './pages/in_progress/InBountyListing';
 import MyBounties from './pages/my_bounties/';
 import MyBountiesListing from './pages/my_bounties/MyBountiesListing';
 import Settings from './pages/settings/';
-import ScrollToTopBtn from './components/menu/ScrollToTop';
 
 const PosedRouter = ({ children }) => (
   <Location>

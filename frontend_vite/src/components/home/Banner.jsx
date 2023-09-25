@@ -1,9 +1,9 @@
 import React from 'react';
 import Reveal from 'react-awesome-reveal';
 import { Link } from '@reach/router';
-import ColorGroup from './ColorGroup';
-import { fadeInUp, fadeIn, IsSmMobile } from '../../utils';
 import SubHeader from '../menu/SubHeader';
+import { fadeInUp, fadeIn, IsSmMobile } from '../../utils';
+import ColorGroup from './ColorGroup';
 
 const BannerBody = () => (
     <div className='relative z-1'>
