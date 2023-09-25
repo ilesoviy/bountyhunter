@@ -1,16 +1,16 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useGlobal } from '../../context/GlobalContext';
-// import { useCustomWallet } from '../../context/WalletContext';
+import { useCustomWallet } from '../../context/WalletContext';
 // import { useContract } from '../../context/ContractContext';
 import * as BountyHunter from 'bountyhunter';
 import * as SorobanClient from 'soroban-client';
-import freighter from "@stellar/freighter-api";
-const {
-    isConnected,
-    isAllowed,
-    getPublicKey,
-    signTransaction,
-} = freighter;
+// import freighter from "@stellar/freighter-api";
+// const {
+//     isConnected,
+//     isAllowed,
+//     getPublicKey,
+//     signTransaction,
+// } = freighter;
 
 export const CONTRACT_ID = BountyHunter.networks.futurenet.contractId;
 
@@ -33,7 +33,7 @@ export enum WorkStatus {
 
 const useBounty = () => {
     const { chainId } = useGlobal();
-    // const { walletAddress } = useCustomWallet();
+    const { walletAddress, walletObj } = useCustomWallet();
     // const { setAdmin, setFee } = useContract();
 
     const DEF_PAY_TOKEN = 'CB64D3G7SM2RTH6JSGG34DDTFTQ5CFDKVDZJZSODMCX4NJ2HV2KN7OHT';
@@ -47,7 +47,7 @@ const useBounty = () => {
     const contract2 = new BountyHunter.Contract({contractId: BountyHunter.networks.futurenet.contractId, 
         networkPassphrase: BountyHunter.networks.futurenet.networkPassphrase, 
         rpcUrl: chainId === 169 ? "https://rpc-mainnet.stellar.org" : "https://rpc-futurenet.stellar.org", 
-        wallet: freighter
+        wallet: walletObj
     });
 
     const server = new SorobanClient.Server(
@@ -56,7 +56,7 @@ const useBounty = () => {
 
     async function executeTransaction(operation: SorobanClient.xdr.Operation, baseFee?: string): Promise<number> {
         
-        const pubKey = await getPublicKey();
+        const pubKey = await walletObj.getUserInfo();
         console.log('pubKey:', pubKey);
 
         const sourceAcc = await server.getAccount(pubKey);
@@ -75,12 +75,12 @@ const useBounty = () => {
         const transaction = await server.prepareTransaction(transaction0);
         const txXDR = transaction.toXDR();
         // console.log('txXDR:', txXDR);
-        const signedTx = await signTransaction(txXDR, {
+        const {signedXDR} = await walletObj.signTransaction(txXDR, {
             network: 'FUTURENET',
             networkPassphrase: SorobanClient.Networks.FUTURENET,
             accountToSign: pubKey,
         });
-        const txEnvelope = SorobanClient.xdr.TransactionEnvelope.fromXDR(signedTx, 'base64');
+        const txEnvelope = SorobanClient.xdr.TransactionEnvelope.fromXDR(signedXDR, 'base64');
         const tx = new SorobanClient.Transaction(txEnvelope, SorobanClient.Networks.FUTURENET);
 
         try {
