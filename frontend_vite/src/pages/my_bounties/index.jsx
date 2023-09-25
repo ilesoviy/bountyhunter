@@ -22,6 +22,8 @@ const MyBounties = () => {
 
   const [isSearchShow, setShow] = useState(false);
 
+  const [searchChanged, setSearchChanged] = useState(false);
+
   const searchbox = useRef(null);
 
   useEffect(() => {
@@ -30,13 +32,14 @@ const MyBounties = () => {
       if (!isConnected)
         return;
 
-      const createdBounties = await getCreatedBounties(walletAddress);
+      var createdBounties = await getCreatedBounties(walletAddress);
       console.log('createdBounties:', createdBounties);
+      createdBounties = createdBounties.filter( item => searchbox?.current?.filter(item) );
       setBounties(createdBounties);
     }
 
     fetchBounties();
-  }, [isConnected, walletAddress]);
+  }, [isConnected, walletAddress, searchChanged]);
 
   return (
     <div className='full-container'>
@@ -51,7 +54,7 @@ const MyBounties = () => {
                 <p className='text-[40px] lg:text-[32px] md:text-[24px] text-white'>My Bounties</p>
               </div>
             </Reveal>
-            <SearchBox ref={searchbox} callback={() => { setShow(isSearchShow => !isSearchShow) }} />
+            <SearchBox ref={searchbox} onSearchChange={ () => setSearchChanged(true)}  callback={() => { setShow(isSearchShow => !isSearchShow) }} />
           </div>
           {!isConnected &&
             <div className='pl-[30px] lg:pl-0'>

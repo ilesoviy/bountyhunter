@@ -8,30 +8,32 @@ const SearchBox = forwardRef(function SearchBox(props, ref) {
 
   const [isSearchShow, setSearchShow] = useState(false);
 
-  const [isClosed, setClosed] = useState(false);
-  const [isActive, setActive] = useState(false);
+  const [isClosed, setClosed] = useState(true);
+  const [isActive, setActive] = useState(true);
 
-  const [isCompe, setComp] = useState(false);
-  const [isCoop, setCoop] = useState(false);
-  const [isHack, setHack] = useState(false);
+  const [isCompe, setComp] = useState(true);
+  const [isCoop, setCoop] = useState(true);
+  const [isHack, setHack] = useState(true);
 
-  const [isBegin, setBegin] = useState(false);
-  const [isInter, setInter] = useState(false);
-  const [isAdvan, setAdvan] = useState(false);
+  const [isBegin, setBegin] = useState(true);
+  const [isInter, setInter] = useState(true);
+  const [isAdvan, setAdvan] = useState(true);
 
-  const [isDesig, setDesig] = useState(false);
-  const [isDevel, setDevel] = useState(false);
-  const [isSmtCt, setSmtCt] = useState(false);
-  const [isData, setData] = useState(false);
-  const [isAI, setAI] = useState(false);
+  const [isDesig, setDesig] = useState(true);
+  const [isDevel, setDevel] = useState(true);
+  const [isSmtCt, setSmtCt] = useState(true);
+  const [isData, setData] = useState(true);
+  const [isAI, setAI] = useState(true);
 
   const handleSearchShow = useCallback(() => {
     setSearchShow(isSearchShow => !isSearchShow);
     props.callback && props.callback();
+    props.onSearchChange && props.onSearchChange();
   }, []);
 
   const handleKeyword = useCallback((event) => {
     setKeyword(event.target.value);
+    props.onSearchChange && props.onSearchChange();
   }, []);
 
   const handleClosed = useCallback(() => {
@@ -77,13 +79,68 @@ const SearchBox = forwardRef(function SearchBox(props, ref) {
     setAI(isAI => !isAI);
   }, []);
 
+  function statusFilter(status) {
+    switch (status) {
+      case 1:
+        return isActive
+    }
+    return true;
+  }
+
+  function typeFilter(type) {
+    switch (type) {
+      case 1:
+        return isCompe;
+      case 2:
+        return isCoop;
+      case 3:
+        return isHack;
+    }
+    return true;
+  }
+
+  function diffFilter(diff) {
+    switch (diff) {
+      case 1:
+        return isBegin;
+      case 2:
+        return isInter;
+      case 3:
+        return isAdvan;
+    }
+    return true;
+  }
+
+  function topicFilter(topic) {
+    switch (topic) {
+      case 1:
+        return isDesig;
+      case 2:
+        return isDevel;
+      case 3:
+        return isSmtCt;
+      case 4:
+        return isData;
+      case 5:
+        return isAI;
+    }
+    return true;
+  }
+
   useImperativeHandle(ref, () => {
     return {
       getKeyword() {
         return keyword;
       },
-      getSelectedItems() {
-        return '';
+      filter(bounty) {
+        console.log('-------SearchBox-------', bounty);
+        if (!bounty.title.toLowerCase().includes(keyword))
+          return false;
+        if (!statusFilter(bounty.status) ||
+          !typeFilter(bounty.status) ||
+          !diffFilter(bounty.status) ||
+          !topicFilter(bounty.topic)) return false;
+        return true;
       }
     }
   });

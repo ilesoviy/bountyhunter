@@ -21,16 +21,20 @@ const ExploreBounty = () => {
 
   const [isSearchShow, setShow] = useState(false);
 
+  const [searchChanged, setSearchChanged] = useState(false);
+
   const searchbox = useRef(null);
 
   useEffect(() => {
     async function fetchRecentBounties() {
-      const recentBounties = await getRecentBounties();
+      var recentBounties = await getRecentBounties();
       console.log('recentBounties:', recentBounties);
+      recentBounties = recentBounties.filter( item => searchbox?.current?.filter(item) );
       setBounties(recentBounties);
+      setSearchChanged(false);
     }
     fetchRecentBounties();
-  }, []);
+  }, [searchChanged]);
 
   return (
     <div className='full-container' >
@@ -46,7 +50,7 @@ const ExploreBounty = () => {
                 <p className='text-[16px] app-gray'><span className='app-color'>{bounties?.length}</span> Results </p>
               </div>
             </Reveal>
-            <SearchBox ref={searchbox} callback={() =>{ setShow( isSearchShow => !isSearchShow ) }}/>
+            <SearchBox ref={searchbox} onSearchChange={ () => setSearchChanged(true)} callback={() => { setShow(isSearchShow => !isSearchShow) }} />
             {/* <button onClick={() => { console.log(searchbox.current.getKeyword()) }}>View</button> */}
           </div>
 

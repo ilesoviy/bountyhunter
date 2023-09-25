@@ -20,6 +20,8 @@ const InProgress = () => {
 
   const [isSearchShow, setShow] = useState(false);
 
+  const [searchChanged, setSearchChanged] = useState(false);
+
   const searchbox = useRef(null);
 
   useEffect(() => {
@@ -28,13 +30,14 @@ const InProgress = () => {
       if (!isConnected)
         return;
 
-      const appliedBounties = await getAppliedBounties(walletAddress);
+      var appliedBounties = await getAppliedBounties(walletAddress);
       console.log('appliedBounties:', appliedBounties);
+      appliedBounties = appliedBounties.filter( item => searchbox?.current?.filter(item) );
       setBounties(appliedBounties);
     }
 
     fetchBounties();
-  }, [isConnected, walletAddress]);
+  }, [isConnected, walletAddress, searchChanged]);
 
 
   return (
@@ -50,7 +53,7 @@ const InProgress = () => {
                 <p className='text-[40px] lg:text-[32px] md:text-[24px] sm:text-center text-white'>In Progress</p>
               </div>
             </Reveal>
-            <SearchBox ref={searchbox} callback={() => { setShow(isSearchShow => !isSearchShow) }} />
+            <SearchBox ref={searchbox} onSearchChange={ () => setSearchChanged(true)}  callback={() => { setShow(isSearchShow => !isSearchShow) }} />
           </div>
 
           {!isConnected &&
