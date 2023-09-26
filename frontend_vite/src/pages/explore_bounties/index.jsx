@@ -60,7 +60,7 @@ const ExploreBounty = () => {
             </div>
           }
 
-          <div className={`app-content ${isSearchShow ? 'blur-sm' : ''}`}>
+          <div className={`app-content ${isSearchShow ? 'blur-sm' : ''} ${ isConnected? '':'pb-[200px]'}`}>
             {IsSmMobile() ? (
               <div>
                 {bounties?.map((item, idx) => {
