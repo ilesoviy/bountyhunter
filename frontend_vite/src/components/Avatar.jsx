@@ -22,7 +22,7 @@ const Avatar = ({ hide }) => {
   return (
     <div className="relative flex items-center justify-center">
       <img alt="" className="w-[120px] h-[120px] rounded-full" 
-		    src={(!hide && userImg ? `data:image/${userImg.contentType};base64,${Buffer.from(userImg.data).toString('base64')}` : '/images/banner/unknown.png')} />
+		    src={(!hide && userImg) ? userImg : '/images/banner/unknown.png'} />
     </div>
   );
 }
