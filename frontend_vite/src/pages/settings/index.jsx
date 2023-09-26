@@ -26,10 +26,8 @@ const SettingsBody = () => {
   const [name, setName] = useState('');
   const [github, setGitHub] = useState('');
   const [discord, setDiscord] = useState('');
-  const [selImage, setSelImage] = useState(null);
-  const [avatar, setAvatar] = useState(null);
   const [preview, setPreview] = useState(null);
-  const [croppedAvatar, setCroppedAvatar] = useState(null);
+  const [avatar, setAvatar] = useState(null);
   const [open, setOpen] = useState(false);
 
   const handleClickOpen = () => {
@@ -38,8 +36,7 @@ const SettingsBody = () => {
   
   const handleOk = () => {
     setOpen(false);
-    setCroppedAvatar(preview);
-    console.log(preview);
+    setAvatar(preview);
     setPreview(null);
   };
 
@@ -56,9 +53,6 @@ const SettingsBody = () => {
   const handleDiscord = useCallback((event) => {
     setDiscord(event.target.value);
   }, []);
-  const handleImage = useCallback((event) => {
-    setSelImage(event.target.files[0]);
-  }, []);
 
   const onAvatarCrop = useCallback((p) => {
     setPreview(p)
@@ -74,14 +68,13 @@ const SettingsBody = () => {
       return;
     }
 
-    if (!setUser(walletAddress, name, github, discord, selImage)) {
+    if (!setUser(walletAddress, name, github, discord, avatar)) {
       toast.error('Failed to save user information!');
       return;
     }
 
     toast('Saved user information!');
-  }, [isConnected, walletAddress, name, github, discord, selImage]);
-
+  }, [isConnected, walletAddress, name, github, discord, avatar]);
 
 
   useEffect(() => {
@@ -90,14 +83,12 @@ const SettingsBody = () => {
         setName('');
         setGitHub('');
         setDiscord('');
-        setSelImage(null);
         setAvatar(null);
       } else {
         const user = await getUser(walletAddress);
         setName(user.name);
         setGitHub(user.github);
         setDiscord(user.discord);
-        setSelImage(null);
         setAvatar(user.img);
       }
     }
@@ -113,37 +104,17 @@ const SettingsBody = () => {
               <div className='row pl-[20px]'>
                 <div className='flex'>
                   <div className="relative flex items-center justify-center">
-                    <img id="image" name="image" alt="" className="w-[128px] h-[128px] rounded-full" src={croppedAvatar || '/images/banner/unknown.png' } />
+                    <img id="image" name="image" alt="" className="w-[128px] h-[128px] rounded-full" 
+                      src={ avatar || '/images/banner/unknown.png' } />
                     <div className='absolute right-0 bottom-0 w-[30px] h-[30px] flex bg-[#011829] flex justify-center items-center rounded-full cursor-pointer'>
                       <i className='fa fa-pencil' />
                     </div>
                     <button
                       className="absolute right-0 bottom-0 w-[30px] h-[30px] opacity-0"
-                      onChange={handleImage}
                       onClick={handleClickOpen}
                     />
                   </div>
                 </div>
-                {/* <div className='flex'>
-                  <div className="relative flex items-center justify-center">
-                    {selImage ?
-                      (<img id="image" name="image" alt="" className="w-[120px] h-[120px] rounded-full" src={URL.createObjectURL(selImage)} />)
-                      : (avatar ?
-                        <img id="image" name="image" alt="" className="w-[120px] h-[120px] rounded-full" src={`data:image/${avatar.contentType};base64,${Buffer.from(avatar.data).toString('base64')}`} />
-                        : <img id="image" name="image" alt="" src={'/images/banner/unknown.png'} />)}
-                    <div className='absolute right-0 bottom-0 w-[30px] h-[30px] flex bg-[#011829] flex justify-center items-center rounded-full cursor-pointer'>
-                      <i className='fa fa-pencil' />
-                    </div>
-                    <input
-                      type="file"
-                      name="myImage"
-                      accept="image/*"
-                      className="absolute right-0 bottom-0 w-[30px] h-[30px] opacity-0"
-                      onChange={handleImage}
-                    />
-                  </div>
-                </div> */}
-
                 <div className='w-full pb-3'>
                   <div className='input-form-control'>
                     <label className='input-label'>Name</label>

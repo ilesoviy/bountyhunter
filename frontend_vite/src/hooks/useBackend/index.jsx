@@ -12,7 +12,7 @@ const useBackend = () => {
             let name = '';
             let github = '';
             let discord = '';
-            let image = {};
+            let image = '';
 
             try {
                 const res = await fetch(BACKEND_URL + 'get_user', {
@@ -48,25 +48,55 @@ const useBackend = () => {
 
     const setUser = useCallback(
         async (wallet, name, github, discord, image) => {
-            const formData = new FormData();
+            // const formData = new FormData();
 
-            formData.append('wallet', wallet);
-            formData.append('name', name);
-            formData.append('github', github);
-            formData.append('discord', discord);
-            formData.append('image', image);
+            // formData.append('wallet', wallet);
+            // formData.append('name', name);
+            // formData.append('github', github);
+            // formData.append('discord', discord);
+            // // formData.append('image', image);
 
-            console.log('formData:', formData);
+            // console.log('formData:', formData);
 
-            axios.post(BACKEND_URL + 'set_user', formData)
-                .then((response) => {
-                    console.log(response.data.details);
-                    return 0;
-                })
-                .catch ((error) => {
-                    console.error('Error uploading avatar:', error);
-                    return -1;
+            // axios.post(BACKEND_URL + 'set_user', formData)
+            //     .then((response) => {
+            //         console.log('response:', response);
+            //         // console.log(response.data.details);
+            //         return 0;
+            //     })
+            //     .catch ((error) => {
+            //         console.error('Error uploading avatar:', error);
+            //         return -1;
+            //     });
+
+            try {
+                const res = await fetch(BACKEND_URL + 'set_user', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        'wallet': wallet,
+                        'name': name,
+                        'github': github,
+                        'discord': discord,
+                        'image': image
+                    })
                 });
+    
+                const resData = await res.json();
+                if (resData.error) {
+                    console.error('error1:', resData.error);
+                    return -1;
+                } else {
+                    console.log(resData.details);
+                    return 0;
+                }
+            } catch (error) {
+                console.error('error2:', error);
+            }
+
+            return -2;
         }, 
         []
     );
