@@ -3,6 +3,13 @@ import { Scrollbars } from 'react-custom-scrollbars';
 import { Reveal } from 'react-awesome-reveal';
 import { toast } from "react-toastify";
 
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import Button from '@mui/material/Button';
+
 import { useCustomWallet } from '../../contexts/WalletContext';
 import Sidebar from '../../components/menu/SideBar';
 import Subheader from '../../components/menu/SubHeader';
@@ -10,6 +17,7 @@ import MainHeader from '../../components/menu/MainHeader';
 import HelpButton from '../../components/menu/HelpButton';
 import WarningMsg from '../../components/WarningMsg';
 import useBackend from '../../hooks/useBackend';
+import AvatarCrop from '../../components/AvatarCrop';
 import { IsSmMobile, numberWithCommas, fadeInUp, fadeIn } from '../../utils';
 
 const SettingsBody = () => {
@@ -20,7 +28,25 @@ const SettingsBody = () => {
   const [discord, setDiscord] = useState('');
   const [selImage, setSelImage] = useState(null);
   const [avatar, setAvatar] = useState(null);
+  const [preview, setPreview] = useState(null);
+  const [croppedAvatar, setCroppedAvatar] = useState(null);
+  const [open, setOpen] = useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
   
+  const handleOk = () => {
+    setOpen(false);
+    setCroppedAvatar(preview);
+    console.log(preview);
+    setPreview(null);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+    setPreview(null);
+  };
   const handleName = useCallback((event) => {
     setName(event.target.value);
   }, []);
@@ -33,6 +59,15 @@ const SettingsBody = () => {
   const handleImage = useCallback((event) => {
     setSelImage(event.target.files[0]);
   }, []);
+
+  const onAvatarCrop = useCallback((p) => {
+    setPreview(p)
+  })
+
+  const onAvatarClose = useCallback((p) => {
+    setPreview(null)
+  })
+
   const handleSave = useCallback((event) => {
     if (!isConnected) {
       toast.warning(`Wallet not connected yet!`);
@@ -46,6 +81,8 @@ const SettingsBody = () => {
 
     toast('Saved user information!');
   }, [isConnected, walletAddress, name, github, discord, selImage]);
+
+
 
   useEffect(() => {
     async function fetchUser() {
@@ -76,11 +113,24 @@ const SettingsBody = () => {
               <div className='row pl-[20px]'>
                 <div className='flex'>
                   <div className="relative flex items-center justify-center">
+                    <img id="image" name="image" alt="" className="w-[128px] h-[128px] rounded-full" src={croppedAvatar || '/images/banner/unknown.png' } />
+                    <div className='absolute right-0 bottom-0 w-[30px] h-[30px] flex bg-[#011829] flex justify-center items-center rounded-full cursor-pointer'>
+                      <i className='fa fa-pencil' />
+                    </div>
+                    <button
+                      className="absolute right-0 bottom-0 w-[30px] h-[30px] opacity-0"
+                      onChange={handleImage}
+                      onClick={handleClickOpen}
+                    />
+                  </div>
+                </div>
+                {/* <div className='flex'>
+                  <div className="relative flex items-center justify-center">
                     {selImage ?
                       (<img id="image" name="image" alt="" className="w-[120px] h-[120px] rounded-full" src={URL.createObjectURL(selImage)} />)
-                    : (avatar ? 
-                      <img id="image" name="image" alt="" className="w-[120px] h-[120px] rounded-full" src={`data:image/${avatar.contentType};base64,${Buffer.from(avatar.data).toString('base64')}`} />
-                      : <img id="image" name="image" alt="" src={'/images/banner/unknown.png'} />)}
+                      : (avatar ?
+                        <img id="image" name="image" alt="" className="w-[120px] h-[120px] rounded-full" src={`data:image/${avatar.contentType};base64,${Buffer.from(avatar.data).toString('base64')}`} />
+                        : <img id="image" name="image" alt="" src={'/images/banner/unknown.png'} />)}
                     <div className='absolute right-0 bottom-0 w-[30px] h-[30px] flex bg-[#011829] flex justify-center items-center rounded-full cursor-pointer'>
                       <i className='fa fa-pencil' />
                     </div>
@@ -92,7 +142,8 @@ const SettingsBody = () => {
                       onChange={handleImage}
                     />
                   </div>
-                </div>                
+                </div> */}
+
                 <div className='w-full pb-3'>
                   <div className='input-form-control'>
                     <label className='input-label'>Name</label>
@@ -126,8 +177,37 @@ const SettingsBody = () => {
                 </div>
               </div>
             </div>
+            <Dialog open={open} onClose={handleClose}
+              PaperProps={{
+                style: {
+                  background: 'linear-gradient(to bottom right, rgb(0, 65, 104), rgb(0, 65, 104))',
+                  boxShadow: 'none',
+                },
+              }}>
+              <DialogTitle>Select your image</DialogTitle>
+              <DialogContent>
+                <div className='flex w-full pb-3 gap-2'>
+                  <AvatarCrop
+                    width={300}
+                    height={250}
+                    exportSize={200}
+                    onCrop={onAvatarCrop}
+                    onClose={onAvatarClose} />
+                  <img
+                    alt=""
+                    style={{ width: "120px", height: "120px" }}
+                    className='rounded-full'
+                    src={preview || '/images/banner/unknown.png'}
+                  />
+                </div>
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={handleOk} className='text-white'>Ok</Button>
+                <Button onClick={handleClose} className='text-white'>Close</Button>
+              </DialogActions>
+            </Dialog>
           </div>)
-           :
+          :
           (<WarningMsg msg='You need to connect your wallet in order to save settings.' />)
       }
     </Reveal>
