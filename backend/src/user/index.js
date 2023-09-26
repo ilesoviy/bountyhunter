@@ -20,7 +20,7 @@ async function setUser(wallet, name, github, discord, img) {
 }
 
 async function getUser(wallet) {
-    return await UserModel.findOne({wallet: wallet})/* .map(b => {b.name, b.github, b.discord}) */;
+    return await UserModel.findOne({wallet: wallet});
 }
 
 module.exports = { setUser, getUser }

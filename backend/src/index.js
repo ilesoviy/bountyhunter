@@ -3,6 +3,7 @@ const express = require('express');
 const app = express();
 const { connect } = require('./db');
 const cors = require('cors');
+const path = require('path');
 
 dotenv.config();
 if (process.env.NODE_ENV == ('development' || 'development ')) {
