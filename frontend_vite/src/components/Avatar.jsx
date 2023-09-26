@@ -8,6 +8,7 @@ const Avatar = ({ hide }) => {
   const [userImg, setUserImg] = useState(null);
   
   useEffect(() => {
+    setUserImg(null);
     if (!isConnected)
       return;
 
