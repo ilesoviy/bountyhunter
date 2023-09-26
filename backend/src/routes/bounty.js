@@ -34,21 +34,16 @@ router.post('/get_user', async (request, response) => {
         user: creator });
 });
 
-router.post('/set_user', upload.single('image'), async (request, response) => {
+router.post('/set_user', async (request, response) => {
     const query = request.body;
 
     try {
-        const img = {
-            data: fs.readFileSync(path.join(__dirname + '/../../uploads/' + (request.body.wallet + '.bin'))), 
-            contentType: 'image/png'
-        };
-        
         const res = await setUser(query.wallet, 
             query.name, 
             query.github, 
             query.discord, 
-            img);
-        response.send({ status: 'success', details: `${query.name ? query.name: query.wallet}: successfully set info` });
+            query.image);
+        response.send({ status: 'success', details: `${query.name ? query.name: query.wallet} : successfully set info` });
     } catch (err) {
         response.send({ status: 'failed', error: err.message });
     }
