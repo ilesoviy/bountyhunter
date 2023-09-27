@@ -27,5 +27,5 @@ app.use('/api/bounty', require('./routes/bounty'));
 
 app.listen(process.env.PORT, async function () {
     console.log(`Ready to go. listening on port:[${process.env.PORT}] on pid:[${process.pid}]`);
-    await connect()
+    await connect();
 });
