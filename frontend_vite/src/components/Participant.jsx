@@ -13,7 +13,7 @@ export const Participant = ({ bountyId, submit }) => {
       return;
 
     async function fetchWorks(bountyId) {
-      const bountyWorks = await getWorks(bountyId, submit ? WorkStatus.SUBMITTED : WorkStatus.APPLIED);
+      const bountyWorks = await getWorks(bountyId);
       setWorks(bountyWorks);
     }
 
@@ -39,7 +39,7 @@ export const Participant = ({ bountyId, submit }) => {
                   <tr className='text-[16px]' key={idx}>
                     <td width="45%" className='text-center p-2'>{shortenAddress(work?.participant.wallet)} ({work?.participant.name})</td>
                     <td width="25%" className='text-center'>{getWorkStatus(work?.status)}</td>
-                    <td width="" className='text-center'>{submit ? getTimeDifference(work?.submitDate) : getTimeDifference(work?.applyDate)} ago</td>
+                    <td width="" className='text-center'>{(work?.status == WorkStatus.SUBMITTED) ? getTimeDifference(work?.submitDate) : getTimeDifference(work?.applyDate)} ago</td>
                   </tr>
                 )) : <tr><td className='text-center'>No Participants</td></tr>
               }

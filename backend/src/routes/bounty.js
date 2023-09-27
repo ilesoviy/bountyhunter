@@ -170,7 +170,7 @@ router.post('/get_works', async (request, response) => {
     }
 
     try {
-        const works = await getWorks(bounty._id, request.body.status)
+        const works = await getWorks(bounty._id)
         response.send({ status: 'success', details: `${works?.length} works`, works: works })
     } catch (err) {
         response.send({ status: 'failed', error: err.message })

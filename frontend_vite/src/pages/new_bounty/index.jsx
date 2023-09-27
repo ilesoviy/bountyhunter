@@ -125,7 +125,7 @@ const NewBountyBody = () => {
       }
     });
 
-  }, [walletAddress, title, payAmount, duration, type, difficulty, topic, description, gitHub]);
+  }, [isConnected, walletAddress, title, payAmount, duration, type, difficulty, topic, description, gitHub]);
 
   const handleSubmit = useCallback(async (event) => {
     if (!checkCondition()) return;
@@ -160,7 +160,7 @@ const NewBountyBody = () => {
     toast('Successfully added bounty!');
 
     nav('/NewBounty/');
-  }, [walletAddress, title, payAmount, duration, type, difficulty, topic, description, gitHub]);
+  }, [isConnected, walletAddress, title, payAmount, duration, type, difficulty, topic, description, gitHub]);
 
   return (
     <div className='app-body lg:pl-0 pl-[20px] pr-0 mt-3'>

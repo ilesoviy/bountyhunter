@@ -23,8 +23,8 @@ async function addWork(user, bounty, workId, applyDate, status) {
     return true
 }
 
-async function getWorks(bountyId, status) {
-    const works = await WorkModel.find({bounty: bountyId, status: status}).populate('participant')
+async function getWorks(bountyId) {
+    const works = await WorkModel.find({bounty: bountyId}).populate('participant')
     return works
 }
 
