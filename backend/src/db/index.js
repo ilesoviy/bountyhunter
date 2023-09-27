@@ -1,5 +1,6 @@
 const dotenv = require('dotenv');
 const mongoose = require('mongoose');
+const path = require('path');
 
 dotenv.config();
 if (process.env.NODE_ENV == ('development' || 'development ')) {
