@@ -1,5 +1,6 @@
 const BountyModel = require("../models/bounty")
 const WorkModel = require("../models/work")
+const { addLog } = require('../log')
 
 async function addBounty(creatorId, bountyId, 
     title, payAmount, startDate, endDate, 
@@ -28,8 +29,9 @@ async function addBounty(creatorId, bountyId,
         block: block, 
         status: status
     })
-
     await newBounty.save()
+
+    await addLog(creatorId, startDate, 'Create', newBounty._id, null, '');
 }
 
 async function getRecentBounties() {
@@ -85,6 +87,8 @@ async function cancelBounty(bountyId, newStatus) {
 
     bounty.status = newStatus;
     bounty.save()
+
+    await addLog(bounty.creator, Date.now(), 'Cancel', bounty._id, null, '');
 }
 
 async function closeBounty(bountyId, newStatus) {
@@ -95,6 +99,8 @@ async function closeBounty(bountyId, newStatus) {
 
     bounty.status = newStatus;
     bounty.save()
+
+    await addLog(bounty.creator, Date.now(), 'Close', bounty._id, null, '');
 }
 
 module.exports = { addBounty, getRecentBounties, getBounties, getSingleBounty, cancelBounty, closeBounty }

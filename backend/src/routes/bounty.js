@@ -60,9 +60,10 @@ router.post('/add_bounty', async (request, response) => {
     }
 
     try {
+        const startDate = Date.now();
         await addBounty(creator._id, 
             query.bountyId, query.title, query.payAmount, 
-            Date.now(), Date.now() + query.duration * 1000, 
+            startDate, startDate + query.duration * 1000, 
             query.type, query.difficulty, query.topic, 
             query.description, query.gitHub, 
             query.block, query.status);
@@ -109,6 +110,8 @@ router.post('/get_single_bounty', async (request, response) => {
 })
 
 router.post('/cancel_bounty', async (request, response) => {
+    const query = request.body;
+
     const creator = await getUser(query.wallet);
     if (creator === null) {
         response.send({ status: 'failed', error: `You did not login or invalid user` });
@@ -116,7 +119,7 @@ router.post('/cancel_bounty', async (request, response) => {
     }
 
     try {
-        const cancelled = await cancelBounty(request.body.bountyId)
+        const cancelled = await cancelBounty(query.bountyId)
         response.send({ status: 'success', details: `${creator.name ? creator.name : creator.wallet} successfully cancelled ${query.bountyId}` })
     } catch (err) {
         response.send({ status: 'failed', error: err.message })
@@ -124,6 +127,8 @@ router.post('/cancel_bounty', async (request, response) => {
 });
 
 router.post('/close_bounty', async (request, response) => {
+    const query = request.body;
+
     const creator = await getUser(query.wallet);
     if (creator === null) {
         response.send({ status: 'failed', error: `You did not login or invalid user` });
@@ -131,7 +136,7 @@ router.post('/close_bounty', async (request, response) => {
     }
 
     try {
-        const closed = await closeBounty(request.body.bountyId)
+        const closed = await closeBounty(query.bountyId)
         response.send({ status: 'success', details: `${creator.name ? creator.name : creator.wallet} successfully closed ${query.bountyId}` })
     } catch (err) {
         response.send({ status: 'failed', error: err.message })
@@ -155,7 +160,8 @@ router.post('/add_work', async (request, response) => {
     }
 
     try {
-        const added = await addWork(user, bounty, query.workId, query.applyDate, query.status)
+        const applyDate = Date.now();
+        const added = await addWork(user, bounty, query.workId, applyDate, query.status)
         response.send({ status: 'success', details: `${user.name ? user.name: user.wallet} ${added === true ? 'added': 'not added'} ${query.workId}` })
     } catch (err) {
         response.send({ status: 'failed', error: err.message })
@@ -211,7 +217,7 @@ router.post('/submit_work', async (request, response) => {
     }
 
     try {
-        const submitted = await submitWork(query.workId, query.title, query.description, query.workRepo, query.submitDate, query.status)
+        const submitted = await submitWork(user, query.workId, query.title, query.description, query.workRepo, Date.now(), query.status)
         response.send({ status: 'success', details: `${user.name ? user.name: user.wallet} ${submitted === true? 'submitted': 'not submitted'} ${query.workId}` })
     } catch (err) {
         response.send({ status: 'failed', error: err.message })

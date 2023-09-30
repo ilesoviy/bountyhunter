@@ -1,4 +1,5 @@
 const WorkModel = require('../models/work')
+const { addLog } = require('../log')
 
 async function addWork(user, bounty, workId, applyDate, status) {
     await bounty.populate('creator')
@@ -20,6 +21,8 @@ async function addWork(user, bounty, workId, applyDate, status) {
     })
 
     await newWork.save()
+
+    await addLog(user._id, applyDate, 'Apply', bounty._id, newWork._id, '')
     return true
 }
 
@@ -33,7 +36,7 @@ async function getWork(user, bounty) {
     return works
 }
 
-async function submitWork(workId, title, description, workRepo, submitDate, newStatus) {
+async function submitWork(user, workId, title, description, workRepo, submitDate, newStatus) {
     const work = await WorkModel.findOne({workId: workId})
     if (work === null) {
         throw new Error('Invalid Work')
@@ -45,6 +48,8 @@ async function submitWork(workId, title, description, workRepo, submitDate, newS
     work.submitDate = submitDate;
     work.status = newStatus;
     work.save()
+
+    await addLog(user._id, submitDate, 'Submit', null, work._id, '');
     return true
 }
 
@@ -52,7 +57,7 @@ async function countSubmissions(bounty, countStatus) {
     return await WorkModel.countDocuments({bounty: bounty, status: countStatus})
 }
 
-async function approveWork(workId, newStatus) {
+async function approveWork(user, workId, newStatus) {
     const work = await WorkModel.findOne({workId: workId})
     if (work === null) {
         throw new Error('Invalid Work')
@@ -60,10 +65,12 @@ async function approveWork(workId, newStatus) {
 
     work.status = newStatus;
     work.save()
+
+    await addLog(user._id, Date.now(), 'Approve', null, work._id, '');
     return true
 }
 
-async function rejectWork(workId, newStatus) {
+async function rejectWork(user, workId, newStatus) {
     const work = await WorkModel.findOne({workId: workId})
     if (work === null) {
         throw new Error('Invalid Work')
@@ -71,6 +78,8 @@ async function rejectWork(workId, newStatus) {
 
     work.status = newStatus;
     work.save()
+
+    await addLog(user._id, Date.now(), 'Reject', null, work._id, '');
     return true
 }
 
