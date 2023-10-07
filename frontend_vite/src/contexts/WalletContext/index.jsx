@@ -33,7 +33,7 @@ export const WalletProvider = (props) => {
         selectedWallet: WalletType.FREIGHTER,
     });
 
-    const walletObj = {
+    const [walletObj, setWalletObj] = useState ({
         isConnected: async() => {
             return isConnected;
         },
@@ -43,17 +43,28 @@ export const WalletProvider = (props) => {
         },
 
         getUserInfo: async() => {
-            return kit.getPublicKey();
+            return await kit.getPublicKey();
         },
 
         signTransaction: async(tx, opts) => {
-            return kit.sign({
+            return await kit.sign({
                 xdr: tx,
                 network: WalletNetwork.FUTURENET,
                 publicKey: opts?.accountToSign ? opts?.accountToSign : await kit.getPublicKey()
             });
         }
-    };
+    });
+
+    useEffect (() => {
+        setWalletObj ((prevState) => {
+            return {
+                ...prevState,
+                isConnected: async() => {
+                    return isConnected;
+                }
+            }
+        });
+    }, [isConnected]);
 
     const connectWallet = async () => {
         await kit.openModal({
@@ -88,6 +99,14 @@ export const WalletProvider = (props) => {
 
                 setWalletAddress(_publicKey);
                 setIsConnected(true);
+                // setWalletObj ((prevState) => {
+                //     return {
+                //         ...prevState,
+                //         isConnected: async() => {
+                //             return true;
+                //         }
+                //     }
+                // });
 
                 // dispatch(changeConnect(option.type));
                 setSelectedWallet(option.type);
@@ -108,42 +127,51 @@ export const WalletProvider = (props) => {
         } else {
             setIsConnected(false);
         }
+
+        // setWalletObj ((prevState) => {
+        //     return {
+        //         ...prevState,
+        //         isConnected: async() => {
+        //             return false;
+        //         }
+        //     }
+        // });
     }
 
-    // useEffect(() => {
-    //     let _publicKey = "";
+    useEffect(() => {
+        let _publicKey = "";
 
-    //     const syncWallet = async () => {
-    //         if (selectedWallet === WalletType.WALLET_CONNECT) {
-    //             try {
-    //                 await kit.startWalletConnect({
-    //                     name: "BountyHunter",
-    //                     description: "BountyHunter WebApp",
-    //                     url: "https://bounty.cryptosnowprince.com/",
-    //                     icons: ["URL_OF_ICON"],
-    //                     projectId: 'bountyhunter-c9d7d',
-    //                 });
+        const syncWallet = async () => {
+            if (selectedWallet === WalletType.WALLET_CONNECT) {
+                try {
+                    await kit.startWalletConnect({
+                        name: "BountyHunter",
+                        description: "BountyHunter WebApp",
+                        url: "https://bounty.cryptosnowprince.com/",
+                        icons: ["URL_OF_ICON"],
+                        projectId: 'bountyhunter-c9d7d',
+                    });
 
-    //                 const sessions = await kit.getSessions();
-    //                 if (sessions.length) {
-    //                     await kit.setSession(sessions[0]?.id);
-    //                 }
-    //             } catch (error) {
-    //                 console.error(error);
-    //             }
-    //             _publicKey = await kit?.getWalletConnectPublicKey();
-    //         } else {
-    //             _publicKey = await kit.getPublicKey();
-    //         }
+                    const sessions = await kit.getSessions();
+                    if (sessions.length) {
+                        await kit.setSession(sessions[0]?.id);
+                    }
+                } catch (error) {
+                    console.error(error);
+                }
+                _publicKey = await kit?.getWalletConnectPublicKey();
+            } else {
+                _publicKey = await kit.getPublicKey();
+            }
 
-    //         setAddress(_publicKey);
-    //         setIsConnected(true);
-    //     };
+            setWalletAddress(_publicKey);
+            setIsConnected(true);
+        };
 
-    //     if (selectedWallet) {
-    //         syncWallet();
-    //     }
-    // }, [selectedWallet, network?.chainId]);
+        if (selectedWallet) {
+            syncWallet();
+        }
+    }, [selectedWallet/* , network?.chainId */]);
 
     // useEffect(() => {
     //     setServer(
