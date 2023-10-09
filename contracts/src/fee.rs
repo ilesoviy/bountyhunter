@@ -1,5 +1,8 @@
-use soroban_sdk::{ Env, Address };
-use crate::storage_types::{ FEE_DECIMALS, INSTANCE_BUMP_AMOUNT, DataKey, FeeInfo };
+use soroban_sdk::{ log, Env };
+use crate::storage_types::{
+    FEE_DECIMALS, /* INSTANCE_LIFETIME_THRESHOLD, INSTANCE_BUMP_AMOUNT, */ 
+    ErrorCode, DataKey, FeeInfo
+};
 
 
 pub fn fee_check(e: &Env) -> bool {
@@ -13,23 +16,22 @@ pub fn fee_check(e: &Env) -> bool {
     }
 }
 
-pub fn fee_get(e: &Env) -> FeeInfo {
+pub fn fee_get(e: &Env) -> Result<FeeInfo, ErrorCode> {
     let key = DataKey::Fee;
 
     if !e.storage().instance().has(&key) {
-        panic!("FeeInfo wasn't initialized");
+        log!(e, "FeeInfo wasn't initialized");
+        return Err(ErrorCode::FeeNotSet)
     }
     
-    e.storage().instance().get(&key).unwrap()
+    Ok(e.storage().instance().get(&key).unwrap())
 }
 
-pub fn fee_set(e: &Env, admin: &Address, fee_info: &FeeInfo) {
+pub fn fee_set(e: &Env, fee_info: &FeeInfo) {
     let key = DataKey::Fee;
 
-    admin.require_auth();
-
     e.storage().instance().set(&key, fee_info);
-    e.storage().instance().bump(INSTANCE_BUMP_AMOUNT, INSTANCE_BUMP_AMOUNT);
+    // e.storage().instance().bump(INSTANCE_LIFETIME_THRESHOLD, INSTANCE_BUMP_AMOUNT);
 }
 
 pub fn fee_calculate(_e: &Env, fee_info: &FeeInfo, amount: u64) -> u64 {

@@ -1,8 +1,8 @@
 [package]
 name = "soroban_escrow_smart_contract"
-version = "0.0.0"
+version = "1.0.0"
 edition = "2021"
-publish = false
+publish = true
 
 [lib]
 crate-type = ["cdylib"]

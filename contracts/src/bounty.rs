@@ -1,89 +1,78 @@
 const BOUNTY: Symbol = symbol_short!("BOUNTY");
 
 use soroban_sdk::{
-    /* log, */ token, symbol_short, 
+    log, token, symbol_short, 
     Env, Address, Symbol, String
 };
-use crate::storage_types::{ INSTANCE_BUMP_AMOUNT, FeeInfo, WorkStatus, WorkInfo, BountyStatus, BountyInfo, DataKey, ErrorCode };
-use crate::fee::{ fee_check, fee_get, fee_calculate };
-use crate::work::{ work_create, work_write, work_get };
+use crate::storage_types::{
+    INSTANCE_LIFETIME_THRESHOLD, INSTANCE_BUMP_AMOUNT, BALANCE_BUMP_AMOUNT, 
+    /* FeeInfo, */ WorkStatus, WorkInfo, BountyStatus, BountyInfo, /* WorkKey, */ DataKey, ErrorCode
+};
+use crate::fee::{ fee_get, fee_calculate, fee_check };
+use crate::work::{ work_create, work_read, work_write_id, work_write_key, work_check_id, work_check_key };
 
 
-pub fn get_error(
-    e: &Env
-) -> u32 {
-    if !e.storage().instance().has(&DataKey::ErrorCode) {
-        return ErrorCode::GetErrorFailed as u32;
-    }
+// pub fn get_error(
+//     e: &Env
+// ) -> u32 {
+//     if !e.storage().instance().has(&DataKey::ErrorCode) {
+//         return ErrorCode::GetErrorFailed as u32;
+//     }
 
-    let err_code: u32 = e.storage().instance().get(&DataKey::ErrorCode).unwrap_or(0);
-    err_code
-}
+//     let err_code: u32 = e.storage().instance().get(&DataKey::ErrorCode).unwrap_or(0);
+//     err_code
+// }
 
-pub fn reset_error(
-    e: &Env
-) {
-    e.storage().instance().set(&DataKey::ErrorCode, &0);
-}
+// pub fn reset_error(
+//     e: &Env
+// ) {
+//     e.storage().instance().set(&DataKey::ErrorCode, &0);
+// }
 
-pub fn bounty_count(e: &Env
-) -> u32 {
-    let bounty_count: u32 = e.storage().instance().get(&DataKey::BountyCount).unwrap_or(0);
-    bounty_count
-}
 
-pub fn work_count(e: &Env
-) -> u32 {
-    let work_count: u32 = e.storage().instance().get(&DataKey::WorkCount).unwrap_or(0);
-    work_count
-}
-
+// returns new bounty id on success, errorcode on failure
 pub fn bounty_create(
     e: &Env, 
     creator: &Address, 
     name: &String, 
     reward_amount: u64, 
     pay_token: &Address, 
-    deadline: u64, 
-    expiration_ledger: u32
-) -> u32 {
+    deadline: u64/* , 
+    expiration_ledger: u32 */
+) -> Result<u32, ErrorCode> {
     // check args
-    if name.len() == 0 {
-        // panic!("empty name");
-        return ErrorCode::EmptyName as u32
-    }
     if reward_amount == 0 {
-        // panic!("zero reward");
-        return ErrorCode::ZeroReward as u32
+        log!(e, "zero reward");
+        return Err(ErrorCode::ZeroReward)
     }
     if deadline == 0 {
-        // panic!("zero deadline");
-        return ErrorCode::ZeroDeadline as u32
+        log!(e, "zero deadline");
+        return Err(ErrorCode::ZeroDeadline)
     }
 
 	if !fee_check(e) {
-        // panic!("fee not set");
-        return ErrorCode::FeeNotSet as u32
+        log!(e, "fee not set");
+        return Err(ErrorCode::FeeNotSet)
     }
     
-    // Authorize the `create` call by creator to verify his/her identity.
-    creator.require_auth();
-
-	let fee_info: FeeInfo = fee_get(e);
+    let fee_info = fee_get(e).unwrap();
     let fee_amount: u64 = fee_calculate(e, &fee_info.clone(), reward_amount);
     let transfer_amount: i128 = (reward_amount + fee_amount) as i128;
     
     let contract = e.current_contract_address();
     let pay_token_client = token::Client::new(e, &pay_token.clone());
 
-    if pay_token_client.balance(&creator) < transfer_amount {
-        // panic!("insufficient creator's balance");
-        return ErrorCode::InsuffCreatorBalance as u32
+    // Authorize the `create` call by creator to verify identity.
+    creator.require_auth();
+
+	if pay_token_client.balance(&creator) < transfer_amount {
+        log!(e, "insufficient creator's balance");
+        return Err(ErrorCode::InsuffCreatorBalance)
     }
     if pay_token_client.allowance(&creator, &contract) < transfer_amount {
-        // panic!("insufficient creator's allowance");
-        // return ErrorCode::InsuffCreatorAllowance as u32
-        pay_token_client.approve(&creator, &contract, &transfer_amount, &expiration_ledger);
+        // log!(e, "insufficient creator's allowance");
+        // return Err(ErrorCode::InsuffCreatorAllowance)
+        pay_token_client.approve(&creator, &contract, &transfer_amount, &/* expiration_ledger */BALANCE_BUMP_AMOUNT);
     }
 
     pay_token_client.transfer(&creator, &contract, &(reward_amount as i128));
@@ -101,58 +90,62 @@ pub fn bounty_create(
             name: name.clone(), 
             reward_amount, 
             pay_token: pay_token.clone(), 
-            end_date: deadline, 
+            end_date: e.ledger().timestamp() + deadline, 
             status: BountyStatus::ACTIVE
         },
     );
     
     // increase bounty count
     e.storage().instance().set(&DataKey::BountyCount, &(bounty_count + 1));
-    e.storage().instance().bump(INSTANCE_BUMP_AMOUNT, INSTANCE_BUMP_AMOUNT);
+    e.storage().instance().bump(INSTANCE_LIFETIME_THRESHOLD, INSTANCE_BUMP_AMOUNT);
 
-    // emit BountyActive event
-    e.events().publish((BOUNTY, symbol_short!("BActive")), 
+    // emit BountyCreate event
+    e.events().publish((BOUNTY, symbol_short!("BCreate")), 
         (creator.clone(), name.clone(), reward_amount, deadline, bounty_id)
     );
 
-    bounty_id
+    Ok(bounty_id)
 }
 
+// returns new work id on success, errorcode on failure
 pub fn bounty_apply(
     e: &Env, 
     participant: &Address, 
     bounty_id: u32
-) -> u32 {
+) -> Result<u32, ErrorCode> {
     // check args
     if !bounty_check(e, bounty_id) {
-        // panic!("bounty not found");
-        return ErrorCode::BountyNotFound as u32
+        log!(e, "bounty not found");
+        return Err(ErrorCode::BountyNotFound)
     }
-
-    let bounty = bounty_load(e, bounty_id);
+    let bounty = bounty_read(e, bounty_id);
     if bounty.creator == participant.clone() {
-        // panic!("can't apply to self-created bounty!");
-        return ErrorCode::NoApplyToSelfBounty as u32;
+        log!(e, "participant is creator");
+        return Err(ErrorCode::ParticipantIsCreator)
     }
     if bounty.status != BountyStatus::ACTIVE {
-        // panic!("invalid bounty status");
-        return ErrorCode::InvalidBountyStatus as u32
+        log!(e, "inactive bounty status");
+        return Err(ErrorCode::InactiveBountyStatus)
     }
 
-    // Authorize the `create` call by participant to verify his/her identity.
+    // avoid duplicate appliance
+    if work_check_key(e, participant, bounty_id) {
+        log!(e, "already applied participant");
+        return Err(ErrorCode::AlreadyAppliedParticipant);
+    }
+
+    // Authorize the `apply` call by participant to verify identity.
     participant.require_auth();
 
-    let ret: u32 = work_create(&e, &participant, bounty_id);
-
-    e.storage().instance().set(&DataKey::ErrorCode, &ret);
-    e.storage().instance().bump(INSTANCE_BUMP_AMOUNT, INSTANCE_BUMP_AMOUNT);
+    let work_id: u32 = work_create(&e, &participant, bounty_id);
+    work_write_key(e, participant, bounty_id, 1);
     
     // emit BountyApplied event
     e.events().publish((BOUNTY, symbol_short!("BApply")), 
-        (participant.clone(), bounty_id, ret)
+        (participant.clone(), bounty_id, work_id)
     );
 
-    ret
+    Ok(work_id)
 }
 
 pub fn bounty_submit(
@@ -160,145 +153,157 @@ pub fn bounty_submit(
     participant: &Address, 
     work_id: u32, 
     work_repo: &String
-) -> ErrorCode {
+) -> Result<i32, ErrorCode> {
     // check args
+    if !work_check_id(e, work_id) {
+        log!(e, "work not found");
+        return Err(ErrorCode::WorkNotFound)
+    }
     if work_repo.len() == 0 {
-        // panic!("invalid repo");
-        return ErrorCode::InvalidWorkRepo
+        log!(e, "invalid repo");
+        return Err(ErrorCode::InvalidWorkRepo)
     }
     
-    let mut work = work_get(e, work_id);
+    let mut work = work_read(e, work_id);
     if work.participant != *participant {
-        // panic!("invalid participant");
-        return ErrorCode::InvalidParticipant
+        log!(e, "invalid participant");
+        return Err(ErrorCode::InvalidParticipant)
     }
     if work.status != WorkStatus::APPLIED {
-        // panic!("not applied");
-        return ErrorCode::NotApplied
+        log!(e, "not applied work");
+        return Err(ErrorCode::NotAppliedWork)
     }
 
+    // Authorize the `submit` call by participant to verify identity.
     participant.require_auth();
 
 	work.status = WorkStatus::SUBMITTED;
-    work_write(&e, work_id, &work);
+    work_write_id(&e, work_id, &work);
 
     // emit WorkSubmitted event
     e.events().publish((BOUNTY, symbol_short!("WSubmit")), 
         (participant.clone(), work_id, work_repo.clone())
     );
 
-    ErrorCode::Success
+    Ok(0)
 }
 
 pub fn bounty_approve(e: &Env, 
     creator: &Address, 
     work_id: u32
-) -> ErrorCode {
-    if !e.storage().instance().has(&DataKey::RegWorks(work_id)) {
-        // panic!("can't find work");
-        return ErrorCode::WorkNotFound
+) -> Result<i32, ErrorCode> {
+    if !work_check_id(e, work_id) {
+        log!(e, "work not found");
+        return Err(ErrorCode::WorkNotFound)
     }
-    let mut work: WorkInfo = work_get(e, work_id);
-
-    if !e.storage().instance().has(&DataKey::RegBounties(work.bounty_id)) {
-        // panic!("can't find bounty");
-        return ErrorCode::BountyNotFound
+    let mut work: WorkInfo = work_read(e, work_id);
+    
+    if !bounty_check(e, work.bounty_id) {
+        log!(e, "bounty not found");
+        return Err(ErrorCode::BountyNotFound)
     }
-    let bounty: BountyInfo = bounty_load(e, work.bounty_id);
+    let mut bounty: BountyInfo = bounty_read(e, work.bounty_id);
     if bounty.creator != *creator {
-        // panic!("invalid creator");
-        return ErrorCode::InvalidCreator;
+        log!(e, "invalid creator");
+        return Err(ErrorCode::InvalidCreator)
     }
     if bounty.status != BountyStatus::ACTIVE {
-        // panic!("invalid bounty status");
-        return ErrorCode::InvalidBountyStatus
+        log!(e, "inactive bounty status");
+        return Err(ErrorCode::InactiveBountyStatus)
     }
 
-    // if !fee_check(e) {
-    //     // panic!("fee not set");
-    //     return ErrorCode::FeeNotSet
-    // }
-    
+    // Authorize the `approve` call by creator to verify identity.
     creator.require_auth();
 
     let pay_token_client = token::Client::new(e, &bounty.pay_token);
 
-    // let fee_info = fee_get(e);
-    // let fee_amount: u64 = fee_calculate(&fee_info, bounty.reward_amount);
-    let amount: u64 = bounty.reward_amount/*  - fee_amount */;
+    let amount: u64 = bounty.reward_amount;
     let contract = e.current_contract_address();
     
-    // pay_token_client.transfer(&contract, &fee_info.fee_wallet, &(fee_amount as i128));
     pay_token_client.transfer(&contract, &work.participant, &(amount as i128));
 
     work.status = WorkStatus::APPROVED;
-    work_write(e, work_id, &work);
+    work_write_id(e, work_id, &work);
     
-    // emit WorkAccepted event
-    e.events().publish((BOUNTY, symbol_short!("WApprove")), 
+    bounty.status = BountyStatus::COMPLETE;
+    bounty_write(e, work.bounty_id, &bounty);
+
+    // emit BountyComplete event
+    e.events().publish((BOUNTY, symbol_short!("BComplete")), 
         (creator.clone(), work.bounty_id, work.participant, work_id)
     );
 
-    ErrorCode::Success
+    Ok(0)
 }
 
 pub fn bounty_reject(e: &Env, 
     creator: &Address, 
     work_id: u32
-) -> ErrorCode {
-    if !e.storage().instance().has(&DataKey::RegWorks(work_id)) {
-        // panic!("can't find work");
-        return ErrorCode::WorkNotFound;
+) -> Result<i32, ErrorCode> {
+    if !work_check_id(e, work_id) {
+        log!(e, "work not found");
+        return Err(ErrorCode::WorkNotFound)
     }
-    let mut work: WorkInfo = work_get(e, work_id);
+    let mut work: WorkInfo = work_read(e, work_id);
 
-    if !e.storage().instance().has(&DataKey::RegBounties(work.bounty_id)) {
-        // panic!("can't find bounty");
-        return ErrorCode::BountyNotFound;
+    if !bounty_check(e, work.bounty_id) {
+        log!(e, "bounty not found");
+        return Err(ErrorCode::BountyNotFound)
     }
-    let bounty: BountyInfo = bounty_load(e, work.bounty_id);
-
+    let bounty: BountyInfo = bounty_read(e, work.bounty_id);
+    if bounty.creator != *creator {
+        log!(e, "invalid creator");
+        return Err(ErrorCode::InvalidCreator)
+    }
     if bounty.status != BountyStatus::ACTIVE {
-        // panic!("invaid bounty status");
-        return ErrorCode::InvalidBountyStatus;
+        log!(e, "inactive bounty status");
+        return Err(ErrorCode::InactiveBountyStatus)
     }
     
+    // Authorize the `reject` call by creator to verify identity.
     creator.require_auth();
 
     work.status = WorkStatus::REJECTED;
-    work_write(e, work_id, &work);
+    work_write_id(e, work_id, &work);
 
     // emit WorkRejected event
     e.events().publish((BOUNTY, symbol_short!("WReject")), 
         (creator.clone(), work.bounty_id, work.participant, work_id)
     );
 
-    ErrorCode::Success
+    Ok(0)
 }
 
 pub fn bounty_cancel(e: &Env, 
     creator: &Address, 
     bounty_id: u32
-) -> ErrorCode {
-    if !e.storage().instance().has(&DataKey::RegBounties(bounty_id)) {
-        // panic!("can't find bounty");
-        return ErrorCode::BountyNotFound;
+) -> Result<i32, ErrorCode> {
+    if !bounty_check(e, bounty_id) {
+        log!(e, "bounty not found");
+        return Err(ErrorCode::BountyNotFound)
     }
-    let mut bounty = bounty_load(e, bounty_id);
-
+    let mut bounty = bounty_read(e, bounty_id);
     if bounty.creator != *creator {
-        // panic!("invalid creator");
-        return ErrorCode::InvalidCreator
+        log!(e, "invalid creator");
+        return Err(ErrorCode::InvalidCreator)
     }
     if bounty.status != BountyStatus::ACTIVE {
-        // panic!("invalid bounty status");
-        return ErrorCode::InvalidBountyStatus
+        log!(e, "inactive bounty status");
+        return Err(ErrorCode::InactiveBountyStatus)
     }
 
+    // Authorize the `cancel` call by creator to verify identity.
     creator.require_auth();
 
     // refund to creator
-    token::Client::new(e, &bounty.pay_token).transfer(
+    let pay_token_client = token::Client::new(e, &bounty.pay_token);
+
+    if pay_token_client.balance(&e.current_contract_address()) < bounty.reward_amount as i128 {
+        log!(e, "insufficient contract's balance");
+        return Err(ErrorCode::InsuffContractBalance)
+    }
+
+    pay_token_client.transfer(
         &e.current_contract_address(), 
         &creator, 
         &(bounty.reward_amount as i128), 
@@ -312,32 +317,39 @@ pub fn bounty_cancel(e: &Env,
         (creator.clone(), bounty_id)
     );
 
-    ErrorCode::Success
+    Ok(0)
 }
 
 pub fn bounty_close(e: &Env, 
-    admin: &Address, 
+    creator: &Address, 
     bounty_id: u32
-) -> ErrorCode {
-    if !e.storage().instance().has(&DataKey::RegBounties(bounty_id)) {
-        // panic!("can't find bounty");
-        return ErrorCode::BountyNotFound
+) -> Result<u32, ErrorCode> {
+    if !bounty_check(e, bounty_id) {
+        log!(e, "bounty not found");
+        return Err(ErrorCode::BountyNotFound)
     }
-    let mut bounty: BountyInfo = bounty_load(e, bounty_id);
-
+    let mut bounty: BountyInfo = bounty_read(e, bounty_id);
     if bounty.status != BountyStatus::ACTIVE {
-        // panic!("bounty not available");
-        return ErrorCode::InvalidBountyStatus
+        log!(e, "inactive bounty status");
+        return Err(ErrorCode::InactiveBountyStatus)
     }
     if bounty.end_date > e.ledger().timestamp() {
-        // panic!("bounty not timeout");
-        return ErrorCode::NoTimeout
+        log!(e, "bounty not timeout");
+        return Err(ErrorCode::NoTimeout)
     }
 
-    admin.require_auth();
+    // Authorize the `cancel` call by creator to verify identity.
+    creator.require_auth();
 
     // refund to bounty creator
-    token::Client::new(e, &bounty.pay_token).transfer(
+    let pay_token_client = token::Client::new(e, &bounty.pay_token);
+
+    if pay_token_client.balance(&e.current_contract_address()) < bounty.reward_amount as i128 {
+        log!(e, "insufficient contract's balance");
+        return Err(ErrorCode::InsuffContractBalance)
+    }
+
+    pay_token_client.transfer(
         &e.current_contract_address(), 
         &bounty.creator, 
         &(bounty.reward_amount as i128), 
@@ -348,12 +360,20 @@ pub fn bounty_close(e: &Env,
 
     // emit BountyClosed event
     e.events().publish((BOUNTY, symbol_short!("BClose")), 
-        (admin.clone(), bounty_id)
+        (creator.clone(), bounty_id)
     );
 
-    ErrorCode::Success
+    Ok(0)
 }
 
+fn bounty_read(e: &Env, key: u32) -> BountyInfo {
+    e.storage().instance().get(&DataKey::RegBounties(key)).unwrap()
+}
+
+fn bounty_write(e: &Env, key: u32, bounty: &BountyInfo) {
+    e.storage().instance().set(&DataKey::RegBounties(key), bounty);
+    // e.storage().instance().bump(INSTANCE_LIFETIME_THRESHOLD, INSTANCE_BUMP_AMOUNT);
+}
 
 fn bounty_check(e: &Env, bounty_id: u32) -> bool {
     if e.storage().instance().has(&DataKey::RegBounties(bounty_id)) {
@@ -364,11 +384,7 @@ fn bounty_check(e: &Env, bounty_id: u32) -> bool {
     }
 }
 
-fn bounty_load(e: &Env, key: u32) -> BountyInfo {
-    e.storage().instance().get(&DataKey::RegBounties(key)).unwrap()
-}
-
-fn bounty_write(e: &Env, key: u32, bounty: &BountyInfo) {
-    e.storage().instance().set(&DataKey::RegBounties(key), bounty);
-    e.storage().instance().bump(INSTANCE_BUMP_AMOUNT, INSTANCE_BUMP_AMOUNT);
-}
+// pub fn bounty_count(e: &Env) -> u32 {
+//     let bounty_count: u32 = e.storage().instance().get(&DataKey::BountyCount).unwrap_or(0);
+//     bounty_count
+// }
