@@ -6,7 +6,7 @@
   "type": "commonjs",
   "scripts": {
     "encrypt": "node src/wallet/encryption.js",
-    "start": "node --max-old-space-size=4096 src/index.js",
+    "start": "node src/index.js",
     "daemon": "nohup node src/index.js >>1.log 2>&1 &",
     "start-server": "npx pm2 start ./src/index.js --name bountyhunter-backend",
     "stop-server": "npx pm2 stop ./src/index.js"

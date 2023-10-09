@@ -1,16 +1,16 @@
 const UserModel = require("../models/user");
 
-async function setUser(wallet, name, github, discord, img) {
+async function setUser(wallet, name, github, discord, avatar) {
     if (0 < await UserModel.countDocuments({wallet: wallet})) {
         // throw new Error(`${wallet} already in use, Please use another wallet address`);
-        await UserModel.updateOne({wallet: wallet}, { name: name, github: github, discord: discord, img: img });
+        await UserModel.updateOne({wallet: wallet}, { name: name, github: github, discord: discord, avatar: avatar });
     } else {
         const newUser = new UserModel({
             wallet: wallet,
             name: name,
             github: github,
             discord: discord,
-            img: img
+            avatar: avatar
         });
     
         await newUser.save();
@@ -23,4 +23,4 @@ async function getUser(wallet) {
     return await UserModel.findOne({wallet: wallet});
 }
 
-module.exports = { setUser, getUser }
+module.exports = { setUser, getUser };

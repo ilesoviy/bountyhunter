@@ -1,4 +1,4 @@
-const LogModel = require('../models/log')
+const LogModel = require('../models/log');
 
 async function addLog(userId, time, action, bountyId, workId, note) {
     const newLog = new LogModel({
@@ -8,13 +8,15 @@ async function addLog(userId, time, action, bountyId, workId, note) {
         bountyId: bountyId, 
         workId: workId, 
         note: note
-    })
+    });
 
-    await newLog.save()
+    await newLog.save();
+
+    return true;
 }
 
 async function getLogs(filter, param, user) {
     
 }
 
-module.exports = { addLog, getLogs }
+module.exports = { addLog, getLogs };
