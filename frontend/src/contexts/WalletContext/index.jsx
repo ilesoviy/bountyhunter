@@ -8,9 +8,7 @@ export const WalletContext = createContext();
 
 export const WalletProvider = (props) => {
     const { chainId } = useGlobal();
-    console.log('chainId:', chainId);
     const configuredChainId = useMemo(() => parseInt(networkConfig[chainId].chainId, 16), [chainId]);
-
     const [isConnected, setIsConnected] = useState(false);
     const [walletAddress, setWalletAddress] = useState('');
     
@@ -60,10 +58,10 @@ export const WalletProvider = (props) => {
         });
     }, [isConnected]);
 
-    const syncWallet = async (providerType) => {
+    const syncWallet = async (selectedWallet) => {
         let publicKey = '';
 
-        if (providerType === WalletType.WALLET_CONNECT) {
+        if (selectedWallet === WalletType.WALLET_CONNECT) {
             try {
                 await kit.startWalletConnect({
                     name: 'BountyHunter',
@@ -85,19 +83,19 @@ export const WalletProvider = (props) => {
                 console.error(error);
             }
         } else {
-            await kit.setWallet(providerType);
+            await kit.setWallet(selectedWallet);
             publicKey = await kit.getPublicKey();
         }
 
-        setWalletAddress(publicKey);
+        setSelectedWallet(selectedWallet);
         setIsConnected(true);
+        setWalletAddress(publicKey);
     };
 
     const connectWallet = async () => {
         await kit.openModal({
             onWalletSelected: async (option) => {
                 syncWallet(option.type);
-                setSelectedWallet(option.type);
             },
         });
     }
@@ -114,21 +112,20 @@ export const WalletProvider = (props) => {
             } else {
                 console.log('Not connected!');
             }
-        } else {
-            setIsConnected(false);
         }
 
         setSelectedWallet(null);
+        setIsConnected(false);
         setWalletAddress('');
     }
 
     useEffect(() => {
         let selectedWallet = getSelectedWallet();
 
-        if (selectedWallet !== null && chainId !== configuredChainId) {
+        if (selectedWallet !== null) {
             syncWallet(selectedWallet);
         }
-    }, [walletAddress, chainId, configuredChainId]);
+    }, []);
 
     return (
         <WalletContext.Provider value={{ connectWallet, disconnectWallet, isConnected, walletAddress, walletObj }}>
