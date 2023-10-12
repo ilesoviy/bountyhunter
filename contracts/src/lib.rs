@@ -25,14 +25,17 @@ pub struct BountyHunter;
 
 #[contractimpl]
 impl BountyHunter {
+    // initialize
     pub fn init(e: Env, admin: Address) {
         write_administrator(&e, &admin);
     }
 
+    // get version
     pub fn version() -> u32 {
         1
     }
 
+    // upgrade
     pub fn upgrade(e: Env, new_wasm_hash: BytesN<32>) {
         let admin: Address = read_administrator(&e);
         admin.require_auth();
@@ -70,6 +73,7 @@ impl BountyHunter {
         return Ok(())
     }
 
+    // get fee
     pub fn get_fee(e: Env) -> Result<(u32, Address), ErrorCode> {
         if !fee_check(&e) {
             return Err(ErrorCode::FeeNotSet)
