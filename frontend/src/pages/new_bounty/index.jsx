@@ -22,14 +22,14 @@ const NewBountyBody = () => {
   const loc = useLocation();
   const nav = useNavigate();
 
-  const [title, setTitle] = useState('B1');
-  const [payAmount, setPayAmount] = useState('100');
-  const [duration, setDuration] = useState(1);
-  const [type, setType] = useState(1);
-  const [difficulty, setDifficulty] = useState(1);
-  const [topic, setTopic] = useState(1);
-  const [description, setDescription] = useState('D1');
-  const [gitHub, setGitHub] = useState('https://github.com/creator1/bounty1');
+  const [title, setTitle] = useState('');
+  const [payAmount, setPayAmount] = useState('');
+  const [duration, setDuration] = useState(0);
+  const [type, setType] = useState(0);
+  const [difficulty, setDifficulty] = useState(0);
+  const [topic, setTopic] = useState(0);
+  const [description, setDescription] = useState('');
+  const [gitHub, setGitHub] = useState('');
 
   useEffect(() => {
     const { title, payAmount, duration, type, difficulty, topic, description, gitHub } = loc.state;
