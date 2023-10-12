@@ -11,16 +11,13 @@ use soroban_sdk::{
     token, contract, contractimpl, BytesN, 
     Env, Address, String
 };
-use crate::storage_types::{ /* INSTANCE_LIFETIME_THRESHOLD, INSTANCE_BUMP_AMOUNT,  */FeeInfo, /* DataKey, */ ErrorCode };
+use crate::storage_types::{ FeeInfo, ErrorCode };
 use crate::admin::{ has_administrator, read_administrator, write_administrator };
 use crate::fee::{ fee_check, fee_set, fee_get };
 use crate::bounty::{
-    /* bounty_count, */
     bounty_create, bounty_approve, bounty_reject, bounty_cancel, bounty_close, 
     bounty_apply, bounty_submit, 
-    /* get_error, reset_error */
 };
-// use crate::work::{ work_count };
 
 
 #[contract]
@@ -82,42 +79,21 @@ impl BountyHunter {
         return Ok((fee_info.fee_rate, fee_info.fee_wallet))
     }
 
-    // pub fn get_last_error(e: Env) -> u32 {
-    //     get_error(&e)
-    // }
-
-    // pub fn reset_last_error(e: Env) {
-    //     reset_error(&e)
-    // }
-
-    // pub fn count_bounties(e: Env) -> u32 {
-    //     bounty_count(&e)
-    // }
-
-    // pub fn count_works(e: Env) -> u32 {
-    //     work_count(&e)
-    // }
-
     // return new bounty id on success, errorcode on failure
     pub fn create_bounty(e: Env, 
         creator: Address, 
         name: String, 
         reward: u64, 
         pay_token: Address, 
-        deadline: u64/* , 
-        expiration_ledger: u32 */
+        deadline: u64
     ) -> Result<u32, ErrorCode> {
         let ret: Result<u32, ErrorCode> = bounty_create(&e, 
             &creator, 
             &name, 
             reward, 
             &pay_token, 
-            deadline/* , 
-            expiration_ledger */
+            deadline
         );
-
-        // e.storage().instance().set(&DataKey::ErrorCode, &ret);
-        // e.storage().instance().bump(INSTANCE_LIFETIME_THRESHOLD, INSTANCE_BUMP_AMOUNT);
 
         return ret
     }
@@ -129,21 +105,14 @@ impl BountyHunter {
     ) -> Result<u32, ErrorCode> {
         let ret: Result<u32, ErrorCode> = bounty_apply(&e, &participant, bounty_id);
 
-        // e.storage().instance().set(&DataKey::ErrorCode, &ret);
-        // e.storage().instance().bump(INSTANCE_LIFETIME_THRESHOLD, INSTANCE_BUMP_AMOUNT);
-
         return ret
     }
 
     pub fn submit_work(e: Env, 
         participant: Address, 
-        work_id: u32, 
-        work_repo: String
+        work_id: u32
     ) -> Result<i32, ErrorCode> {
-        let ret: Result<i32, ErrorCode> = bounty_submit(&e, &participant, work_id, &work_repo);
-
-        // e.storage().instance().set(&DataKey::ErrorCode, &ret);
-        // e.storage().instance().bump(INSTANCE_LIFETIME_THRESHOLD, INSTANCE_BUMP_AMOUNT);
+        let ret: Result<i32, ErrorCode> = bounty_submit(&e, &participant, work_id);
 
         return ret
     }
@@ -154,9 +123,6 @@ impl BountyHunter {
     ) -> Result<i32, ErrorCode> {
         let ret: Result<i32, ErrorCode> = bounty_approve(&e, &creator, work_id);
 
-        // e.storage().instance().set(&DataKey::ErrorCode, &ret);
-        // e.storage().instance().bump(INSTANCE_LIFETIME_THRESHOLD, INSTANCE_BUMP_AMOUNT);
-
         return ret
     }
 
@@ -165,9 +131,6 @@ impl BountyHunter {
         work_id: u32
     ) -> Result<i32, ErrorCode> {
         let ret: Result<i32, ErrorCode> = bounty_reject(&e, &creator, work_id);
-
-        // e.storage().instance().set(&DataKey::ErrorCode, &ret);
-        // e.storage().instance().bump(INSTANCE_LIFETIME_THRESHOLD, INSTANCE_BUMP_AMOUNT);
 
         return ret
     }
@@ -178,9 +141,6 @@ impl BountyHunter {
     ) -> Result<i32, ErrorCode> {
         let ret: Result<i32, ErrorCode> = bounty_cancel(&e, &creator, bounty_id);
 
-        // e.storage().instance().set(&DataKey::ErrorCode, &ret);
-        // e.storage().instance().bump(INSTANCE_LIFETIME_THRESHOLD, INSTANCE_BUMP_AMOUNT);
-
         return ret
     }
 
@@ -189,9 +149,6 @@ impl BountyHunter {
         bounty_id: u32
     ) -> Result<u32, ErrorCode> {
         let ret: Result<u32, ErrorCode> = bounty_close(&e, &admin, bounty_id);
-
-        // e.storage().instance().set(&DataKey::ErrorCode, &ret);
-        // e.storage().instance().bump(INSTANCE_LIFETIME_THRESHOLD, INSTANCE_BUMP_AMOUNT);
 
         return ret
     }

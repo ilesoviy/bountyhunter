@@ -2,7 +2,7 @@
 extern crate std;
 
 use soroban_sdk::{ log, token };
-use crate::storage_types::{ FEE_DECIMALS, /* DAY_IN_LEDGERS, */ BALANCE_BUMP_AMOUNT/* , ErrorCode */ };
+use crate::storage_types::{ FEE_DECIMALS, /* DAY_IN_LEDGERS, */ BALANCE_BUMP_AMOUNT };
 use crate::{ BountyHunter, BountyHunterClient };
 use soroban_sdk::{
     symbol_short, Symbol,
@@ -57,12 +57,13 @@ fn test1_approve() {
     let pay_token_client = pay_token.1;
     let pay_token_asset_client = pay_token.2;
     pay_token_asset_client.mint(&creator.clone(), &(10000 * MUL_VAL as i128));
-    pay_token_client.approve(&creator.clone(), &bounty_contract.address.clone(), &(10000 * MUL_VAL as i128), &(e.ledger().sequence() + BALANCE_BUMP_AMOUNT));
+    pay_token_client.approve(&creator.clone(), &bounty_contract.address.clone(), 
+        &(10000 * MUL_VAL as i128), &(e.ledger().sequence() + BALANCE_BUMP_AMOUNT));
     
     // init
     bounty_contract.init(&admin);
     
-    // init fee
+    // set fee
     let fee_rate = DEF_FEE_RATE;
     let fee_wallet = Address::random(&e);
     bounty_contract.set_fee(&fee_rate, &fee_wallet);
@@ -76,8 +77,7 @@ fn test1_approve() {
         &bounty_name,
         &(1000 * MUL_VAL),
         &pay_token_id,
-        &deadline/* ,
-        &BALANCE_BUMP_AMOUNT */
+        &deadline
     );
     assert_eq!(bounty_id, 0);
     log!(&e, "bounty_id", bounty_id);
@@ -95,8 +95,7 @@ fn test1_approve() {
                         bounty_name,
                         (1000 * MUL_VAL),
                         pay_token_id.clone(),
-                        deadline/* ,
-                        BALANCE_BUMP_AMOUNT */
+                        deadline
                     ).into_val(&e)
                 )),
                 sub_invocations: std::vec![
@@ -139,8 +138,7 @@ fn test1_approve() {
     // submit work
     let ret1 = bounty_contract.submit_work(
         &worker,
-        &work_id,
-        &String::from_slice(&e, "https://github.com/test_acc/test_repo")
+        &work_id
     );
     assert_eq!(ret1, 0);
     
@@ -192,12 +190,13 @@ fn test2_reject() {
     let pay_token_client = pay_token.1;
     let pay_token_asset_client = pay_token.2;
     pay_token_asset_client.mint(&creator.clone(), &(10000 * MUL_VAL as i128));
-    pay_token_client.approve(&creator.clone(), &bounty_contract.address.clone(), &(10000 * MUL_VAL as i128), &(e.ledger().sequence() + BALANCE_BUMP_AMOUNT));
+    pay_token_client.approve(&creator.clone(), &bounty_contract.address.clone(), 
+        &(10000 * MUL_VAL as i128), &(e.ledger().sequence() + BALANCE_BUMP_AMOUNT));
     
     // init
     bounty_contract.init(&admin);
     
-    // init fee
+    // set fee
     let fee_rate = DEF_FEE_RATE;
     let fee_wallet = Address::random(&e);
     bounty_contract.set_fee(&fee_rate, &fee_wallet);
@@ -211,8 +210,7 @@ fn test2_reject() {
         &bounty_name,
         &(1000 * MUL_VAL),
         &pay_token_id,
-        &deadline/* ,
-        &BALANCE_BUMP_AMOUNT */
+        &deadline
     );
     assert_eq!(bounty_id, 0);
     // check transfer
@@ -229,8 +227,7 @@ fn test2_reject() {
                         bounty_name,
                         (1000 * MUL_VAL),
                         pay_token_id.clone(),
-                        deadline/* ,
-                        BALANCE_BUMP_AMOUNT */
+                        deadline
                     ).into_val(&e)
                 )),
                 sub_invocations: std::vec![
@@ -273,8 +270,7 @@ fn test2_reject() {
     // submit work
     let ret1 = bounty_contract.submit_work(
         &worker,
-        &work_id,
-        &String::from_slice(&e, "https://github.com/test_acc/test_repo")
+        &work_id
     );
     assert_eq!(ret1, 0);
 
@@ -322,12 +318,13 @@ fn test3_cancel() {
     let pay_token_client = pay_token.1;
     let pay_token_asset_client = pay_token.2;
     pay_token_asset_client.mint(&creator.clone(), &(10000 * MUL_VAL as i128));
-    pay_token_client.approve(&creator.clone(), &bounty_contract.address.clone(), &(10000 * MUL_VAL as i128), &(e.ledger().sequence() + BALANCE_BUMP_AMOUNT));
+    pay_token_client.approve(&creator.clone(), &bounty_contract.address.clone(), 
+        &(10000 * MUL_VAL as i128), &(e.ledger().sequence() + BALANCE_BUMP_AMOUNT));
     
     // init
     bounty_contract.init(&admin);
     
-    // init fee
+    // set fee
     let fee_rate = DEF_FEE_RATE;
     let fee_wallet = Address::random(&e);
     bounty_contract.set_fee(&fee_rate, &fee_wallet);
@@ -341,8 +338,7 @@ fn test3_cancel() {
         &bounty_name,
         &(1000 * MUL_VAL),
         &pay_token_id,
-        &deadline/* ,
-        &BALANCE_BUMP_AMOUNT */
+        &deadline
     );
     assert_eq!(bounty_id, 0);
     // check transfer
@@ -359,8 +355,7 @@ fn test3_cancel() {
                         bounty_name,
                         (1000 * MUL_VAL),
                         pay_token_id.clone(),
-                        deadline/* ,
-                        BALANCE_BUMP_AMOUNT */
+                        deadline
                     ).into_val(&e)
                 )),
                 sub_invocations: std::vec![
@@ -440,12 +435,13 @@ fn test4_close() {
     let pay_token_client = pay_token.1;
     let pay_token_asset_client = pay_token.2;
     pay_token_asset_client.mint(&creator.clone(), &(10000 * MUL_VAL as i128));
-    pay_token_client.approve(&creator.clone(), &bounty_contract.address.clone(), &(10000 * MUL_VAL as i128), &(e.ledger().sequence() + BALANCE_BUMP_AMOUNT));
+    pay_token_client.approve(&creator.clone(), &bounty_contract.address.clone(), 
+        &(10000 * MUL_VAL as i128), &(e.ledger().sequence() + BALANCE_BUMP_AMOUNT));
 
     // init
     bounty_contract.init(&admin);
     
-    // init fee
+    // set fee
     let fee_rate = DEF_FEE_RATE;
     let fee_wallet = Address::random(&e);
     bounty_contract.set_fee(&fee_rate, &fee_wallet);
@@ -459,8 +455,7 @@ fn test4_close() {
         &bounty_name,
         &(1000 * MUL_VAL),
         &pay_token_id,
-        &deadline/* ,
-        &BALANCE_BUMP_AMOUNT */
+        &deadline
     );
     assert_eq!(bounty_id, 0);
     // check transfer
@@ -477,8 +472,7 @@ fn test4_close() {
                         bounty_name,
                         (1000 * MUL_VAL),
                         pay_token_id.clone(),
-                        deadline/* ,
-                        BALANCE_BUMP_AMOUNT */
+                        deadline
                     ).into_val(&e)
                 )),
                 sub_invocations: std::vec![

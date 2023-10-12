@@ -6,28 +6,10 @@ use soroban_sdk::{
 };
 use crate::storage_types::{
     INSTANCE_LIFETIME_THRESHOLD, INSTANCE_BUMP_AMOUNT, BALANCE_BUMP_AMOUNT, 
-    /* FeeInfo, */ WorkStatus, WorkInfo, BountyStatus, BountyInfo, /* WorkKey, */ DataKey, ErrorCode
+    WorkStatus, WorkInfo, BountyStatus, BountyInfo, DataKey, ErrorCode
 };
 use crate::fee::{ fee_get, fee_calculate, fee_check };
 use crate::work::{ work_create, work_read, work_write_id, work_write_key, work_check_id, work_check_key };
-
-
-// pub fn get_error(
-//     e: &Env
-// ) -> u32 {
-//     if !e.storage().instance().has(&DataKey::ErrorCode) {
-//         return ErrorCode::GetErrorFailed as u32;
-//     }
-
-//     let err_code: u32 = e.storage().instance().get(&DataKey::ErrorCode).unwrap_or(0);
-//     err_code
-// }
-
-// pub fn reset_error(
-//     e: &Env
-// ) {
-//     e.storage().instance().set(&DataKey::ErrorCode, &0);
-// }
 
 
 // returns new bounty id on success, errorcode on failure
@@ -37,8 +19,7 @@ pub fn bounty_create(
     name: &String, 
     reward_amount: u64, 
     pay_token: &Address, 
-    deadline: u64/* , 
-    expiration_ledger: u32 */
+    deadline: u64
 ) -> Result<u32, ErrorCode> {
     // check args
     if reward_amount == 0 {
@@ -72,7 +53,7 @@ pub fn bounty_create(
     if pay_token_client.allowance(&creator, &contract) < transfer_amount {
         // log!(e, "insufficient creator's allowance");
         // return Err(ErrorCode::InsuffCreatorAllowance)
-        pay_token_client.approve(&creator, &contract, &transfer_amount, &/* expiration_ledger */BALANCE_BUMP_AMOUNT);
+        pay_token_client.approve(&creator, &contract, &transfer_amount, &(e.ledger().sequence() + BALANCE_BUMP_AMOUNT));
     }
 
     pay_token_client.transfer(&creator, &contract, &(reward_amount as i128));
@@ -151,17 +132,12 @@ pub fn bounty_apply(
 pub fn bounty_submit(
     e: &Env, 
     participant: &Address, 
-    work_id: u32, 
-    work_repo: &String
+    work_id: u32
 ) -> Result<i32, ErrorCode> {
     // check args
     if !work_check_id(e, work_id) {
         log!(e, "work not found");
         return Err(ErrorCode::WorkNotFound)
-    }
-    if work_repo.len() == 0 {
-        log!(e, "invalid repo");
-        return Err(ErrorCode::InvalidWorkRepo)
     }
     
     let mut work = work_read(e, work_id);
@@ -182,7 +158,7 @@ pub fn bounty_submit(
 
     // emit WorkSubmitted event
     e.events().publish((BOUNTY, symbol_short!("WSubmit")), 
-        (participant.clone(), work_id, work_repo.clone())
+        (participant.clone(), work_id)
     );
 
     Ok(0)
@@ -383,8 +359,3 @@ fn bounty_check(e: &Env, bounty_id: u32) -> bool {
         false
     }
 }
-
-// pub fn bounty_count(e: &Env) -> u32 {
-//     let bounty_count: u32 = e.storage().instance().get(&DataKey::BountyCount).unwrap_or(0);
-//     bounty_count
-// }

@@ -93,7 +93,6 @@ pub struct BountyInfo {
 pub struct WorkInfo {
     pub participant: Address,
     pub bounty_id: u32,
-    pub work_repo: String,
     pub status: WorkStatus
 }
 

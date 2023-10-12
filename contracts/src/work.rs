@@ -1,5 +1,5 @@
 
-use soroban_sdk::{ Env, Address, String };
+use soroban_sdk::{ Env, Address };
 
 use crate::storage_types::{
     // INSTANCE_LIFETIME_THRESHOLD, INSTANCE_BUMP_AMOUNT, 
@@ -22,8 +22,7 @@ pub fn work_create(
         &WorkInfo {
             participant: participant.clone(), 
             bounty_id, 
-            status: WorkStatus::APPLIED, 
-            work_repo: String::from_slice(&e, "")
+            status: WorkStatus::APPLIED
         },
     );
     
@@ -65,8 +64,3 @@ pub fn work_check_key(e: &Env, participant: &Address, bounty_id: u32) -> bool {
         false
     }
 }
-
-// pub fn work_count(e: &Env) -> u32 {
-//     let work_count: u32 = e.storage().instance().get(&DataKey::WorkCount).unwrap_or(0);
-//     work_count
-// }
