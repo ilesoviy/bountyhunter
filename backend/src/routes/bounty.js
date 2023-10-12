@@ -124,7 +124,7 @@ router.post('/cancel_bounty', async (request, response) => {
     try {
         const res = await cancelBounty(query.bountyId);
         response.send({ status: 'success', 
-            details: `${creator.name ? creator.name : creator.wallet} ${res === true ? 'successfully cancelled' : 'failed to cancel'} ${query.bountyId}` });
+            details: `${creator.name ? creator.name : creator.wallet} ${res === true ? 'successfully cancelled' : 'failed to cancel'} bounty${query.bountyId}` });
     } catch (err) {
         response.send({ status: 'failed', error: err.message });
     }
@@ -142,7 +142,7 @@ router.post('/close_bounty', async (request, response) => {
     try {
         const res = await closeBounty(query.bountyId);
         response.send({ status: 'success', 
-            details: `${creator.name ? creator.name : creator.wallet} ${res === true ? 'successfully closed' : 'failed to close'} ${query.bountyId}` });
+            details: `${creator.name ? creator.name : creator.wallet} ${res === true ? 'successfully closed' : 'failed to close'} bounty${query.bountyId}` });
     } catch (err) {
         response.send({ status: 'failed', error: err.message });
     }
@@ -168,7 +168,7 @@ router.post('/create_work', async (request, response) => {
         const applyDate = Date.now();
         const res = await createWork(user, bounty, query.workId, applyDate, query.status);
         response.send({ status: 'success', 
-            details: `${user.name ? user.name : user.wallet} ${res === true ? 'successfully created' : 'failed to created'} ${query.workId}` });
+            details: `${user.name ? user.name : user.wallet} ${res === true ? 'successfully created' : 'failed to created'} work${query.workId}` });
     } catch (err) {
         response.send({ status: 'failed', error: err.message });
     }
@@ -225,7 +225,7 @@ router.post('/submit_work', async (request, response) => {
     try {
         const res = await submitWork(user, query.workId, query.title, query.description, query.workRepo, Date.now(), query.status);
         response.send({ status: 'success', 
-            details: `${user.name ? user.name : user.wallet} ${res === true ? 'successfully submitted' : 'failed to submit'} ${query.workId}` });
+            details: `${user.name ? user.name : user.wallet} ${res === true ? 'successfully submitted' : 'failed to submit'} work${query.workId}` });
     } catch (err) {
         response.send({ status: 'failed', error: err.message });
     }
@@ -264,9 +264,9 @@ router.post('/approve_work', async (request, response) => {
     }
 
     try {
-        const res = await approveWork(query.workId);
+        const res = await approveWork(user, query.workId, query.status);
         response.send({ status: 'success', 
-            details: `${user.name ? user.name : user.wallet} ${res === true? 'successfully approved': 'failed to approve'} ${query.workId}` });
+            details: `${user.name ? user.name : user.wallet} ${res === true? 'successfully approved': 'failed to approve'} work${query.workId}` });
     } catch (err) {
         response.send({ status: 'failed', error: err.message });
     }
@@ -282,9 +282,9 @@ router.post('/reject_work', async (request, response) => {
     }
 
     try {
-        const res = await rejectWork(query.workId);
+        const res = await rejectWork(user, query.workId, query.status);
         response.send({ status: 'success', 
-            details: `${user.name ? user.name : user.wallet} ${res === true ? 'successfully rejected' : 'failed to reject'} ${query.workId}` });
+            details: `${user.name ? user.name : user.wallet} ${res === true ? 'successfully rejected' : 'failed to reject'} work${query.workId}` });
     } catch (err) {
         response.send({ status: 'failed', error: err.message });
     }
