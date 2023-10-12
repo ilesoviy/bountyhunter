@@ -10,7 +10,7 @@ import HelpButton from '../../components/menu/HelpButton';
 import WarningMsg from '../../components/WarningMsg';
 import { Information } from '../../components/Information';
 import BackButton from '../../components/menu/BackButton';
-import useBounty from '../../hooks/useBounty';
+import { useContract } from '../../contexts/ContractContext';
 import useBackend from '../../hooks/useBackend';
 import { SECS_PER_DAY, IsSmMobile, getBountyStatus, getDuration } from '../../utils';
 
@@ -18,7 +18,7 @@ const PreviewBody = () => {
   const nav = useNavigate();
   const loc = useLocation();
   const { walletAddress, isConnected } = useCustomWallet();
-  const { CONTRACT_ID, DEF_PAY_TOKEN, approveToken, createBounty } = useBounty();
+  const { CONTRACT_ID, DEF_PAY_TOKEN, approveToken, createBounty } = useContract();
   const { createBountyB } = useBackend();
   const {title, payAmount, duration, type, difficulty, topic, description, gitHub } = loc.state;
 

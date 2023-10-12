@@ -3,14 +3,14 @@ import { Reveal } from 'react-awesome-reveal';
 import { useNavigate } from '@reach/router';
 import { toast} from 'react-toastify';
 import { useCustomWallet } from '../../contexts/WalletContext';
-import useBounty from '../../hooks/useBounty';
+import { useContract } from '../../contexts/ContractContext';
 import useBackend from '../../hooks/useBackend';
 import { fadeInUp } from '../../utils';
 
 export const MyBountyBodyListItem = ({ bountyId }) => {
   const { isConnected, walletAddress } = useCustomWallet();
-  const { getSingleBounty, countSubmissions, closeBountyB, getLastError } = useBackend();
-  const { closeBounty } = useBounty();
+  const { closeBounty } = useContract();
+  const { getSingleBounty, countSubmissions, closeBountyB } = useBackend();
   
   const [bounty, setBounty] = useState([]);
   const [submissions, setSubmissions] = useState(0);
@@ -44,9 +44,7 @@ export const MyBountyBodyListItem = ({ bountyId }) => {
 
     const res1 = await closeBounty(walletAddress, bountyId);
     if (res1) {
-      const error = await getLastError();
       toast.error('Failed to close to bounty!');
-      console.error('error:', error);
       return;
     }
 

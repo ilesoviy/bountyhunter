@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {BountyStatus, WorkStatus} from '../../hooks/useBounty';
+import {BountyStatus, WorkStatus} from '../../contexts/ContractContext';
 
 const useBackend = () => {
     // const BACKEND_URL = 'https://sorobounty-6345876ced42.herokuapp.com/api/bounty/';
@@ -424,7 +424,7 @@ const useBackend = () => {
                 body: JSON.stringify({
                     'wallet': wallet,
                     'workId': workId,
-                    'status': WorkStatus.SUBMITTED
+                    'status': WorkStatus.APPROVED
                 })
             });
 

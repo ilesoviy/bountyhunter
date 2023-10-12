@@ -1,7 +1,7 @@
 import moment from 'moment';
 import { keyframes } from '@emotion/react';
 import { useMediaQuery } from 'react-responsive';
-import { BountyStatus, WorkStatus } from './hooks/useBounty';
+import { BountyStatus, WorkStatus } from './contexts/ContractContext';
 
 export const SECS_PER_MIN = 60;
 export const MINS_PER_HOUR = 60;

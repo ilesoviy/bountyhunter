@@ -1,22 +1,22 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Scrollbars } from 'react-custom-scrollbars';
 import { Reveal } from 'react-awesome-reveal';
-import { Link, useLocation, useNavigate } from '@reach/router';
+import { useLocation, useNavigate } from '@reach/router';
 import { toast } from 'react-toastify';
 
-import { useCustomWallet } from '../../contexts/WalletContext';
 import Sidebar from '../../components/menu/SideBar';
 import Subheader from '../../components/menu/SubHeader';
 import MainHeader from '../../components/menu/MainHeader';
 import HelpButton from '../../components/menu/HelpButton';
 import WarningMsg from '../../components/WarningMsg';
-import useBounty, { BountyStatus } from '../../hooks/useBounty';
+import { useCustomWallet } from '../../contexts/WalletContext';
+import { useContract, BountyStatus } from '../../contexts/ContractContext';
 import useBackend from '../../hooks/useBackend';
 import { SECS_PER_DAY, IsSmMobile, fadeInUp, fadeIn, getDuration } from '../../utils';
 
 const NewBountyBody = () => {
   const { walletAddress, isConnected } = useCustomWallet();
-  const { CONTRACT_ID, DEF_PAY_TOKEN, approveToken, createBounty } = useBounty();
+  const { CONTRACT_ID, DEF_PAY_TOKEN, approveToken, createBounty } = useContract();
   const { createBountyB } = useBackend();
 
   const loc = useLocation();

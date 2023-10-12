@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Reveal } from 'react-awesome-reveal';
-import { WorkStatus } from '../hooks/useBounty';
+import { WorkStatus } from '../contexts/ContractContext';
 import useBackend from '../hooks/useBackend';
 import { fadeInUp, shortenAddress, getWorkStatus, getTimeDifference } from '../utils';
 

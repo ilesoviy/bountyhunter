@@ -9,14 +9,14 @@ import Subheader from '../../components/menu/SubHeader';
 import { ListingDescription } from '../../components/ListingDescription';
 import { Information } from '../../components/Information';
 import BackButton from '../../components/menu/BackButton';
-import useBounty,  { WorkStatus } from '../../hooks/useBounty';
+import { useContract, WorkStatus } from '../../contexts/ContractContext';
 import useBackend from '../../hooks/useBackend';
 import { IsSmMobile } from '../../utils';
 import MyBountiesReviewItem from './MyBountiesReviewItem';
 
 const MyBountiesListingBody = ({bounty, works}) => {
   const { isConnected, walletAddress } = useCustomWallet();
-  const { cancelBounty, getLastError } = useBounty();
+  const { cancelBounty } = useContract();
   const { cancelBountyB } = useBackend();
   const nav = useNavigate();
   
@@ -28,9 +28,7 @@ const MyBountiesListingBody = ({bounty, works}) => {
 
     const res1 = await cancelBounty(walletAddress, bounty?.bountyId);
     if (res1) {
-      const error = await getLastError();
       toast.error('Failed to cancel bounty!');
-      console.error('error:', error);
       return;
     }
 

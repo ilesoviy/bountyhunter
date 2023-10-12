@@ -10,14 +10,14 @@ import { Information } from '../../components/Information';
 import { Participant } from '../../components/Participant';
 import BackButton from '../../components/menu/BackButton';
 import { useCustomWallet } from '../../contexts/WalletContext';
-import useBounty from '../../hooks/useBounty';
+import { useContract } from '../../contexts/ContractContext';
 import useBackend from '../../hooks/useBackend';
 import { IsSmMobile } from '../../utils';
 
 const ExBountyListingBody = ({bounty}) => {
   const nav = useNavigate();
   const { isConnected, walletAddress } = useCustomWallet();
-  const { applyBounty } = useBounty();
+  const { applyBounty } = useContract();
   const { createWork } = useBackend();
   
   const onClickApply = useCallback(async (event) => {

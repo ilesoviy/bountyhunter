@@ -12,7 +12,7 @@ import { ListingDescription } from '../../components/ListingDescription';
 import { Participant } from '../../components/Participant';
 import WarningMsg from '../../components/WarningMsg';
 import BackButton from '../../components/menu/BackButton'
-import useBounty from '../../hooks/useBounty';
+import { useContract } from '../../contexts/ContractContext';
 import useBackend from '../../hooks/useBackend';
 import { Drawer } from './Drawer';
 import { IsSmMobile } from '../../utils';
@@ -72,7 +72,7 @@ const InBountyListingBody = ({ bounty, callback }) => {
 
 const InBountyListing = () => {
   const { isConnected, walletAddress } = useCustomWallet();
-  const { submitWork } = useBounty();
+  const { submitWork } = useContract();
   const { getSingleBounty, getWork, submitWorkB } = useBackend();
   const { id: bountyId } = useParams();
   const nav = useNavigate();
