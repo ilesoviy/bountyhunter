@@ -1,6 +1,6 @@
 import { Reveal } from 'react-awesome-reveal';
-import { useNavigate } from "@reach/router";
-import { numberWithCommas, IsSmMobile, fadeInUp, fadeIn, getUTCNow, getUTCDate, isEmpty, 
+import { useNavigate } from '@reach/router';
+import { numberWithCommas, fadeInUp, 
   shortenAddress, getBountyStatus, getType, getLevel, getTopic, getTimeDifference } from '../../utils';
 
 const ExBounty = ({bounty}) => {
@@ -17,7 +17,7 @@ const ExBounty = ({bounty}) => {
                 <div className='flex justify-between xsm:text-[10px] sm:text-center items-center'>
                   <div className='flex flex-col'>
                     <div className='flex flex-row items-center'>
-                      <img className="h-[30px] logo" src="/images/banner/user.png" alt="" />
+                      <img className='h-[30px] logo' src='/images/banner/user.png' alt='' />
                       <span className='app-gray text-[20px] xsm:text-[10px]'>{shortenAddress(bounty?.creator.wallet)}</span>
                     </div>
                   </div>
@@ -30,8 +30,8 @@ const ExBounty = ({bounty}) => {
                 </div>
               </div>
               <div className='app-card-body'>
-                <div className="row text-left">
-                  <div className='text-[32px]' to="/ExploreBounties/0">{bounty?.title}</div>
+                <div className='row text-left'>
+                  <div className='text-[32px]' to='/ExploreBounties/0'>{bounty?.title}</div>
                   <p className='text-[17px] sm:text-[15px] description' dangerouslySetInnerHTML={{__html: bounty.description.replace(new RegExp('\r?\n','g'), '<br />')}}></p>
                 </div>
               </div>

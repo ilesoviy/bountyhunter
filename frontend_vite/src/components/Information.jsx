@@ -1,5 +1,4 @@
 import { Reveal } from 'react-awesome-reveal';
-import moment from "moment";
 import { fadeInUp, shortenAddress, getType, getLevel, getTopic, getBountyStatus, getFormatedDate } from '../utils';
 
 export const Information = ({
@@ -16,7 +15,7 @@ export const Information = ({
                         <div className='flex justify-between items-center gap-3'>
                             <span className='text-[16px] font-bold'>Published by:</span>
                             <div className='flex items-center justify-center'>
-                                <img src={'/images/banner/user.png'} className='h-[20px]' alt="" />
+                                <img src={'/images/banner/user.png'} className='h-[20px]' alt='' />
                                 <span className='text-[16px] '>{wallet ? shortenAddress(wallet) : ''}</span>
                             </div>
                         </div>
@@ -54,7 +53,7 @@ export const Information = ({
                         </div>
                         <div className='flex justify-between sm:text-center items-center gap-3'>
                             <span className='text-[18px]'>Repository:</span>
-                            <a className='text-[18px]' href={gitHub}><i className="fa-regular fa-arrow-up-right-from-square" /></a>
+                            <a className='text-[18px]' href={gitHub}><i className='fa-regular fa-arrow-up-right-from-square' /></a>
                         </div>
                     </div>
                 </div>

@@ -13,7 +13,7 @@ html {
 }
 
 body {
-  font-family: "Montserrat", Helvetica, Arial, sans-serif;
+  font-family: 'Montserrat', Helvetica, Arial, sans-serif;
   font-weight: 300;
   font-size: 16px;
   color: white;
@@ -915,9 +915,9 @@ h5 {
       font-style: normal;
 
       &:before {
-        font-family: "FontAwesome";
+        font-family: 'FontAwesome';
         font-size: 18px;
-        content: "\f106";
+        content: '\f106';
         color: #fff !important;
         position: relative;
       }

@@ -1,9 +1,15 @@
-import moment from "moment";
-import { keyframes } from "@emotion/react";
+import moment from 'moment';
+import { keyframes } from '@emotion/react';
 import { useMediaQuery } from 'react-responsive';
 import { BountyStatus, WorkStatus } from './hooks/useBounty';
 
-export const SECS_PER_DAY = 24 * 60 * 60;
+export const SECS_PER_MIN = 60;
+export const MINS_PER_HOUR = 60;
+export const HOURS_PER_DAY = 24;
+export const DAYS_PER_MONTH = 30;
+export const MONTHS_PER_YEAR = 12;
+export const SECS_PER_HOUR = MINS_PER_HOUR * SECS_PER_MIN;
+export const SECS_PER_DAY = HOURS_PER_DAY * SECS_PER_HOUR;
 
 export const fadeInUp = keyframes`
   0% {
@@ -128,18 +134,18 @@ export function scrollTo(scrollableElement, elmID) {
 
 export function getTimeDifference(date) {
   let difference =
-    moment(new Date(), "YYYY-MM-DD HH:mm:ss").diff(
-      moment(new Date(date), "YYYY-MM-DD HH:mm:ss")
+    moment(new Date(), 'YYYY-MM-DD HH:mm:ss').diff(
+      moment(new Date(date), 'YYYY-MM-DD HH:mm:ss')
     ) / 1000;
 
-  if (difference < 60) return `${Math.floor(difference)} seconds`;
-  else if (difference < 3600) return `${Math.floor(difference / 60)} minutes`;
-  else if (difference < 86400) return `${Math.floor(difference / 3600)} hours`;
-  else if (difference < 86400 * 30)
-    return `${Math.floor(difference / 86400)} days`;
-  else if (difference < 86400 * 30 * 12)
-    return `${Math.floor(difference / 86400 / 30)} months`;
-  else return `${(difference / 86400 / 30 / 12).toFixed(1)} years`;
+  if (difference < SECS_PER_MIN) return `${Math.floor(difference)} seconds`;
+  else if (difference < SECS_PER_HOUR) return `${Math.floor(difference / SECS_PER_MIN)} minutes`;
+  else if (difference < SECS_PER_DAY) return `${Math.floor(difference / SECS_PER_HOUR)} hours`;
+  else if (difference < SECS_PER_DAY * DAYS_PER_MONTH)
+    return `${Math.floor(difference / SECS_PER_DAY)} days`;
+  else if (difference < SECS_PER_DAY * DAYS_PER_MONTH * MONTHS_PER_YEAR)
+    return `${Math.floor(difference / SECS_PER_DAY / DAYS_PER_MONTH)} months`;
+  else return `${(difference / SECS_PER_DAY / DAYS_PER_MONTH / MONTHS_PER_YEAR).toFixed(1)} years`;
 }
 
 export function getUTCNow() {
@@ -148,48 +154,50 @@ export function getUTCNow() {
 
 export function getUTCTimestamp(_date) {
   var date = new Date(_date);
-  var date_utc = new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), date.getUTCHours(), date.getUTCMinutes(), date.getUTCSeconds())
+  var date_utc = new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), 
+    date.getUTCHours(), date.getUTCMinutes(), date.getUTCSeconds())
   return date_utc.getTime();
 }
 
 export function getUTCDate(timestamp) {
   const num_time = parseInt(timestamp) * 1000;
   const date = new Date(num_time);
-  return moment.utc(date).format("MMMM Do, HH:mm UTC");
+  return moment.utc(date).format('MMMM Do, HH:mm UTC');
 }
 
 export function getDeadlineTimestamp(start_time, duration) {
   const utc_date = new Date(parseInt(start_time));
-  const start_utc = Date.UTC(utc_date.getUTCFullYear(), utc_date.getUTCMonth(), utc_date.getUTCDate(), utc_date.getUTCHours(), utc_date.getUTCMinutes(), utc_date.getUTCSeconds());
+  const start_utc = Date.UTC(utc_date.getUTCFullYear(), utc_date.getUTCMonth(), utc_date.getUTCDate(), 
+    utc_date.getUTCHours(), utc_date.getUTCMinutes(), utc_date.getUTCSeconds());
   if (duration > 3650)
     duration = 3650;
-  return start_utc + duration * 24 * 3600 * 1000;
+  return start_utc + duration * SECS_PER_DAY * 1000;
 }
 
 export function getTime(date) {
-  return (date * 24 * 3600 * 1000).toString();
+  return (date * SECS_PER_DAY * 1000).toString();
 }
 
 export function getDate(timestamp) {
   const num_time = parseInt(timestamp) * 1000;
   const date = new Date(num_time);
-  return moment(date).format("YYYY/MM/DD");
+  return moment(date).format('YYYY/MM/DD');
 }
 
 export function getStringDate(timestamp) {
   const num_time = parseInt(timestamp) * 1000;
   const date = new Date(num_time);
-  return moment(date).format("DD MMM");
+  return moment(date).format('DD MMM');
 }
 
 export function validationStartTime(start_time) {
   const start_date = new Date(parseInt(start_time * 1000));
   const now_date = new Date();
   let difference =
-    moment(start_date, "DD/MM/YYYY HH:mm:ss").diff(
-      moment(now_date, "DD/MM/YYYY HH:mm:ss")
+    moment(start_date, 'DD/MM/YYYY HH:mm:ss').diff(
+      moment(now_date, 'DD/MM/YYYY HH:mm:ss')
     ) / 1000;
-  if (difference > -86400)
+  if (difference > -SECS_PER_DAY)
     return true;
   else
     return false;
@@ -204,11 +212,11 @@ export function generateRandomId() {
 export function getQueryParam(prop) {
   var params = {};
   var search = decodeURIComponent(
-    window.location.href.slice(window.location.href.indexOf("?") + 1)
+    window.location.href.slice(window.location.href.indexOf('?') + 1)
   );
-  var definitions = search.split("&");
+  var definitions = search.split('&');
   definitions.forEach(function (val, key) {
-    var parts = val.split("=", 2);
+    var parts = val.split('=', 2);
     params[parts[0]] = parts[1];
   });
   return prop && prop in params ? params[prop] : params;
@@ -218,15 +226,15 @@ export function classList(classes) {
   return Object.entries(classes)
     .filter(entry => entry[1])
     .map(entry => entry[0])
-    .join(" ");
+    .join(' ');
 }
 
 export const parseErrorMsg = (errMsg) => {
-  var returStr = "";
-  let startPos = JSON.stringify(errMsg).search("message");
+  var returStr = '';
+  let startPos = JSON.stringify(errMsg).search('message');
   if (startPos >= 0) {
     let subStr = errMsg.substring(startPos + 4, errMsg.length)
-    let endPos = subStr.indexOf("\"");
+    let endPos = subStr.indexOf('\'');
     if (endPos >= 0) {
       subStr = subStr.substring(0, endPos);
       returStr = subStr;
@@ -243,8 +251,8 @@ export const numberWithCommas = (x, digit = 3) => {
 export const isEmpty = value =>
   value === undefined ||
   value === null ||
-  (typeof value === "object" && Object.keys(value).length === 0) ||
-  (typeof value === "string" && value.trim().length === 0);
+  (typeof value === 'object' && Object.keys(value).length === 0) ||
+  (typeof value === 'string' && value.trim().length === 0);
 
 /* Added on 2023/09/13 */
 export const shortenAddress = (addr) => {
@@ -346,7 +354,7 @@ export function getWorkStatus(status) {
 export function convertUTCDateToLocalDate(date) {
   var newDate = new Date(date.getTime()+date.getTimezoneOffset()*60*1000);
 
-  var offset = date.getTimezoneOffset() / 60;
+  var offset = date.getTimezoneOffset() / MINS_PER_HOUR;
   var hours = date.getHours();
 
   newDate.setHours(hours - offset);
@@ -357,5 +365,5 @@ export function convertUTCDateToLocalDate(date) {
 export function getFormatedDate(timestamp) {
   const num_time = parseInt(timestamp);
   const date = new Date(num_time);
-  return moment(date).format("MMMM DD, YYYY, hh:mm A")
+  return moment(date).format('MMMM DD, YYYY, hh:mm A')
 }

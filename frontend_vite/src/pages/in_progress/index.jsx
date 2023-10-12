@@ -1,6 +1,7 @@
-import React, { useCallback, useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Scrollbars } from 'react-custom-scrollbars';
 import { Reveal } from 'react-awesome-reveal';
+
 import { useCustomWallet } from '../../contexts/WalletContext';
 import Sidebar from '../../components/menu/SideBar';
 import Subheader from '../../components/menu/SubHeader';
@@ -9,7 +10,7 @@ import HelpButton from '../../components/menu/HelpButton';
 import SearchBox from '../../components/menu/SearchBox';
 import WarningMsg from '../../components/WarningMsg';
 import useBackend from '../../hooks/useBackend';
-import { IsSmMobile, fadeInUp, isEmpty } from '../../utils';
+import { IsSmMobile, fadeInUp } from '../../utils';
 import InBounty from './InBounty';
 
 const InProgress = () => {
@@ -44,9 +45,9 @@ const InProgress = () => {
     <div className='full-container'>
       <div className='container'>
         <MainHeader />
-        <Sidebar path="InProgress" />
+        <Sidebar path='InProgress' />
         <div className='app-container'>
-          <Subheader path="InProgress" />
+          <Subheader path='InProgress' />
           <div className='app-header items-center md:items-start sm:flex-col lg:pl-0 pl-[40px] pr-0 relative z-[99]'>
             <Reveal keyframes={fadeInUp} className='onStep' delay={0} duration={800} triggerOnce>
               <div className='app-title'>
@@ -64,18 +65,17 @@ const InProgress = () => {
 
           <div className={`app-content ${isSearchShow ? 'blur-sm' : ''}`}>
             {IsSmMobile() ? (
-              // <InBountiesBody bounties={bounties} />
               bounties?.map((bounty, idx) => {
                 return (
                   <InBounty key={idx} bountyId={bounty.bountyId} />
                 );
               })
             ) : (
-              <Scrollbars id='body-scroll-bar' autoHide style={{ height: "100%" }}
+              <Scrollbars id='body-scroll-bar' autoHide style={{ height: '100%' }}
                 renderThumbVertical={({ style, ...props }) =>
                   <div {...props} className={'thumb-horizontal'} />
                 }>
-                {/* <InBountiesBody bounties={bounties} /> */
+                {
                   bounties?.map((bounty, idx) =>
                     <InBounty key={idx} bountyId={bounty.bountyId} />
                   )

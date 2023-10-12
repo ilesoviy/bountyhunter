@@ -1,9 +1,9 @@
-import { useCallback, useState, useEffect } from "react";
+import { useCallback, useState, useEffect } from 'react';
 import { Reveal } from 'react-awesome-reveal';
 import { toast } from 'react-toastify';
 import { useNavigate } from '@reach/router';
-import { useCustomWallet } from "../../contexts/WalletContext";
-import useBounty from "../../hooks/useBounty";
+import { useCustomWallet } from '../../contexts/WalletContext';
+import useBounty from '../../hooks/useBounty';
 import useBackend from '../../hooks/useBackend';
 import { fadeInUp, shortenAddress } from '../../utils';
 
@@ -82,13 +82,13 @@ const MyBountiesReviewItem = ({work}) => {
         </div>
       </div>
       {isExpanded &&
-        <div className="flex-col">
-          <div className="py-2 app-gray">{work?.title}</div>
-          <div className="py-2 app-gray ">{work?.description}</div>
-          <a className="py-2 app-gray " href="#">{work?.gitHub}</a>
-          <div className="flex justify-end gap-2">
-            <button className="rounded-2xl border px-2 py-1" onClick={onClickApprove}>Approve</button>
-            <button className="rounded-2xl border px-2 py-1" onClick={onClickReject}>Reject</button>
+        <div className='flex-col'>
+          <div className='py-2 app-gray'>{work?.title}</div>
+          <div className='py-2 app-gray '>{work?.description}</div>
+          <a className='py-2 app-gray ' href='#'>{work?.gitHub}</a>
+          <div className='flex justify-end gap-2'>
+            <button className='rounded-2xl border px-2 py-1' onClick={onClickApprove}>Approve</button>
+            <button className='rounded-2xl border px-2 py-1' onClick={onClickReject}>Reject</button>
           </div>
         </div>
       }

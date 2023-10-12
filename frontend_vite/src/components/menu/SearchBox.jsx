@@ -148,14 +148,13 @@ const SearchBox = forwardRef(function SearchBox(props, ref) {
   });
 
   return (
-
     <Reveal keyframes={fadeIn} className='onStep' delay={0} duration={1000} triggerOnce>
       <div className='flex gap-4 items-center'>
         <div className='input-form-control relative z-50'>
           <div className={`input-control rounded-3xl h-[60px] ${isSearchShow ? 'invisible' : ''}`}>
-            <i className="fa input-prefix fa-search"></i>
-            <input type="text" value={keyword} onChange={handleKeyword} className='input-main mx-3' placeholder='Search'></input>
-            <button className="input-suffix flex items-center gap-2 border-l-1" onClick={handleSearchShow}>
+            <i className='fa input-prefix fa-search'></i>
+            <input type='text' value={keyword} onChange={handleKeyword} className='input-main mx-3' placeholder='Search'></input>
+            <button className='input-suffix flex items-center gap-2 border-l-1' onClick={handleSearchShow}>
               Filter<i className='fa fa-angle-down' />
             </button>
           </div>
@@ -165,10 +164,10 @@ const SearchBox = forwardRef(function SearchBox(props, ref) {
           }
           {isSearchShow &&
             <section className='absolute right-0 top-0 left-0 rounded-3xl border-0 bg-[#00263e]'>
-              <div className="input-control h-[60px]  border-0">
-                <i className="fa fa-search input-prefix"></i>
-                <input type="text" value={keyword} onChange={handleKeyword} className='input-main border-r-1 mx-3' placeholder='Search'></input>
-                <button className="input-suffix flex items-center gap-2 border-l-1" onClick={handleSearchShow}>
+              <div className='input-control h-[60px]  border-0'>
+                <i className='fa fa-search input-prefix'></i>
+                <input type='text' value={keyword} onChange={handleKeyword} className='input-main border-r-1 mx-3' placeholder='Search'></input>
+                <button className='input-suffix flex items-center gap-2 border-l-1' onClick={handleSearchShow}>
                   <i className='fa fa-angle-up' />
                 </button>
               </div>
@@ -209,7 +208,6 @@ const SearchBox = forwardRef(function SearchBox(props, ref) {
         </div>
       </div>
     </Reveal>
-
   );
 });
 

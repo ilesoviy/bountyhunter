@@ -2,7 +2,8 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { Scrollbars } from 'react-custom-scrollbars';
 import { Reveal } from 'react-awesome-reveal';
 import { Link, useLocation, useNavigate } from '@reach/router';
-import { toast } from "react-toastify";
+import { toast } from 'react-toastify';
+
 import { useCustomWallet } from '../../contexts/WalletContext';
 import Sidebar from '../../components/menu/SideBar';
 import Subheader from '../../components/menu/SubHeader';
@@ -15,22 +16,20 @@ import { SECS_PER_DAY, IsSmMobile, fadeInUp, fadeIn, getDuration } from '../../u
 
 const NewBountyBody = () => {
   const { walletAddress, isConnected } = useCustomWallet();
-  const { CONTRACT_ID, DEF_PAY_TOKEN, approveToken, getLastError, countBounties, createBounty } = useBounty();
-  const { addBounty } = useBackend();
+  const { CONTRACT_ID, DEF_PAY_TOKEN, approveToken, createBounty } = useBounty();
+  const { createBountyB } = useBackend();
 
   const loc = useLocation();
   const nav = useNavigate();
 
-  const DEF_PAY_AMOUNT = 0;
-
-  const [title, setTitle] = useState('');
-  const [payAmount, setPayAmount] = useState('');
-  const [duration, setDuration] = useState(0);
-  const [type, setType] = useState(0);
-  const [difficulty, setDifficulty] = useState(0);
-  const [topic, setTopic] = useState(0);
-  const [description, setDescription] = useState('');
-  const [gitHub, setGitHub] = useState('');
+  const [title, setTitle] = useState('B1');
+  const [payAmount, setPayAmount] = useState('100');
+  const [duration, setDuration] = useState(1);
+  const [type, setType] = useState(1);
+  const [difficulty, setDifficulty] = useState(1);
+  const [topic, setTopic] = useState(1);
+  const [description, setDescription] = useState('D1');
+  const [gitHub, setGitHub] = useState('https://github.com/creator1/bounty1');
 
   useEffect(() => {
     const { title, payAmount, duration, type, difficulty, topic, description, gitHub } = loc.state;
@@ -78,35 +77,35 @@ const NewBountyBody = () => {
 
   function checkCondition() {
     if (!isConnected) {
-      toast.warning("Wallet not connected yet!");
+      toast.warning('Wallet not connected yet!');
       return false;
     }
     if (!title) {
-      toast.warning("Please input title!");
+      toast.warning('Please input title!');
       return false;
     }
     if (payAmount === '' || Number(payAmount) === 0) {
-      toast.warning("Please input amount!");
+      toast.warning('Please input amount!');
       return false;
     }
     if ( !duration ) {
-      toast.warning("Please select duration!");
+      toast.warning('Please select duration!');
       return false;
     }
     if ( !type ) {
-      toast.warning("Please select type!");
+      toast.warning('Please select type!');
       return false;
     }
     if ( !difficulty ) {
-      toast.warning("Please select difficulty!");
+      toast.warning('Please select difficulty!');
       return false;
     }
     if ( !topic ) {
-      toast.warning("Please select topic!");
+      toast.warning('Please select topic!');
       return false;
     }
     if ( !description ) {
-      toast.warning("Please input description!");
+      toast.warning('Please input description!');
       return false;
     }
     return true;
@@ -138,20 +137,17 @@ const NewBountyBody = () => {
     // }
 
     const days = getDuration(duration);
-    const bountyIdOld = await countBounties();
-    const bountyIdNew = await createBounty(walletAddress, title, Number(payAmount) * 10000000, DEF_PAY_TOKEN, SECS_PER_DAY * days);
-    if (bountyIdNew < 0 || bountyIdOld === bountyIdNew) {
-      const error = await getLastError();
+    const [bountyId, ledger] = await createBounty(walletAddress, title, Number(payAmount) * 10000000, DEF_PAY_TOKEN, SECS_PER_DAY * days);
+    if (bountyId < 0) {
       toast.error('Failed to create new bounty!');
-      console.error('error:', error);
       return;
     }
 
-    const res2 = await addBounty(walletAddress, bountyIdOld,
+    const res2 = await createBountyB(walletAddress, bountyId,
       title, Number(payAmount), SECS_PER_DAY * days,
       type, difficulty, topic,
       description, gitHub,
-      /* block */111);
+      ledger);
     if (res2) {
       toast.error('Failed to add bounty!');
       return;
@@ -172,24 +168,24 @@ const NewBountyBody = () => {
               <div className='col-md-12 pb-3'>
                 <div className='input-form-control'>
                   <label className='input-label'>Title</label>
-                  <div className="input-control">
-                    <input type="text" name="title" value={title} className='input-main' onChange={onChangeTitle}></input>
+                  <div className='input-control'>
+                    <input type='text' name='title' value={title} className='input-main' onChange={onChangeTitle}></input>
                   </div>
                 </div>
               </div>
               <div className='col-md-6 pb-3'>
                 <div className='input-form-control'>
                   <label className='input-label'>Payment Amount</label>
-                  <div className="input-control">
-                    <input type="number" name="payAmount" value={payAmount} className='input-main' onChange={onChangePayAmount}></input>
+                  <div className='input-control'>
+                    <input type='number' name='payAmount' value={payAmount} className='input-main' onChange={onChangePayAmount}></input>
                   </div>
                 </div>
               </div>
               <div className='col-md-6 pb-3'>
                 <div className='input-form-control'>
                   <label className='input-label'>Dead Line</label>
-                  <div className="input-control">
-                    <select name="deadline" value={duration} className='input-main' onChange={onChangeDuration}>
+                  <div className='input-control'>
+                    <select name='deadline' value={duration} className='input-main' onChange={onChangeDuration}>
                       <option value={0} disabled hidden>Select a duration</option>
                       <option value={1}>More than 6 months</option>
                       <option value={2}>3 to 6 months</option>
@@ -202,8 +198,8 @@ const NewBountyBody = () => {
               <div className='col-md-4 pb-3'>
                 <div className='input-form-control'>
                   <label className='input-label'>Bounty Type</label>
-                  <div className="input-control">
-                    <select name="type" value={type} className='input-main' onChange={onChangeType}>
+                  <div className='input-control'>
+                    <select name='type' value={type} className='input-main' onChange={onChangeType}>
                       <option value={0} disabled hidden>Select a type</option>
                       <option value={1}>Competitive</option>
                       <option value={2}>Cooperative</option>
@@ -215,8 +211,8 @@ const NewBountyBody = () => {
               <div className='col-md-4 pb-3'>
                 <div className='input-form-control'>
                   <label className='input-label'>Bounty Difficulty</label>
-                  <div className="input-control">
-                    <select name="difficulty" value={difficulty} className='input-main' onChange={onChangeDifficulty}>
+                  <div className='input-control'>
+                    <select name='difficulty' value={difficulty} className='input-main' onChange={onChangeDifficulty}>
                       <option value={0} disabled hidden>Select a difficulty</option>
                       <option value={1}>Beginner</option>
                       <option value={2}>Intermediate</option>
@@ -228,8 +224,8 @@ const NewBountyBody = () => {
               <div className='col-md-4 pb-3'>
                 <div className='input-form-control'>
                   <label className='input-label'>Bounty Topic</label>
-                  <div className="input-control">
-                    <select name="topic" value={topic} className='input-main' onChange={onChangeTopic}>
+                  <div className='input-control'>
+                    <select name='topic' value={topic} className='input-main' onChange={onChangeTopic}>
                       <option value={0} disabled hidden>Select a topic</option>
                       <option value={1}>Design</option>
                       <option value={2}>Development</option>
@@ -243,8 +239,8 @@ const NewBountyBody = () => {
               <div className='col-md-12 pb-3'>
                 <div className='input-form-control'>
                   <label className='input-label'>Description</label>
-                  <div className="input-control h-auto">
-                    <textarea type="text" name="description" value={description} rows={5} className='input-main' onChange={onChangeDesc}></textarea>
+                  <div className='input-control h-auto'>
+                    <textarea type='text' name='description' value={description} rows={5} className='input-main' onChange={onChangeDesc}></textarea>
                   </div>
                 </div>
               </div>
@@ -252,32 +248,21 @@ const NewBountyBody = () => {
               <div className='col-md-12 pb-3'>
                 <div className='input-form-control'>
                   <label className='input-label'>Github Link</label>
-                  <div className="input-control">
-                    <input type="text" name="gitHub" value={gitHub} className='input-main' onChange={onChangeGitHub}></input>
+                  <div className='input-control'>
+                    <input type='text' name='gitHub' value={gitHub} className='input-main' onChange={onChangeGitHub}></input>
                   </div>
                 </div>
               </div>
               <div className='col-md-4 pb-3'>
                 <div className='input-form-control'>
-                  <div className="input-control border-0">
+                  <div className='input-control border-0'>
                     <button className='input-main btn-hover text-white' onClick={handlePreview}>Preview</button>
-                    {/* <Link
-                      to="/NewBounty/Preview"
-                      state={{
-                        title, payAmount, duration, type, difficulty, topic, description, gitHub,
-                        wallet: walletAddress,
-                        status: BountyStatus.INIT,
-                        startDate: Date.now(),
-                        endDate: Date.now() + getDuration(duration) * SECS_PER_DAY * 1000
-                      }}
-                      className='w-full text-center btn-hover'
-                    >Prevew</Link> */}
                   </div>
                 </div>
               </div>
               <div className='col-md-4 pb-3'>
                 <div className='input-form-control'>
-                  <div className="input-control border-0">
+                  <div className='input-control border-0'>
                     <button className='input-main btn-hover text-white' onClick={handleSubmit}>Submit</button>
                   </div>
                 </div>
@@ -297,9 +282,9 @@ const NewBounty = () => {
     <div className='full-container'>
       <div className='container'>
         <MainHeader />
-        <Sidebar path="NewBounty" />
+        <Sidebar path='NewBounty' />
         <div className='app-container'>
-          <Subheader path="NewBounty" />
+          <Subheader path='NewBounty' />
 
           {!isConnected &&
             <div className='pl-[40px] lg:pl-0'>
@@ -310,7 +295,7 @@ const NewBounty = () => {
             {IsSmMobile() ? (
               <NewBountyBody />
             ) : (
-              <Scrollbars id='body-scroll-bar' className='' style={{ height: "100%" }}
+              <Scrollbars id='body-scroll-bar' className='' style={{ height: '100%' }}
                 renderThumbVertical={({ style, ...props }) =>
                   <div {...props} className={'thumb-horizontal'} />
                 }>

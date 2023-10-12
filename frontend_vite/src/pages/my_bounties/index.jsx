@@ -1,7 +1,6 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import { useMemo, useState, useEffect, useCallback, useReducer, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Reveal } from 'react-awesome-reveal';
-import { createGlobalStyle } from 'styled-components';
 import { Scrollbars } from 'react-custom-scrollbars';
 import { useCustomWallet } from '../../contexts/WalletContext';
 import Sidebar from '../../components/menu/SideBar';
@@ -11,7 +10,7 @@ import HelpButton from '../../components/menu/HelpButton';
 import SearchBox from '../../components/menu/SearchBox';
 import WarningMsg from '../../components/WarningMsg';
 import useBackend from '../../hooks/useBackend';
-import { fadeInUp, fadeIn, IsSmMobile, numberWithCommas } from '../../utils';
+import { fadeInUp, IsSmMobile } from '../../utils';
 import { MyBountyBodyListItem } from './MyBountiesBody';
 
 const MyBounties = () => {
@@ -45,9 +44,9 @@ const MyBounties = () => {
     <div className='full-container'>
       <div className='container'>
         <MainHeader />
-        <Sidebar path="MyBounties" />
+        <Sidebar path='MyBounties' />
         <div className='app-container'>
-          <Subheader path="MyBounties" />
+          <Subheader path='MyBounties' />
           <div className='app-header md:items-start sm:flex-col lg:pl-0 pl-[40px] pr-0 relative z-[99]'>
             <Reveal keyframes={fadeInUp} className='onStep' delay={0} duration={800} triggerOnce>
               <div className='app-title'>
@@ -67,7 +66,7 @@ const MyBounties = () => {
                 <MyBountyBodyListItem key={idx} bountyId={bounty.bountyId} />
               ))
             ) : (
-              <Scrollbars id='body-scroll-bar' autoHide style={{ height: "100%" }}
+              <Scrollbars id='body-scroll-bar' autoHide style={{ height: '100%' }}
                 renderThumbVertical={({ style, ...props }) =>
                   <div {...props} className={'thumb-horizontal'} />
                 }>

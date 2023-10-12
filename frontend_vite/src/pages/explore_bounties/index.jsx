@@ -1,6 +1,7 @@
 import React, { useState, useCallback, useRef, useEffect } from 'react';
 import { Scrollbars } from 'react-custom-scrollbars';
 import { Reveal } from 'react-awesome-reveal';
+
 import { useCustomWallet } from '../../contexts/WalletContext';
 import SideBar from '../../components/menu/SideBar';
 import SubHeader from '../../components/menu/SubHeader';
@@ -9,8 +10,8 @@ import HelpButton from '../../components/menu/HelpButton';
 import SearchBox from '../../components/menu/SearchBox';
 import WarningMsg from '../../components/WarningMsg';
 import useBackend from '../../hooks/useBackend';
-import { IsSmMobile, fadeInUp, fadeIn, getUTCNow, getUTCDate, isEmpty } from '../../utils';
 import ExBounty from './ExBounty';
+import { IsSmMobile, fadeInUp } from '../../utils';
 
 const ExploreBounty = () => {
   const { isConnected } = useCustomWallet();
@@ -40,9 +41,9 @@ const ExploreBounty = () => {
     <div className='full-container' >
       <div className='container'>
         <MainHeader />
-        <SideBar path="ExploreBounties" />
+        <SideBar path='ExploreBounties' />
         <div className='app-container'>
-          <SubHeader path="ExploreBounties" />
+          <SubHeader path='ExploreBounties' />
           <div className='app-header items-center md:items-start sm:flex-col lg:pl-0 pl-[40px] pr-0 relative z-[99]'>
             <Reveal keyframes={fadeInUp} className='onStep' delay={0} duration={800} triggerOnce>
               <div className='app-title'>
@@ -51,7 +52,6 @@ const ExploreBounty = () => {
               </div>
             </Reveal>
             <SearchBox ref={searchbox} onSearchChange={ () => setSearchChanged(true)} callback={() => { setShow(isSearchShow => !isSearchShow) }} />
-            {/* <button onClick={() => { console.log(searchbox.current.getKeyword()) }}>View</button> */}
           </div>
 
           {!isConnected &&
@@ -70,7 +70,7 @@ const ExploreBounty = () => {
                 })}
               </div>
             ) : (
-              <Scrollbars id='body-scroll-bar' autoHide style={{ height: "100%" }}
+              <Scrollbars id='body-scroll-bar' autoHide style={{ height: '100%' }}
                 renderThumbVertical={({ style, ...props }) =>
                   <div {...props} className={'thumb-horizontal'} />
                 }>

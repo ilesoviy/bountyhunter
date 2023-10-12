@@ -1,7 +1,6 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { Scrollbars } from 'react-custom-scrollbars';
-import { Reveal } from 'react-awesome-reveal';
-import { Link, useParams, useNavigate } from '@reach/router';
+import { useParams, useNavigate } from '@reach/router';
 import { toast } from 'react-toastify';
 import { useCustomWallet } from '../../contexts/WalletContext';
 import MainHeader from '../../components/menu/MainHeader';
@@ -12,7 +11,7 @@ import { Information } from '../../components/Information';
 import BackButton from '../../components/menu/BackButton';
 import useBounty,  { WorkStatus } from '../../hooks/useBounty';
 import useBackend from '../../hooks/useBackend';
-import { IsSmMobile, fadeInUp } from '../../utils';
+import { IsSmMobile } from '../../utils';
 import MyBountiesReviewItem from './MyBountiesReviewItem';
 
 const MyBountiesListingBody = ({bounty, works}) => {
@@ -126,7 +125,7 @@ const MyBountiesListing = () => {
         <MainHeader />
         <div className='bounty-listing-container'>
           <Subheader />
-          <BackButton to="/MyBounties" />
+          <BackButton to='/MyBounties' />
           <div className='app-header px-0 xsm:items-start xl:items-center xsm:flex-col'>
             <div className='app-title'>
               <p className='text-[40px] sm:text-center text-white pt-3'>{bounty?.title}</p>
@@ -135,7 +134,7 @@ const MyBountiesListing = () => {
           {IsSmMobile() ? (
             <MyBountiesListingBody bounty={bounty} works={works} />
           ) : (
-            <Scrollbars id='body-scroll-bar' autoHide style={{ height: "100%" }}
+            <Scrollbars id='body-scroll-bar' autoHide style={{ height: '100%' }}
               renderThumbVertical={({ style, ...props }) =>
                 <div {...props} className={'thumb-horizontal'} />
               }>

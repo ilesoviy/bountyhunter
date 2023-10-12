@@ -1,7 +1,8 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { Scrollbars } from 'react-custom-scrollbars';
-import { toast } from "react-toastify";
-import { useNavigate, useLocation } from "@reach/router";
+import { toast } from 'react-toastify';
+import { useNavigate, useLocation } from '@reach/router';
+
 import { useCustomWallet } from '../../contexts/WalletContext';
 import Subheader from '../../components/menu/SubHeader';
 import MainHeader from '../../components/menu/MainHeader';
@@ -17,41 +18,41 @@ const PreviewBody = () => {
   const nav = useNavigate();
   const loc = useLocation();
   const { walletAddress, isConnected } = useCustomWallet();
-  const { CONTRACT_ID, DEF_PAY_TOKEN, approveToken, getLastError, countBounties, createBounty } = useBounty();
-  const { addBounty } = useBackend();
+  const { CONTRACT_ID, DEF_PAY_TOKEN, approveToken, createBounty } = useBounty();
+  const { createBountyB } = useBackend();
   const {title, payAmount, duration, type, difficulty, topic, description, gitHub } = loc.state;
 
   function checkCondition() {
     if (!isConnected) {
-      toast.warning("Wallet not connected yet!");
+      toast.warning('Wallet not connected yet!');
       return false;
     }
     if (!title) {
-      toast.warning("Please input title!");
+      toast.warning('Please input title!');
       return false;
     }
     if (payAmount === '' || Number(payAmount) === 0) {
-      toast.warning("Please input amount!");
+      toast.warning('Please input amount!');
       return false;
     }
     if ( !duration ) {
-      toast.warning("Please select duration!");
+      toast.warning('Please select duration!');
       return false;
     }
     if ( !type ) {
-      toast.warning("Please select type!");
+      toast.warning('Please select type!');
       return false;
     }
     if ( !difficulty ) {
-      toast.warning("Please select difficulty!");
+      toast.warning('Please select difficulty!');
       return false;
     }
     if ( !topic ) {
-      toast.warning("Please select topic!");
+      toast.warning('Please select topic!');
       return false;
     }
     if ( !description ) {
-      toast.warning("Please input description!");
+      toast.warning('Please input description!');
       return false;
     }
     return true;
@@ -69,22 +70,19 @@ const PreviewBody = () => {
     // }
 
     const days = getDuration(duration);
-    const bountyIdOld = await countBounties();
-    const bountyIdNew = await createBounty(walletAddress, title, Number(payAmount) * 10000000, DEF_PAY_TOKEN, SECS_PER_DAY * days);
-    if (bountyIdNew < 0 || bountyIdOld === bountyIdNew) {
-      const error = await getLastError();
+    const [bountyId, ledger] = await createBounty(walletAddress, title, Number(payAmount) * 10000000, DEF_PAY_TOKEN, SECS_PER_DAY * days);
+    if (bountyId < 0) {
       toast.error('Failed to create new bounty!');
-      console.error('error:', error);
       return;
     }
 
-    const res2 = await addBounty(walletAddress, bountyIdOld,
+    const res2 = await createBountyB(walletAddress, bountyId,
       title, Number(payAmount), SECS_PER_DAY * days,
       type, difficulty, topic,
       description, gitHub,
-      /* block */111);
+      ledger);
     if (res2) {
-      toast.errpr('Failed to add bounty!');
+      toast.error('Failed to add bounty!');
       return;
     }
 
@@ -102,7 +100,7 @@ const PreviewBody = () => {
               <button className='text-[18px] border rounded-2xl px-4'>{getBountyStatus(loc.state.status)}</button>
             </div>
             <div className='flex'>
-              <button className='text-[18px] mr-2'><i className="fa-regular fa-arrow-up-from-square mr-2"></i>Share</button>
+              <button className='text-[18px] mr-2'><i className='fa-regular fa-arrow-up-from-square mr-2'></i>Share</button>
             </div>
           </div>
           <span className='py-2' dangerouslySetInnerHTML={{__html: loc.state.description?.replace(new RegExp('\r?\n','g'), '<br />')}}></span>
@@ -135,7 +133,7 @@ const PreviewNewBounty = () => {
         <MainHeader />
         <div className='bounty-listing-container'>
           <Subheader />
-          <BackButton to="/NewBounty" state={{...loc.state}}/>
+          <BackButton to='/NewBounty' state={{...loc.state}}/>
           <div className='app-header px-0 xl:items-center xsm:items-start sm:flex-col'>
             <div className='app-title'>
               <p className='text-[40px] sm:text-center text-white pt-3'>{loc.state.title}</p>
@@ -144,7 +142,7 @@ const PreviewNewBounty = () => {
           {IsSmMobile() ? (
             <PreviewBody />
           ) : (
-            <Scrollbars id='body-scroll-bar' autoHide style={{ height: "100%" }}
+            <Scrollbars id='body-scroll-bar' autoHide style={{ height: '100%' }}
               renderThumbVertical={({ style, ...props }) =>
                 <div {...props} className={'thumb-horizontal'} />
               }>

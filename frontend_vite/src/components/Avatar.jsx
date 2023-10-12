@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 import { useCustomWallet } from '../contexts/WalletContext';
 import useBackend from '../hooks/useBackend';
 
@@ -21,8 +21,8 @@ const Avatar = ({ hide }) => {
   }, [isConnected, walletAddress]);
 
   return (
-    <div className="relative flex items-center justify-center">
-      <img alt="" className="w-[120px] h-[120px] rounded-full" 
+    <div className='relative flex items-center justify-center'>
+      <img alt='' className='w-[120px] h-[120px] rounded-full' 
 		    src={(!hide && userImg) ? userImg : '/images/banner/unknown.png'} />
     </div>
   );

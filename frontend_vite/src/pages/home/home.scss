@@ -462,7 +462,7 @@
 
   .roadmap-time {
     position: relative;
-    font-family: "Poppins", Helvetica, Arial, sans-serif;
+    font-family: 'Poppins', Helvetica, Arial, sans-serif;
     font-size: 20px;
     margin-left: -10px;
 
@@ -541,7 +541,7 @@
     list-style: disc;
     margin-left: 0;
     margin-top: 40px;
-    font-family: "Poppins", Helvetica, Arial, sans-serif;
+    font-family: 'Poppins', Helvetica, Arial, sans-serif;
     font-size: 14px;
     line-height: 28px;
     cursor: pointer;
@@ -618,12 +618,12 @@
 
   .accordion-body {
     color: #AEAFB1;
-    font-family: "Poppins", Helvetica, Arial, sans-serif;
+    font-family: 'Poppins', Helvetica, Arial, sans-serif;
   }
 
   .accordion-button {
     color: white !important;
-    font-family: "Poppins", Helvetica, Arial, sans-serif;
+    font-family: 'Poppins', Helvetica, Arial, sans-serif;
     background-color: transparent !important;
     border: none !important;
     border-radius: 4px !important;
@@ -644,7 +644,7 @@
   }
 
   .accordion-button::after {
-    background-image: url("data:image/svg+xml,%3Csvg width='11' height='8' viewBox='0 0 11 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0L5.37333 8L10.6667 0H0Z' fill='%235CF28F'/%3E%3C/svg%3E");
+    background-image: url('data:image/svg+xml,%3Csvg width='11' height='8' viewBox='0 0 11 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0L5.37333 8L10.6667 0H0Z' fill='%235CF28F'/%3E%3C/svg%3E');
     width: 2rem;
     height: 2rem;
     background-color: #2C2D2F;
@@ -653,8 +653,8 @@
     border-radius: 50%;
   }
 
-  .accordion-button[aria-expanded="true"]::after {
-    background-image: url("data:image/svg+xml,%3Csvg width='11' height='8' viewBox='0 0 11 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='m11 0l-5.4 8-5.3-8z' fill='white'/%3E%3C/svg%3E");
+  .accordion-button[aria-expanded='true']::after {
+    background-image: url('data:image/svg+xml,%3Csvg width='11' height='8' viewBox='0 0 11 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='m11 0l-5.4 8-5.3-8z' fill='white'/%3E%3C/svg%3E');
   }
 
   .faq_more_btn {

@@ -1,8 +1,8 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import { Reveal } from 'react-awesome-reveal';
-import { Link, useParams, useNavigate } from '@reach/router';
+import { useParams, useNavigate } from '@reach/router';
 import Scrollbars from 'react-custom-scrollbars';
 import { toast } from 'react-toastify';
+
 import { useCustomWallet } from '../../contexts/WalletContext';
 import MainHeader from '../../components/menu/MainHeader';
 import HelpButton from '../../components/menu/HelpButton';
@@ -14,8 +14,8 @@ import WarningMsg from '../../components/WarningMsg';
 import BackButton from '../../components/menu/BackButton'
 import useBounty from '../../hooks/useBounty';
 import useBackend from '../../hooks/useBackend';
-import { IsSmMobile, fadeInUp } from '../../utils';
 import { Drawer } from './Drawer';
+import { IsSmMobile } from '../../utils';
 
 const InBountyListingBody = ({ bounty, callback }) => {
   return (
@@ -71,7 +71,7 @@ const InBountyListingBody = ({ bounty, callback }) => {
 const InBountyListing = () => {
   const { isConnected, walletAddress } = useCustomWallet();
   const { submitToBounty, getLastError } = useBounty();
-  const { getSingleBounty, getWork, submitWork } = useBackend();
+  const { getSingleBounty, getWork, submitWorkB } = useBackend();
   const { id: bountyId } = useParams();
   const nav = useNavigate();
   const [bounty, setBounty] = useState({});
@@ -122,9 +122,9 @@ const InBountyListing = () => {
       return;
     }
 
-    const res2 = await submitWork(walletAddress, work?.workId, title, description, gitHub);
+    const res2 = await submitWorkB(walletAddress, work?.workId, title, description, gitHub);
     if (res2) {
-      toast.error('Failed to add work!');
+      toast.error('Failed to submit work!');
       return;
     }
 
@@ -139,7 +139,7 @@ const InBountyListing = () => {
         <MainHeader />
         <div className='bounty-listing-container'>
           <Subheader />
-          <BackButton to="/InProgress" />
+          <BackButton to='/InProgress' />
           <div className='app-header px-0 xsm:items-start xl:items-center xsm:flex-col'>
             <div className='app-title'>
               <p className='text-[40px] sm:text-center text-white pt-3'>{bounty?.title}</p>
@@ -148,7 +148,7 @@ const InBountyListing = () => {
           {IsSmMobile() ? (
             <InBountyListingBody bounty={bounty} callback={handleDrawerOpen} />
           ) : (
-            <Scrollbars id='body-scroll-bar' autoHide style={{ height: "100%" }}
+            <Scrollbars id='body-scroll-bar' autoHide style={{ height: '100%' }}
               renderThumbVertical={({ style, ...props }) =>
                 <div {...props} className={'thumb-horizontal'} />
               }>
@@ -158,37 +158,37 @@ const InBountyListing = () => {
         </div>
       </div>
       <HelpButton />
-      <Drawer anchor="right" className="w-full" open={drawerOpen} onClose={handleDrawerClose}>
+      <Drawer anchor='right' className='w-full' open={drawerOpen} onClose={handleDrawerClose}>
         <button onClick={handleDrawerClose}>
           <div className='flex gap-2'>
-            <span className="text-xl"><i className='fa fa-angle-left' /></span>
+            <span className='text-xl'><i className='fa fa-angle-left' /></span>
             <span className='text-xl'>Back</span>
           </div>
         </button>
         {!isConnected && (<WarningMsg msg='You need to connect your wallet in order to submit a work.'/>)}
-        <div className="mt-3 text-[20px] font-bold">
+        <div className='mt-3 text-[20px] font-bold'>
           <span>Bounty Listing / Submit Work</span>
         </div>
         <div className='input-form-control mt-3'>
           <label className='input-label'>Title</label>
-          <div className="input-control">
-            <input type="text" name="title" value={title} className='input-main' onChange={onChangeTitle} />
+          <div className='input-control'>
+            <input type='text' name='title' value={title} className='input-main' onChange={onChangeTitle} />
           </div>
         </div>
         <div className='input-form-control mt-3'>
           <label className='input-label'>Description</label>
-          <div className="input-control h-auto">
-            <textarea type="text" name="description" value={description} className='input-main' onChange={onChangeDescription} />
+          <div className='input-control h-auto'>
+            <textarea type='text' name='description' value={description} className='input-main' onChange={onChangeDescription} />
           </div>
         </div>
         <div className='input-form-control mt-3'>
           <label className='input-label'>Github Link</label>
-          <div className="input-control">
-            <input type="text" name="gitHub" value={gitHub} className='input-main' onChange={onChangeGitHub} />
+          <div className='input-control'>
+            <input type='text' name='gitHub' value={gitHub} className='input-main' onChange={onChangeGitHub} />
           </div>
         </div>
         <div className='input-form-control mt-3'>
-          <div className="input-control w-1/2 border-0">
+          <div className='input-control w-1/2 border-0'>
             <button className='input-main btn-hover' onClick={onSubmitClicked}>Submit Work</button>
           </div>
         </div>

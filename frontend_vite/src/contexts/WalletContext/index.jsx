@@ -1,38 +1,32 @@
-import { createContext, useContext, useState, useEffect } from "react";
-import { StellarWalletsKit, WalletNetwork, WalletType } from "stellar-wallets-kit";
-// import { Server, Networks } from "stellar-sdk";
-// import { useAppDispatch, useAppSelector } from "../../hooks/useRedux";
-// import { changeConnect } from "../ReduxContexts/reducers/network";
-
+import { createContext, useContext, useState, useEffect, useMemo } from 'react';
+import { StellarWalletsKit, WalletNetwork, WalletType } from 'stellar-wallets-kit';
 import { useGlobal } from '../GlobalContext';
+import { networkConfig } from './config';
+
 
 export const WalletContext = createContext();
 
 export const WalletProvider = (props) => {
-    // const network = useAppSelector((state) => state.network);
-    // const { connect: selectedWallet } = useAppSelector(
-    //     (state) => state.info
-    // );
     const { chainId } = useGlobal();
-    const [selectedWallet, setSelectedWallet] = useState(0);
-
-    // const [server, setServer] = useState(
-    //     new Server(network.chainId === 169 
-    //         ? "https://horizon.stellar.org" 
-    //         : "https://horizon-futurenet.stellar.org"
-    //     )
-    // );
+    console.log('chainId:', chainId);
+    const configuredChainId = useMemo(() => parseInt(networkConfig[chainId].chainId, 16), [chainId]);
 
     const [isConnected, setIsConnected] = useState(false);
-    const [walletAddress, setWalletAddress] = useState("");
+    const [walletAddress, setWalletAddress] = useState('');
     
-    // const dispatch = useAppDispatch();
-
     const kit = new StellarWalletsKit({
         network: WalletNetwork.FUTURENET,
         selectedWallet: WalletType.FREIGHTER,
     });
 
+    const setSelectedWallet = (selectedWallet) => {
+        window.localStorage.setItem('selectedWallet', selectedWallet);
+    };
+
+    const getSelectedWallet = () => {
+        return window.localStorage.getItem('selectedWallet');
+    }
+    
     const [walletObj, setWalletObj] = useState ({
         isConnected: async() => {
             return isConnected;
@@ -66,55 +60,51 @@ export const WalletProvider = (props) => {
         });
     }, [isConnected]);
 
+    const syncWallet = async (providerType) => {
+        let publicKey = '';
+
+        if (providerType === WalletType.WALLET_CONNECT) {
+            try {
+                await kit.startWalletConnect({
+                    name: 'BountyHunter',
+                    description: 'BountyHunter WebApp',
+                    url: 'https://www.sorobounty.com/',
+                    icons: ['URL_OF_ICON'],
+                    projectId: 'bountyhunter-c9d7d',
+                });
+
+                const sessions = await kit.getSessions();
+                if (sessions.length) {
+                    await kit.setSession(sessions[0]?.id);
+                } else {
+                    await kit.connectWalletConnect();
+                }
+
+                publicKey = await kit?.getWalletConnectPublicKey();
+            } catch (error) {
+                console.error(error);
+            }
+        } else {
+            await kit.setWallet(providerType);
+            publicKey = await kit.getPublicKey();
+        }
+
+        setWalletAddress(publicKey);
+        setIsConnected(true);
+    };
+
     const connectWallet = async () => {
         await kit.openModal({
             onWalletSelected: async (option) => {
-                let _publicKey;
-
-                if (option.type === WalletType.WALLET_CONNECT) {
-                    try {
-                        await kit.startWalletConnect({
-                            name: 'BountyHunter',
-                            description: 'BountyHunter WebApp',
-                            url: "https://bounty.cryptosnowprince.com/",
-                            icons: ["URL_OF_ICON"],
-                            projectId: 'bountyhunter-c9d7d',
-                        });
-
-                        const sessions = await kit.getSessions();
-                        if (sessions.length) {
-                            await kit.setSession(sessions[0]?.id);
-                        } else {
-                            await kit.connectWalletConnect();
-                        }
-
-                        _pubicKey = await kit?.getWalletConnectPublicKey();
-                    } catch (error) {
-                        console.error(error);
-                    }
-                } else {
-                    await kit.setWallet(option.type);
-                    _publicKey = await kit.getPublicKey();
-                }
-
-                setWalletAddress(_publicKey);
-                setIsConnected(true);
-                // setWalletObj ((prevState) => {
-                //     return {
-                //         ...prevState,
-                //         isConnected: async() => {
-                //             return true;
-                //         }
-                //     }
-                // });
-
-                // dispatch(changeConnect(option.type));
+                syncWallet(option.type);
                 setSelectedWallet(option.type);
             },
         });
     }
 
     const disconnectWallet = async () => {
+        let selectedWallet = getSelectedWallet();
+
         if (selectedWallet === WalletType.WALLET_CONNECT) {
             const sessions = await kit.getSessions();
             console.log('session:', sessions)
@@ -128,56 +118,17 @@ export const WalletProvider = (props) => {
             setIsConnected(false);
         }
 
-        // setWalletObj ((prevState) => {
-        //     return {
-        //         ...prevState,
-        //         isConnected: async() => {
-        //             return false;
-        //         }
-        //     }
-        // });
+        setSelectedWallet(null);
+        setWalletAddress('');
     }
 
     useEffect(() => {
-        let _publicKey = "";
+        let selectedWallet = getSelectedWallet();
 
-        const syncWallet = async () => {
-            if (selectedWallet === WalletType.WALLET_CONNECT) {
-                try {
-                    await kit.startWalletConnect({
-                        name: "BountyHunter",
-                        description: "BountyHunter WebApp",
-                        url: "https://bounty.cryptosnowprince.com/",
-                        icons: ["URL_OF_ICON"],
-                        projectId: 'bountyhunter-c9d7d',
-                    });
-
-                    const sessions = await kit.getSessions();
-                    if (sessions.length) {
-                        await kit.setSession(sessions[0]?.id);
-                    }
-                } catch (error) {
-                    console.error(error);
-                }
-                _publicKey = await kit?.getWalletConnectPublicKey();
-            } else {
-                _publicKey = await kit.getPublicKey();
-            }
-
-            setWalletAddress(_publicKey);
-            setIsConnected(true);
-        };
-
-        if (selectedWallet) {
-            syncWallet();
+        if (selectedWallet !== null && chainId !== configuredChainId) {
+            syncWallet(selectedWallet);
         }
-    }, [selectedWallet/* , network?.chainId */]);
-
-    // useEffect(() => {
-    //     setServer(
-    //         new Server(network.chainId === 169 ? "https://horizon.stellar.org" : "https://horizon-futurenet.stellar.org")
-    //     );
-    // }, [network?.chainId]);
+    }, [chainId, configuredChainId]);
 
     return (
         <WalletContext.Provider value={{ connectWallet, disconnectWallet, isConnected, walletAddress, walletObj }}>

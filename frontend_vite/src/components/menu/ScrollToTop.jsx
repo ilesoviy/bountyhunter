@@ -11,7 +11,7 @@ export default class ScrollToTop extends Component {
 
   componentDidMount() {
     var scrollComponent = this;
-    document.addEventListener("scroll", function (e) {
+    document.addEventListener('scroll', function (e) {
       scrollComponent.toggleVisibility();
     });
   }
@@ -31,7 +31,7 @@ export default class ScrollToTop extends Component {
   scrollToTop() {
     window.scrollTo({
       top: 0,
-      behavior: "smooth"
+      behavior: 'smooth'
     });
   }
 
@@ -42,7 +42,7 @@ export default class ScrollToTop extends Component {
         {is_visible && (
           <div onClick={() => this.scrollToTop()}>
             {/* <ScrollAnim /> */}
-            <i className="fa-solid fa-arrow-up text-white"></i>
+            <i className='fa-solid fa-arrow-up text-white'></i>
           </div>
         )}
       </div>

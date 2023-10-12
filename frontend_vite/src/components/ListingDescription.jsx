@@ -8,7 +8,7 @@ export const ListingDescription = ({bounty}) => {
           <button className='text-[18px] border rounded-2xl px-4'>{getBountyStatus(bounty?.status)}</button>
         </div>
         <div className='flex gap-1'>
-          <button className='text-[18px]'><i className="fa-regular fa-arrow-up-from-square mr-2"></i>Share</button>
+          <button className='text-[18px]'><i className='fa-regular fa-arrow-up-from-square mr-2'></i>Share</button>
         </div>
       </div>
       <span className='pt-2 mb-6 description' dangerouslySetInnerHTML={{

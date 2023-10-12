@@ -39,24 +39,24 @@ export default function App() {
   return (
     <div className='app'>
       <PosedRouter>
-        <ScrollTop path="/">
-          <HomePage exact path="/">
-            <Redirect to="/" />
+        <ScrollTop path='/'>
+          <HomePage exact path='/'>
+            <Redirect to='/' />
           </HomePage>
-          <NewBounty path="NewBounty" />
-          <PreviewNewBounty path="NewBounty/Preview" />
-          <ExploreBounty path="ExploreBounties" />
-          <ExBountyListing path="ExploreBounties/:id" />
-          <InProgress path="InProgress" />
-          <InBountyListing path="InProgress/:id" />
-          <MyBounties path="MyBounties" />
-          <MyBountiesListing path="MyBounties/:id" />
-          <Settings path="Settings" />
+          <NewBounty path='NewBounty' />
+          <PreviewNewBounty path='NewBounty/Preview' />
+          <ExploreBounty path='ExploreBounties' />
+          <ExBountyListing path='ExploreBounties/:id' />
+          <InProgress path='InProgress' />
+          <InBountyListing path='InProgress/:id' />
+          <MyBounties path='MyBounties' />
+          <MyBountiesListing path='MyBounties/:id' />
+          <Settings path='Settings' />
         </ScrollTop>
       </PosedRouter>
       <ScrollToTopBtn />
       <ToastContainer
-        position="top-right"
+        position='top-right'
         autoClose={5000}
         hideProgressBar={false}
         newestOnTop={true}

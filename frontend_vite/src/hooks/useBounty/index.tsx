@@ -1,7 +1,6 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useGlobal } from '../../contexts/GlobalContext';
 import { useCustomWallet } from '../../contexts/WalletContext';
-// import { useContract } from '../../contexts/ContractContext';
 import * as BountyHunter from '../../../bountyhunter_module';
 import * as SorobanClient from 'soroban-client';
 
@@ -27,28 +26,35 @@ export enum WorkStatus {
 
 const useBounty = () => {
     const { chainId } = useGlobal();
-    const { walletAddress, walletObj } = useCustomWallet();
-    // const { setAdmin, setFee } = useContract();
+    const { walletObj } = useCustomWallet();
 
     const DEF_PAY_TOKEN = 'CB64D3G7SM2RTH6JSGG34DDTFTQ5CFDKVDZJZSODMCX4NJ2HV2KN7OHT';
 
     useEffect(() => {
-        // setAdmin("GDPOOKZIQTXKCFOG6UBQHNVAZOQ7AIMRCFGTGEUTI7IPWPWEL2MOR6PL", "GDPOOKZIQTXKCFOG6UBQHNVAZOQ7AIMRCFGTGEUTI7IPWPWEL2MOR6PL");
-        // setFee("GDPOOKZIQTXKCFOG6UBQHNVAZOQ7AIMRCFGTGEUTI7IPWPWEL2MOR6PL", 30, "GBNJ6W2OWIYY4IVQGH4KWZUG5UQGWK2GZGPV43HQNSB6BBSJDLKD76AV");
     }, []);
 
-    const contract = new SorobanClient.Contract(BountyHunter.networks.futurenet.contractId);
-    const contract2 = new BountyHunter.Contract({contractId: BountyHunter.networks.futurenet.contractId, 
+    const contract = new SorobanClient.Contract(CONTRACT_ID);
+    const contract2 = new BountyHunter.Contract({contractId: CONTRACT_ID, 
         networkPassphrase: BountyHunter.networks.futurenet.networkPassphrase, 
-        rpcUrl: chainId === 169 ? "https://rpc-mainnet.stellar.org" : "https://rpc-futurenet.stellar.org", 
+        rpcUrl: chainId === 169 ? 'https://rpc-mainnet.stellar.org' : 'https://rpc-futurenet.stellar.org', 
         wallet: walletObj
     });
 
     const server = new SorobanClient.Server(
-        chainId === 169 ? "https://rpc-mainnet.stellar.org" : "https://rpc-futurenet.stellar.org"
-    )
+        chainId === 169 ? 'https://rpc-mainnet.stellar.org' : 'https://rpc-futurenet.stellar.org'
+    );
 
-    async function executeTransaction(operation: SorobanClient.xdr.Operation, baseFee?: string): Promise<number> {
+    function parseResultXdr(xdr): [number, number] {
+        console.log('xdr:', xdr);
+        if ('resultXdr' in xdr) {
+            console.log('value:', xdr.returnValue._value);
+            return [xdr.returnValue._value, xdr.ledger];
+        }
+
+        return [-5, 0];
+    }
+
+    async function executeTransaction(operation: SorobanClient.xdr.Operation, baseFee?: string): Promise<[number, number]> {
 
         const pubKey = await walletObj.getUserInfo();
         // console.log('pubKey:', pubKey);
@@ -56,17 +62,19 @@ const useBounty = () => {
         const sourceAcc = await server.getAccount(pubKey);
 
         const transaction0 = new SorobanClient.TransactionBuilder(sourceAcc, {
-            fee: (baseFee === undefined || baseFee === "") ? SorobanClient.BASE_FEE : baseFee,
+            fee: (baseFee === undefined || baseFee === '') ? SorobanClient.BASE_FEE : baseFee,
             networkPassphrase: SorobanClient.Networks.FUTURENET,
         })
             .addOperation(operation)
-            .setTimeout(30)
+            .setTimeout(SorobanClient.TimeoutInfinite /* 30 */)
             .build();
 
         const simulated = await server.simulateTransaction(transaction0);
         // console.log('simulated:', simulated);
-        // console.log('latestLedger:', simulated.latestLedger);
-        // console.log('retval:', simulated.result.retval);
+        if (SorobanClient.SorobanRpc.isSimulationError(simulated)) {
+            console.error(simulated.error);
+            return [-1, 0];
+        }
 
         const transaction = await server.prepareTransaction(transaction0);
         const txXDR = transaction.toXDR();
@@ -83,14 +91,14 @@ const useBounty = () => {
             const response = await server.sendTransaction(tx);
 
             console.log('Sent! Transaction Hash:', response.hash);
-            // Poll this until the status is not "pending"
-            if (response.status !== "PENDING") {
+            // Poll this until the status is not 'pending'
+            if (response.status !== 'PENDING') {
                 console.log('Transaction status:', response.status);
-                // console.log(JSON.stringify(response));
-
-                if (response.status === "ERROR") {
-                    return -1;
+                // console.log('response:', response);
+                if (response.status === 'ERROR') {
+                    return [-2, 0];
                 }
+                return parseResultXdr(response);
             } else {
                 let response2;
 
@@ -100,102 +108,109 @@ const useBounty = () => {
 
                     // See if the transaction is complete
                     response2 = await server.getTransaction(response.hash);
-                } while (response2.status !== "SUCCESS" && response2.status !== "FAILED");
+                } while (response2.status !== 'SUCCESS' && response2.status !== 'FAILED');
 
                 console.log('Transaction2 status:', response2.status);
-                // console.log(JSON.stringify(response2));
-
-                if (response2.status === "FAILED") {
-                    return -1;
+                // console.log('response2:', response2);
+                if (response2.status === 'FAILED') {
+                    return [-3, 0];
                 }
+                return parseResultXdr(response2);
             }
         } catch (e) {
             console.error('An error has occured:', e);
-            return -1;
+            return [-4, 0];
         }
 
-        return 0 /* simulated.result.retval._value */;
+        return [0, 0];
     }
 
-    const approveToken = useCallback(
-        async (from, spender, payAmount) => {
-            const tokenContract = new SorobanClient.Contract(DEF_PAY_TOKEN);
-            const res = await executeTransaction(
-                tokenContract.call("approve", 
-                    new SorobanClient.Address(from).toScVal(), // from
-                    new SorobanClient.Address(spender).toScVal(), // spender
-                    SorobanClient.nativeToScVal(Number(payAmount * 2), { type: 'i128' }), // double payAmount for fee
-                    SorobanClient.xdr.ScVal.scvU32(535680 /* 34560 */) // expiration_ledger
-                ),
-            );
+    const approveToken = async (from, spender, payAmount) => {
+        const tokenContract = new SorobanClient.Contract(DEF_PAY_TOKEN);
+        const res = await executeTransaction(
+            tokenContract.call('approve', 
+                new SorobanClient.Address(from).toScVal(), // from
+                new SorobanClient.Address(spender).toScVal(), // spender
+                SorobanClient.nativeToScVal(Number(payAmount * 2), { type: 'i128' }), // double payAmount for fee
+                SorobanClient.xdr.ScVal.scvU32(535680) // expiration_ledger
+            ),
+        );
 
-            console.log('res:', res);
-            return res;
-        }, 
-        []
-    );
+        console.log('res:', res);
+        return res[0];
+    };
 
-    const getLastError = useCallback(
-        async () => {
-            return await contract2.getLastError();
-        }, 
-        []
-    );
+    const receiveEvent = async() => {
+        let requestObject = {
+            'jsonrpc': '2.0',
+            'id': 8675309,
+            'method': 'getEvents',
+            'params': {
+              'startLedger': '227000',
+              'filters': [
+                {
+                  'type': 'contract',
+                  'contractIds': [
+                    CONTRACT_ID
+                  ],
+                  'topics': [
+                    [
+                      'AAAABQAAAAh0cmFuc2Zlcg==',
+                      '*',
+                      '*'
+                    ]
+                  ]
+                }
+              ],
+              'pagination': {
+                'limit': 100
+              }
+            }
+        };
 
-    const countBounties = useCallback(
-        async () => {
-            return await contract2.countBounties();
-        }, 
-        []
-    );
-
-    const countWorks = useCallback(
-        async () => {
-            return await contract2.countWorks();
-        }, 
-        []
-    );
-
-    const parseResultXdr = (xdr) => {
-        console.log('xdr:', xdr);
-    }
+        let res = await fetch('https://soroban-futurenet.stellar.org', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(requestObject),
+        });
+        let json = await res.json()
+        console.log(json)
+    };
 
     const createBounty = async (creator, name, reward, payToken, deadline) => {
         const res = await executeTransaction(
-            contract.call("create_bounty", 
+            contract.call('create_bounty', 
                 new SorobanClient.Address(creator).toScVal(), 
                 SorobanClient.xdr.ScVal.scvString(name), 
                 SorobanClient.xdr.ScVal.scvU64(new SorobanClient.xdr.Uint64(reward)), 
                 new SorobanClient.Address(payToken).toScVal(), 
-                SorobanClient.xdr.ScVal.scvU64(new SorobanClient.xdr.Uint64(deadline)), 
-                SorobanClient.xdr.ScVal.scvU32(400000)  // expiration_ledger
+                SorobanClient.xdr.ScVal.scvU64(new SorobanClient.xdr.Uint64(deadline))
             ),
-            "1000000"
+            '1000000'
         );
 
         // const res = await BountyHunter.invoke({
-        //     method: "create_bounty", 
+        //     method: 'create_bounty', 
         //     args: [
         //         new SorobanClient.Address(creator).toScVal(), 
         //         SorobanClient.xdr.ScVal.scvString(name), 
         //         SorobanClient.xdr.ScVal.scvU64(new SorobanClient.xdr.Uint64(reward)), 
         //         new SorobanClient.Address(payToken).toScVal(), 
-        //         SorobanClient.xdr.ScVal.scvU64(new SorobanClient.xdr.Uint64(deadline)), 
-        //         SorobanClient.xdr.ScVal.scvU32(400000)  // expiration_ledger
+        //         SorobanClient.xdr.ScVal.scvU64(new SorobanClient.xdr.Uint64(deadline))
         //     ],
         //     fee: 100, // fee
-        //     responseType: "full", // responseType
+        //     responseType: 'full', // responseType
         //     parseResultXdr: parseResultXdr, 
         //     secondsToWait: 10, // secondsToWait
-        //     rpcUrl: chainId === 169 ? "https://rpc-mainnet.stellar.org" : "https://rpc-futurenet.stellar.org", // rpcUrl
+        //     rpcUrl: chainId === 169 ? 'https://rpc-mainnet.stellar.org' : 'https://rpc-futurenet.stellar.org', // rpcUrl
         //     networkPassphrase: SorobanClient.Networks.FUTURENET, 
-        //     contractId: BountyHunter.networks.futurenet.contractId, 
+        //     contractId: CONTRACT_ID, 
         //     wallet: walletObj
         // });
 
-        // const contract3 = new BountyHunter.Contract({contractId: BountyHunter.networks.futurenet.contractId, 
+        // const contract3 = new BountyHunter.Contract({contractId: CONTRACT_ID, 
         //     networkPassphrase: BountyHunter.networks.futurenet.networkPassphrase, 
-        //     rpcUrl: chainId === 169 ? "https://rpc-mainnet.stellar.org" : "https://rpc-futurenet.stellar.org", 
+        //     rpcUrl: chainId === 169 ? 'https://rpc-mainnet.stellar.org' : 'https://rpc-futurenet.stellar.org', 
         //     wallet: walletObj
         // });
         // const res = await contract3.createBounty({
@@ -203,117 +218,88 @@ const useBounty = () => {
         //     name, 
         //     reward, 
         //     pay_token: payToken, 
-        //     deadline, 
-        //     expiration_ledger: 400000
+        //     deadline
         // });
 
         console.log('res:', res);
-        if (res)
-            return res;
-
-        return await countBounties();
+        return res;
     }
 
-    const applyBounty = useCallback(
-        async (participant, bountyId) => {
-            const res = await executeTransaction(
-                contract.call("apply_bounty", 
-                    new SorobanClient.Address(participant).toScVal(), 
-                    SorobanClient.xdr.ScVal.scvU32(bountyId)
-                )
-            );
+    const applyBounty = async (participant, bountyId) => {
+        const res = await executeTransaction(
+            contract.call('apply_bounty', 
+                new SorobanClient.Address(participant).toScVal(), 
+                SorobanClient.xdr.ScVal.scvU32(bountyId)
+            )
+        );
 
-            console.log('res:', res);
-            if (res)
-                return res;
+        console.log('res:', res);
+        return res[0];
+    };
 
-            return await countWorks();
-        }, 
-        []
-    );
+    const submitWork = async (participant, workId) => {
+        const res = await executeTransaction(
+            contract.call('submit_work', 
+                new SorobanClient.Address(participant).toScVal(), 
+                SorobanClient.xdr.ScVal.scvU32(workId)
+            )
+        );
 
-    const submitToBounty = useCallback(
-        async (participant, workId, workRepo) => {
-            const res = await executeTransaction(
-                contract.call("submit_work", 
-                    new SorobanClient.Address(participant).toScVal(), 
-                    SorobanClient.xdr.ScVal.scvU32(workId), 
-                    SorobanClient.xdr.ScVal.scvString(workRepo) // not necessary
-                )
-            );
+        console.log('res:', res);
+        return res[0];
+    };
 
-            console.log('res:', res);
-            return res;
-        },
-        []
-    );
+    const approveWork = async (creator, workId) => {
+        const res = await executeTransaction(
+            contract.call('approve_work', 
+                new SorobanClient.Address(creator).toScVal(), 
+                SorobanClient.xdr.ScVal.scvU32(workId)
+            )
+        );
 
-    const approveWork = useCallback(
-        async (creator, workId) => {
-            const res = await executeTransaction(
-                contract.call("approve_work", 
-                    new SorobanClient.Address(creator).toScVal(), 
-                    SorobanClient.xdr.ScVal.scvU32(workId)
-                )
-            );
+        console.log('res:', res);
+        return res[0];
+    };
 
-            console.log('res:', res);
-            return res;
-        },
-        []
-    );
+    const rejectWork = async (creator, workId) => {
+        const res = await executeTransaction(
+            contract.call('reject_work', 
+                new SorobanClient.Address(creator).toScVal(), 
+                SorobanClient.xdr.ScVal.scvU32(workId)
+            )
+        );
 
-    const rejectWork = useCallback(
-        async (creator, workId) => {
-            const res = await executeTransaction(
-                contract.call("reject_work", 
-                    new SorobanClient.Address(creator).toScVal(), 
-                    SorobanClient.xdr.ScVal.scvU32(workId)
-                )
-            );
+        console.log('res:', res);
+        return res[0];
+    };
 
-            console.log('res:', res);
-            return res;
-        },
-        []
-    );
+    const cancelBounty = async (creator, bountyId) => {
+        const res = await executeTransaction(
+            contract.call('cancel_bounty', 
+                new SorobanClient.Address(creator).toScVal(), 
+                SorobanClient.xdr.ScVal.scvU32(bountyId)
+            )
+        );
 
-    const cancelBounty = useCallback(
-        async (creator, bountyId) => {
-            const res = await executeTransaction(
-                contract.call("cancel_bounty", 
-                    new SorobanClient.Address(creator).toScVal(), 
-                    SorobanClient.xdr.ScVal.scvU32(bountyId)
-                )
-            );
+        console.log('res:', res);
+        return res[0];
+    };
 
-            console.log('res:', res);
-            return res;
-        },
-        []
-    );
+    const closeBounty = async (creator, bountyId) => {
+        const res = await executeTransaction(
+            contract.call('close_bounty', 
+                new SorobanClient.Address(creator).toScVal(), 
+                SorobanClient.xdr.ScVal.scvU32(bountyId)
+            )
+        );
 
-    const closeBounty = useCallback(
-        async (creator, bountyId) => {
-            const res = await executeTransaction(
-                contract.call("close_bounty", 
-                    new SorobanClient.Address(creator).toScVal(), 
-                    SorobanClient.xdr.ScVal.scvU32(bountyId)
-                )
-            );
+        console.log('res:', res);
+        return res[0];
+    };
 
-            console.log('res:', res);
-            return res;
-        },
-        []
-    );
-
-    const tokenBalances = useCallback(
-        async (account, token) => {
-            return await contract2.tokenBalances(account, token);
-        }, 
-        []
-    );
+    const tokenBalances = async (account, token) => {
+        return await contract2.tokenBalances(account, token);
+    };
 
     return {
         CONTRACT_ID,
@@ -321,13 +307,9 @@ const useBounty = () => {
 
         approveToken,
 
-        getLastError,
-        countBounties,
-        countWorks,
-
         createBounty,
         applyBounty,
-        submitToBounty,
+        submitWork,
         approveWork,
         rejectWork,
         cancelBounty,

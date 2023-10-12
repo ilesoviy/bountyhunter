@@ -1,27 +1,27 @@
-import React from "react";
-import Konva from "konva/lib/Core";
-import EXIF from "exif-js";
-import LoadImage from "blueimp-load-image";
-import "konva/lib/shapes/Image";
-import "konva/lib/shapes/Circle";
-import "konva/lib/shapes/Rect";
-import "konva/lib/shapes/Path";
-import "konva/lib/Animation";
-import "konva/lib/DragAndDrop";
+import React from 'react';
+import Konva from 'konva/lib/Core';
+import EXIF from 'exif-js';
+import LoadImage from 'blueimp-load-image';
+import 'konva/lib/shapes/Image';
+import 'konva/lib/shapes/Circle';
+import 'konva/lib/shapes/Rect';
+import 'konva/lib/shapes/Path';
+import 'konva/lib/Animation';
+import 'konva/lib/DragAndDrop';
 
 class AvatarCrop extends React.Component {
   static defaultProps = {
-    shadingColor: "grey",
+    shadingColor: 'grey',
     shadingOpacity: 0.6,
-    cropColor: "white",
-    closeIconColor: "white",
+    cropColor: 'white',
+    closeIconColor: 'white',
     lineWidth: 4,
     minCropRadius: 30,
-    backgroundColor: "grey",
-    mimeTypes: "image/jpeg,image/png",
+    backgroundColor: 'grey',
+    mimeTypes: 'image/jpeg,image/png',
     exportAsSquare: false,
     exportSize: undefined,
-    exportMimeType: "image/png",
+    exportMimeType: 'image/png',
     exportQuality: 1.0,
     mobileScaleSpeed: 0.5, // experimental
     onClose: () => {},
@@ -29,27 +29,27 @@ class AvatarCrop extends React.Component {
     onFileLoad: () => {},
     onImageLoad: () => {},
     onBeforeFileLoad: () => {},
-    label: "Choose a file",
+    label: 'Choose a file',
     labelStyle: {
-      fontSize: "1.25em",
-      fontWeight: "700",
-      color: "white",
-      display: "inline-block",
-      fontFamily: "sans-serif",
-      cursor: "pointer",
+      fontSize: '1.25em',
+      fontWeight: '700',
+      color: 'white',
+      display: 'inline-block',
+      fontFamily: 'sans-serif',
+      cursor: 'pointer',
     },
     borderStyle: {
-      border: "2px solid #979797",
-      borderStyle: "dashed",
-      borderRadius: "8px",
-      textAlign: "center",
+      border: '2px solid #979797',
+      borderStyle: 'dashed',
+      borderRadius: '8px',
+      textAlign: 'center',
     },
   };
 
   constructor(props) {
     super(props);
-    const containerId = this.generateHash("avatar_container");
-    const loaderId = this.generateHash("avatar_loader");
+    const containerId = this.generateHash('avatar_container');
+    const loaderId = this.generateHash('avatar_loader');
     this.onFileLoad = this.onFileLoad.bind(this);
     this.onCloseClick = this.onCloseClick.bind(this);
     this.state = {
@@ -140,7 +140,7 @@ class AvatarCrop extends React.Component {
       Math.floor((1 + Math.random()) * 0x10000)
         .toString(16)
         .substring(1);
-    return prefix + "-" + s4() + "-" + s4() + "-" + s4();
+    return prefix + '-' + s4() + '-' + s4() + '-' + s4();
   }
 
   onCloseCallback() {
@@ -167,7 +167,7 @@ class AvatarCrop extends React.Component {
     if (this.state.showLoader) return;
 
     const image = this.props.img || new Image();
-    image.crossOrigin = "Anonymous";
+    image.crossOrigin = 'Anonymous';
     if (!this.props.img && this.props.src) image.src = this.props.src;
     this.setState({ image }, () => {
       if (this.image.complete) return this.init();
@@ -196,7 +196,7 @@ class AvatarCrop extends React.Component {
 
     const ref = this;
     EXIF.getData(file, function () {
-      let exifOrientation = EXIF.getTag(this, "Orientation");
+      let exifOrientation = EXIF.getTag(this, 'Orientation');
       LoadImage(
         file,
         function (image, data) {
@@ -224,7 +224,7 @@ class AvatarCrop extends React.Component {
 
     if (imageHeight && imageWidth) {
       console.warn(
-        "The imageWidth and imageHeight properties can not be set together, using only imageWidth."
+        'The imageWidth and imageHeight properties can not be set together, using only imageWidth.'
       );
     }
 
@@ -354,15 +354,15 @@ class AvatarCrop extends React.Component {
       const scale = scaleY > 0 || isNotOutOfScale(scaleY) ? scaleY : 0;
       cropStroke.radius(cropStroke.radius() - calcScaleRadius(scale));
       crop.radius(crop.radius() - calcScaleRadius(scale));
-      resize.fire("resize");
+      resize.fire('resize');
     };
 
     this.onCropCallback(getPreview());
 
-    crop.on("dragmove", () => crop.fire("resize"));
-    crop.on("dragend", () => this.onCropCallback(getPreview()));
+    crop.on('dragmove', () => crop.fire('resize'));
+    crop.on('dragend', () => this.onCropCallback(getPreview()));
 
-    crop.on("resize", () => {
+    crop.on('resize', () => {
       const x = isLeftCorner()
         ? calcLeft()
         : isRightCorner()
@@ -381,23 +381,23 @@ class AvatarCrop extends React.Component {
       cropStroke.y(y);
     });
 
-    crop.on("mouseenter", () => (stage.container().style.cursor = "move"));
-    crop.on("mouseleave", () => (stage.container().style.cursor = "default"));
-    crop.on("dragstart", () => (stage.container().style.cursor = "move"));
-    crop.on("dragend", () => (stage.container().style.cursor = "default"));
+    crop.on('mouseenter', () => (stage.container().style.cursor = 'move'));
+    crop.on('mouseleave', () => (stage.container().style.cursor = 'default'));
+    crop.on('dragstart', () => (stage.container().style.cursor = 'move'));
+    crop.on('dragend', () => (stage.container().style.cursor = 'default'));
 
-    resize.on("touchstart", (evt) => {
-      resize.on("dragmove", (dragEvt) => {
-        if (dragEvt.evt.type !== "touchmove") return;
+    resize.on('touchstart', (evt) => {
+      resize.on('dragmove', (dragEvt) => {
+        if (dragEvt.evt.type !== 'touchmove') return;
         const scaleY =
-          dragEvt.evt.changedTouches["0"].pageY -
-            evt.evt.changedTouches["0"].pageY || 0;
+          dragEvt.evt.changedTouches['0'].pageY -
+            evt.evt.changedTouches['0'].pageY || 0;
         onScaleCallback(scaleY * this.mobileScaleSpeed);
       });
     });
 
-    resize.on("dragmove", (evt) => {
-      if (evt.evt.type === "touchmove") return;
+    resize.on('dragmove', (evt) => {
+      if (evt.evt.type === 'touchmove') return;
       const newMouseY = evt.evt.y;
       const ieScaleFactor = newMouseY
         ? newMouseY - this.state.lastMouseY
@@ -408,22 +408,22 @@ class AvatarCrop extends React.Component {
       });
       onScaleCallback(scaleY);
     });
-    resize.on("dragend", () => this.onCropCallback(getPreview()));
+    resize.on('dragend', () => this.onCropCallback(getPreview()));
 
-    resize.on("resize", () => moveResizer(crop.x(), crop.y()));
+    resize.on('resize', () => moveResizer(crop.x(), crop.y()));
 
     resize.on(
-      "mouseenter",
-      () => (stage.container().style.cursor = "nesw-resize")
+      'mouseenter',
+      () => (stage.container().style.cursor = 'nesw-resize')
     );
-    resize.on("mouseleave", () => (stage.container().style.cursor = "default"));
-    resize.on("dragstart", (evt) => {
+    resize.on('mouseleave', () => (stage.container().style.cursor = 'default'));
+    resize.on('dragstart', (evt) => {
       this.setState({
         lastMouseY: evt.evt.y,
       });
-      stage.container().style.cursor = "nesw-resize";
+      stage.container().style.cursor = 'nesw-resize';
     });
-    resize.on("dragend", () => (stage.container().style.cursor = "default"));
+    resize.on('dragend', () => (stage.container().style.cursor = 'default'));
   }
 
   initStage() {
@@ -510,7 +510,7 @@ class AvatarCrop extends React.Component {
     return new Konva.Path({
       x: this.halfWidth + this.cropRadius * 0.86 - 8,
       y: this.halfHeight + this.cropRadius * -0.5 - 10,
-      data: "M47.624,0.124l12.021,9.73L44.5,24.5l10,10l14.661-15.161l9.963,12.285v-31.5H47.624z M24.5,44.5   L9.847,59.653L0,47.5V79h31.5l-12.153-9.847L34.5,54.5L24.5,44.5z",
+      data: 'M47.624,0.124l12.021,9.73L44.5,24.5l10,10l14.661-15.161l9.963,12.285v-31.5H47.624z M24.5,44.5   L9.847,59.653L0,47.5V79h31.5l-12.153-9.847L34.5,54.5L24.5,44.5z',
       fill: this.cropColor,
       scale: {
         x: 0.2,
@@ -523,19 +523,19 @@ class AvatarCrop extends React.Component {
     const { width, height } = this.props;
 
     const style = {
-      display: "flex",
-      justifyContent: "center",
+      display: 'flex',
+      justifyContent: 'center',
       backgroundColor: this.backgroundColor,
       width: width || this.width,
-      position: "relative",
+      position: 'relative',
     };
 
     const inputStyle = {
       width: 0.1,
       height: 0.1,
       opacity: 0,
-      overflow: "hidden",
-      position: "absolute",
+      overflow: 'hidden',
+      position: 'absolute',
       zIndex: -1,
     };
 
@@ -543,7 +543,7 @@ class AvatarCrop extends React.Component {
 
     const labelStyle = {
       ...this.props.labelStyle,
-      ...{ lineHeight: (height || 200) + "px" },
+      ...{ lineHeight: (height || 200) + 'px' },
     };
 
     const borderStyle = {
@@ -555,11 +555,11 @@ class AvatarCrop extends React.Component {
     };
 
     const closeBtnStyle = {
-      position: "absolute",
+      position: 'absolute',
       zIndex: 999,
-      cursor: "pointer",
-      left: "10px",
-      top: "10px",
+      cursor: 'pointer',
+      left: '10px',
+      top: '10px',
     };
 
     return (
@@ -569,7 +569,7 @@ class AvatarCrop extends React.Component {
             <input
               onChange={(e) => this.onFileLoad(e)}
               name={this.loaderId}
-              type="file"
+              type='file'
               id={this.loaderId}
               style={inputStyle}
               accept={this.mimeTypes}
@@ -583,17 +583,17 @@ class AvatarCrop extends React.Component {
             <svg
               onClick={this.onCloseClick}
               style={closeBtnStyle}
-              viewBox="0 0 475.2 475.2"
-              width="20px"
-              height="20px"
+              viewBox='0 0 475.2 475.2'
+              width='20px'
+              height='20px'
             >
               <g>
                 <path
-                  d="M405.6,69.6C360.7,24.7,301.1,0,237.6,0s-123.1,24.7-168,69.6S0,174.1,0,237.6s24.7,123.1,69.6,168s104.5,69.6,168,69.6    s123.1-24.7,168-69.6s69.6-104.5,69.6-168S450.5,114.5,405.6,69.6z M386.5,386.5c-39.8,39.8-92.7,61.7-148.9,61.7    s-109.1-21.9-148.9-61.7c-82.1-82.1-82.1-215.7,0-297.8C128.5,48.9,181.4,27,237.6,27s109.1,21.9,148.9,61.7    C468.6,170.8,468.6,304.4,386.5,386.5z"
+                  d='M405.6,69.6C360.7,24.7,301.1,0,237.6,0s-123.1,24.7-168,69.6S0,174.1,0,237.6s24.7,123.1,69.6,168s104.5,69.6,168,69.6    s123.1-24.7,168-69.6s69.6-104.5,69.6-168S450.5,114.5,405.6,69.6z M386.5,386.5c-39.8,39.8-92.7,61.7-148.9,61.7    s-109.1-21.9-148.9-61.7c-82.1-82.1-82.1-215.7,0-297.8C128.5,48.9,181.4,27,237.6,27s109.1,21.9,148.9,61.7    C468.6,170.8,468.6,304.4,386.5,386.5z'
                   fill={this.closeIconColor}
                 />
                 <path
-                  d="M342.3,132.9c-5.3-5.3-13.8-5.3-19.1,0l-85.6,85.6L152,132.9c-5.3-5.3-13.8-5.3-19.1,0c-5.3,5.3-5.3,13.8,0,19.1    l85.6,85.6l-85.6,85.6c-5.3,5.3-5.3,13.8,0,19.1c2.6,2.6,6.1,4,9.5,4s6.9-1.3,9.5-4l85.6-85.6l85.6,85.6c2.6,2.6,6.1,4,9.5,4    c3.5,0,6.9-1.3,9.5-4c5.3-5.3,5.3-13.8,0-19.1l-85.4-85.6l85.6-85.6C347.6,146.7,347.6,138.2,342.3,132.9z"
+                  d='M342.3,132.9c-5.3-5.3-13.8-5.3-19.1,0l-85.6,85.6L152,132.9c-5.3-5.3-13.8-5.3-19.1,0c-5.3,5.3-5.3,13.8,0,19.1    l85.6,85.6l-85.6,85.6c-5.3,5.3-5.3,13.8,0,19.1c2.6,2.6,6.1,4,9.5,4s6.9-1.3,9.5-4l85.6-85.6l85.6,85.6c2.6,2.6,6.1,4,9.5,4    c3.5,0,6.9-1.3,9.5-4c5.3-5.3,5.3-13.8,0-19.1l-85.4-85.6l85.6-85.6C347.6,146.7,347.6,138.2,342.3,132.9z'
                   fill={this.closeIconColor}
                 />
               </g>

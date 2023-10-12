@@ -1,12 +1,12 @@
-import React, { useCallback, useState } from "react";
-import PropTypes from "prop-types";
-import classes from "./Drawer.module.scss";
+import React from 'react';
+import PropTypes from 'prop-types';
+import classes from './Drawer.module.scss';
 
 const changeAnchor = (anchor, classes) => {
   switch (anchor) {
-    case "left":
+    case 'left':
       return classes.drawerLeft;
-    case "right":
+    case 'right':
       return classes.drawerRight;
     default:
       return classes.drawerRight;
@@ -28,21 +28,19 @@ export const Drawer = (props) => {
   return (
     <>
       <div
-        tabIndex="-1"
+        tabIndex='-1'
         className={`${drawer} ${open && drawAnimate} ${!open && drawerHidden
           } ${changeAnchor(anchor, classes)}`}
       >
-
         <div className='drawer-container relative'>
           {children}
         </div>
-
       </div>
       <div
         className={`${drawerOverlay} ${!open && drawerOverlayHidden} ${open && drawerOverlayOpen
           }`}
         onClick={onClose}
-        aria-hidden="true"
+        aria-hidden='true'
       />
     </>
   );

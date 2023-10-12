@@ -3,8 +3,8 @@ import { Link } from '@reach/router';
 import Breakpoint, { BreakpointProvider, setDefaultBreakpoints } from 'react-socks';
 import { Reveal } from 'react-awesome-reveal';
 import Popover from '@mui/material/Popover';
-import { fadeInUp, fadeIn, IsMobile, IsSmMobile, numberWithCommas } from '../../utils';
 import ConnectWallet from './ConnectWallet';
+import { fadeIn } from '../../utils';
 
 setDefaultBreakpoints([
     { xs: 0 },
@@ -64,11 +64,11 @@ const MainHeader = function () {
                     <div className='logo px-0'>
                         <div className='navbar-title navbar-item'>
                             <NavLink to='/'>
-                                <div className="flex items-center gap-2">
+                                <div className='flex items-center gap-2'>
                                   <img
-                                    src="/images/logo.png"
-                                    className="img-fluid"
-                                    alt="#"
+                                    src='/images/logo.png'
+                                    className='img-fluid'
+                                    alt='#'
                                   />
                                   Bounty Hunter
                                 </div>
