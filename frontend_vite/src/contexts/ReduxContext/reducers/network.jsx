@@ -7,7 +7,7 @@ const initialState = {
     rpcUrl: ''
 };
 
-const chainSlice = createSlice({
+const networkSlice = createSlice({
     name: 'chain',
     initialState,
     reducers: {
@@ -25,6 +25,6 @@ const chainSlice = createSlice({
     }
 });
 
-export const { updateChainId, updateExplorerUrl, updateRpcUrl } = chainSlice.actions;
+export const { updateChainId, updateExplorerUrl, updateRpcUrl } = networkSlice.actions;
 
-export default chainSlice.reducer;
+export default networkSlice.reducer;

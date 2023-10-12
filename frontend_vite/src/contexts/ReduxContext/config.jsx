@@ -1,12 +1,12 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import { createTransform, persistStore } from 'redux-persist';
 import persistReducer from 'redux-persist/es/persistReducer';
-import chainSlice from './reducers/chain';
+import networkSlice from './reducers/network';
 import storage from 'redux-persist/lib/storage';
 import { stringify, parse } from 'flatted';
 
 const reducers = combineReducers({
-    chain: chainSlice
+    network: networkSlice
 });
 
 const rootReducer = (state, action) => {
