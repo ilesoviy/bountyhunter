@@ -12,7 +12,7 @@ const bountySchema = new Schema(
         type: { type: Number }, 
         topic: { type: Number }, 
         difficulty: { type: Number }, 
-        ledger: { type: Number }, 
+        block: { type: Number }, 
         gitRepo: { type: String }, 
         status: { type: Number }
     }
