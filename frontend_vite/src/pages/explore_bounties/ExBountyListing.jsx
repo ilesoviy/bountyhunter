@@ -26,7 +26,7 @@ const ExBountyListingBody = ({bounty}) => {
       return;
     }
 
-    const [workId, ledger] = await applyBounty(walletAddress, bounty?.bountyId);
+    const workId = await applyBounty(walletAddress, bounty?.bountyId);
     if (workId < 0) {
       toast.error('Failed to apply to bounty!');
       return;
@@ -61,6 +61,7 @@ const ExBountyListingBody = ({bounty}) => {
               gitHub = {bounty?.gitHub} 
               startDate = {Date.parse(bounty?.startDate)} 
               endDate = {Date.parse(bounty?.endDate)} 
+              block = {bounty?.block} 
               status = {bounty?.status}
             />
             <div className='w-full my-2 py-3'>
@@ -78,7 +79,8 @@ const ExBountyListingBody = ({bounty}) => {
               topic = {bounty?.topic} 
               gitHub = {bounty?.gitHub} 
               startDate = {Date.parse(bounty?.startDate)} 
-              endDate = {Date.parse(bounty?.endDate)}
+              endDate = {Date.parse(bounty?.endDate)} 
+              block = {bounty?.block} 
               status = {bounty?.status}
           />
           <Participant bountyId={bounty.bountyId} />

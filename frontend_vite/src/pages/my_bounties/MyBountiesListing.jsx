@@ -66,7 +66,8 @@ const MyBountiesListingBody = ({bounty, works}) => {
               topic = {bounty?.topic} 
               gitHub = {bounty?.gitHub} 
               startDate = {Date.parse(bounty?.startDate)} 
-              endDate = {Date.parse(bounty?.endDate)}
+              endDate = {Date.parse(bounty?.endDate)} 
+              block = {bounty?.block} 
               status = {bounty?.status}
           />
             <div className='w-full my-2 py-3'>
@@ -84,7 +85,8 @@ const MyBountiesListingBody = ({bounty, works}) => {
               topic = {bounty?.topic} 
               gitHub = {bounty?.gitHub} 
               startDate = {Date.parse(bounty?.startDate)} 
-              endDate = {Date.parse(bounty?.endDate)}
+              endDate = {Date.parse(bounty?.endDate)} 
+              block = {bounty?.block} 
               status = {bounty?.status}
           />
           {works?.map((work, idx) => {

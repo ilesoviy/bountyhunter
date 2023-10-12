@@ -20,7 +20,7 @@ const networkSlice = createSlice({
         },
 
         updateRpcUrl: (state, action) => {
-            state.rpcUrl = convertToSTring(action.payload);
+            state.rpcUrl = convertToString(action.payload);
         }
     }
 });

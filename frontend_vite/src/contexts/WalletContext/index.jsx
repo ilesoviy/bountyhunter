@@ -128,7 +128,7 @@ export const WalletProvider = (props) => {
         if (selectedWallet !== null && chainId !== configuredChainId) {
             syncWallet(selectedWallet);
         }
-    }, [chainId, configuredChainId]);
+    }, [walletAddress, chainId, configuredChainId]);
 
     return (
         <WalletContext.Provider value={{ connectWallet, disconnectWallet, isConnected, walletAddress, walletObj }}>

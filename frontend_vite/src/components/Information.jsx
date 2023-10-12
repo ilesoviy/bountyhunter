@@ -2,7 +2,7 @@ import { Reveal } from 'react-awesome-reveal';
 import { fadeInUp, shortenAddress, getType, getLevel, getTopic, getBountyStatus, getFormatedDate } from '../utils';
 
 export const Information = ({
-    wallet, payAmount, type, difficulty, topic, gitHub, status, startDate, endDate
+    wallet, payAmount, startDate, endDate, type, difficulty, topic, gitHub, block, status
 }) => {
     return (
         <div className=''>
@@ -37,7 +37,7 @@ export const Information = ({
                         </div>
                         <div className='flex justify-between items-center gap-3'>
                             <span className='text-[16px] font-bold'>Block</span>
-                            <span className='text-[16px]'>#254121386</span>
+                            <span className='text-[16px]'>{block}</span>
                         </div>
                         <div className='flex justify-between items-center gap-3'>
                             <span className='text-[16px] font-bold'>Level:</span>

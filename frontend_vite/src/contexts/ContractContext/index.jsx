@@ -2,6 +2,8 @@ import { createContext, useContext, useState, useEffect, useCallback } from 'rea
 import { useDispatch, useSelector } from 'react-redux';
 import { useGlobal } from '../GlobalContext';
 import { useCustomWallet } from '../WalletContext';
+import { networkConfig } from '../WalletContext/config';
+import { updateChainId, updateExplorerUrl, updateRpcUrl} from '../ReduxContext/reducers/network';
 import * as BountyHunter from 'bountyhunter';
 import * as SorobanClient from 'soroban-client';
 
@@ -21,7 +23,6 @@ export const ContractProvider = ({ children }) => {
     const DEF_PAY_TOKEN = 'CB64D3G7SM2RTH6JSGG34DDTFTQ5CFDKVDZJZSODMCX4NJ2HV2KN7OHT';
 
     const contract = new SorobanClient.Contract(CONTRACT_ID);
-    const server = new SorobanClient.Server(network.rpcUrl);
 
     useEffect(() => {
         let ac = new AbortController();
@@ -59,6 +60,8 @@ export const ContractProvider = ({ children }) => {
     };
 
     async function executeTransaction(operation, baseFee) {
+
+        const server = new SorobanClient.Server(network.rpcUrl);
 
         const pubKey = await walletObj.getUserInfo();
         // console.log('pubKey:', pubKey);
@@ -283,7 +286,7 @@ export const ContractProvider = ({ children }) => {
         dispatch(updateChainId(networkConfig[chainId].chainId));
         dispatch(updateExplorerUrl(networkConfig[chainId].explorerUrl));
         dispatch(updateRpcUrl(networkConfig[chainId].rpcUrl));
-    })
+    }, [dispatch, chainId]);
 
     return (
         <ContractContext.Provider value={{
