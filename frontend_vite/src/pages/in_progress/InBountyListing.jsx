@@ -72,7 +72,7 @@ const InBountyListingBody = ({ bounty, callback }) => {
 
 const InBountyListing = () => {
   const { isConnected, walletAddress } = useCustomWallet();
-  const { submitToBounty, getLastError } = useBounty();
+  const { submitWork } = useBounty();
   const { getSingleBounty, getWork, submitWorkB } = useBackend();
   const { id: bountyId } = useParams();
   const nav = useNavigate();
@@ -116,11 +116,9 @@ const InBountyListing = () => {
       return;
     }
 
-    const res1 = await submitToBounty(walletAddress, work?.workId, gitHub);
+    const res1 = await submitWork(walletAddress, work?.workId, gitHub);
     if (res1) {
-      const error = await getLastError();
       toast.error('Failed to submit to bounty!');
-      console.error('error:', error);
       return;
     }
 
