@@ -92,7 +92,7 @@ function parseError(message: string): Err | undefined {
 export const networks = {
     futurenet: {
         networkPassphrase: "Test SDF Future Network ; October 2022",
-        contractId: "CBUNZUDUGJ3P3SRWDTANFYWSETUX2R5XHARILC7RJFCQKN3UH5376JIY",
+        contractId: "CD2G6DU5E74RNPYLPCCLK3TZ6RBAFSQFSJMYCVVZRLWQY2IIUGX5VBF5",
     }
 } as const
 
