@@ -22,7 +22,6 @@ export const ContractProvider = ({ children }) => {
     const [reloadCounter, setReloadCounter] = useState(0);
 
     const CONTRACT_ID = BountyHunter.networks.futurenet.contractId;
-    console.log('CONTRACT_ID:', CONTRACT_ID);
     const DEF_PAY_TOKEN = 'CB64D3G7SM2RTH6JSGG34DDTFTQ5CFDKVDZJZSODMCX4NJ2HV2KN7OHT';
 
     const contract = new SorobanClient.Contract(CONTRACT_ID);
