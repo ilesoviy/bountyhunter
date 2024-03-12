@@ -7,6 +7,6 @@ export default defineConfig({
   base: '',
   root: '',
   build: {
-    outDir: 'build'
+    outDir: './build'
   }
 });
